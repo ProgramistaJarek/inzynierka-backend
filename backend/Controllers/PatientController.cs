@@ -11,7 +11,7 @@ using backend.ModelsDTO;
 
 namespace backend.Controllers
 {
-    [Route("api/[controller]")]    
+    [Route("api/[controller]")]
     [ApiController]
     public class PatientController : ControllerBase
     {
