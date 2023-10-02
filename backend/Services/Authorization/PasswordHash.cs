@@ -2,7 +2,7 @@
 
 namespace backend.Services.Authorization
 {
-    public class PasswordHash
+    public class PasswordHash : IPasswordHash
     {
         public string CreatePasswordHash(string password, byte[] salt)
         {

@@ -23,9 +23,9 @@ namespace backend.Controllers
     {
         private readonly DatabaseContext _context;
         private readonly IConfiguration _configuration;
-        private readonly PasswordHash _passwordHash;
+        private readonly IPasswordHash _passwordHash;
 
-        public AuthorizationController(DatabaseContext context, IConfiguration configuration, PasswordHash passwordHash)
+        public AuthorizationController(DatabaseContext context, IConfiguration configuration, IPasswordHash passwordHash)
         {
             _context = context;
             _configuration = configuration;
