@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Models;
 
@@ -11,9 +12,11 @@ using backend.Models;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231002145501_init4")]
+    partial class init4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,11 +190,6 @@ namespace backend.Migrations
                         new
                         {
                             Id = 8,
-                            Name = "polio OPV"
-                        },
-                        new
-                        {
-                            Id = 9,
                             Name = "Td"
                         });
                 });
@@ -268,155 +266,6 @@ namespace backend.Migrations
                     b.HasIndex("TypesVaccinesId");
 
                     b.ToTable("VaccinationSchedules");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Dose = "",
-                            IdAgeGroups = 1,
-                            IdTypesVaccines = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Dose = "1",
-                            IdAgeGroups = 1,
-                            IdTypesVaccines = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Dose = "2",
-                            IdAgeGroups = 2,
-                            IdTypesVaccines = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Dose = "1",
-                            IdAgeGroups = 2,
-                            IdTypesVaccines = 3
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Dose = "1",
-                            IdAgeGroups = 2,
-                            IdTypesVaccines = 4
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Dose = "2",
-                            IdAgeGroups = 3,
-                            IdTypesVaccines = 3
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Dose = "2",
-                            IdAgeGroups = 3,
-                            IdTypesVaccines = 4
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Dose = "1",
-                            IdAgeGroups = 3,
-                            IdTypesVaccines = 5
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Dose = "3",
-                            IdAgeGroups = 4,
-                            IdTypesVaccines = 3
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Dose = "3",
-                            IdAgeGroups = 4,
-                            IdTypesVaccines = 4
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Dose = "2",
-                            IdAgeGroups = 4,
-                            IdTypesVaccines = 5
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Dose = "3",
-                            IdAgeGroups = 5,
-                            IdTypesVaccines = 2
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Dose = "1",
-                            IdAgeGroups = 6,
-                            IdTypesVaccines = 6
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Dose = "4",
-                            IdAgeGroups = 7,
-                            IdTypesVaccines = 3
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Dose = "3",
-                            IdAgeGroups = 7,
-                            IdTypesVaccines = 5
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Dose = "4",
-                            IdAgeGroups = 7,
-                            IdTypesVaccines = 4
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Dose = "1 dawka przypominająca",
-                            IdAgeGroups = 8,
-                            IdTypesVaccines = 7
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Dose = "",
-                            IdAgeGroups = 8,
-                            IdTypesVaccines = 8
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Dose = "2 dawka przypominająca",
-                            IdAgeGroups = 9,
-                            IdTypesVaccines = 6
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Dose = "2 dawka przypominająca",
-                            IdAgeGroups = 10,
-                            IdTypesVaccines = 9
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Dose = "3 dawka przypominająca",
-                            IdAgeGroups = 11,
-                            IdTypesVaccines = 9
-                        });
                 });
 
             modelBuilder.Entity("backend.Models.VaccinationSchedule", b =>

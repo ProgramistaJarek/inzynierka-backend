@@ -1,12 +1,15 @@
-﻿using backend.Models;
+﻿using Azure;
+using backend.Models;
 using backend.ModelsDTO;
 using backend.Services.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -27,6 +30,48 @@ namespace backend.Controllers
             _context = context;
             _configuration = configuration;
             _passwordHash = passwordHash;
+        }
+
+        // GET: api/authorization
+        [Authorize]
+        [HttpGet("user")]
+        public async Task<ActionResult<UserDTO>> GetUser()
+        {
+            if (int.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId))
+            {
+                var patient = await _context.User.FindAsync(userId);
+
+                if (patient == null)
+                {
+                    return NotFound();
+                }
+
+                return new UserDTO()
+                {
+                    Nickname = patient.Nickname
+                };
+            }
+            else
+            {
+                return BadRequest("Invalid user ID");
+            }
+        }
+
+        // GET: api/authorization/5
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<UserDTO>> GetUserById(int id)
+        {
+            var patient = await _context.User.FindAsync(id);
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            return new UserDTO()
+            {
+                Nickname = patient.Nickname
+            };
         }
 
         // POST: api/authorization
@@ -50,7 +95,7 @@ namespace backend.Controllers
                 return Unauthorized("Password is wrong");
             }
 
-            return Ok(GenerateJWT(userDTO));
+            return Ok(GenerateJWT(user));
         }
 
         // POST: api/Authorization
@@ -84,14 +129,22 @@ namespace backend.Controllers
             return Ok("Registration successful");
         }
 
-        private string GenerateJWT(UserDTO userDTO)
+        // POST: api/Authorization
+        [HttpPost("change-password")]
+        public async Task<ActionResult<UserDTO>> ChangeUserPassword(HttpRequestMessage requestMessage)
+        {
+            return Ok("zmienles haslo");
+        }
+
+        private string GenerateJWT(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, userDTO.Nickname),
+                new Claim(ClaimTypes.Name, user.Nickname),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
 
             var token = new JwtSecurityToken(null, null,
