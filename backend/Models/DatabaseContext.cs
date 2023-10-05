@@ -8,6 +8,7 @@ namespace backend.Models
     {
         public DbSet<Patient> Patients { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Vaccinations> Vaccinations { get; set; }
         public DbSet<AgeGroups> AgeGroups { get; set; }
         public DbSet<TypesVaccines> TypesVaccines { get; set; }
         public DbSet<VaccinationSchedule> VaccinationSchedules { get; set; }

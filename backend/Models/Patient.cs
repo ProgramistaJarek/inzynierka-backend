@@ -9,6 +9,5 @@
         public string Adress { get; set; } = String.Empty;
         public string PhoneNumber { get; set; } = String.Empty;
         public DateTime BirthDay { get; set; }
-
     }
 }

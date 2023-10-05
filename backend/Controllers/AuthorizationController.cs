@@ -14,6 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using IAuthorizationService = backend.Services.Authorization.IAuthorizationService;
 
 namespace backend.Controllers
 {
@@ -22,14 +23,12 @@ namespace backend.Controllers
     public class AuthorizationController : ControllerBase
     {
         private readonly DatabaseContext _context;
-        private readonly IConfiguration _configuration;
-        private readonly IPasswordHash _passwordHash;
+        private readonly IAuthorizationService _authorizationService;
 
-        public AuthorizationController(DatabaseContext context, IConfiguration configuration, IPasswordHash passwordHash)
+        public AuthorizationController(DatabaseContext context, IAuthorizationService authorizationService)
         {
             _context = context;
-            _configuration = configuration;
-            _passwordHash = passwordHash;
+            _authorizationService = authorizationService;
         }
 
         // GET: api/authorization
@@ -90,12 +89,12 @@ namespace backend.Controllers
                 return Unauthorized("User do not exist");
             }
 
-            if (!_passwordHash.VerifyPassword(userDTO.Password, user.Password, Convert.FromBase64String(user.PasswordSalt)))
+            if (!_authorizationService.VerifyPassword(userDTO.Password, user.Password, Convert.FromBase64String(user.PasswordSalt)))
             {
                 return Unauthorized("Password is wrong");
             }
 
-            return Ok(GenerateJWT(user));
+            return Ok(_authorizationService.GenerateJWT(user));
         }
 
         // POST: api/Authorization
@@ -116,7 +115,7 @@ namespace backend.Controllers
 
             byte[] salt = RandomNumberGenerator.GetBytes(128 / 8);
             string userPasswordSalt = Convert.ToBase64String(salt);
-            string userPasswordHash = _passwordHash.CreatePasswordHash(userDTO.Password, salt);
+            string userPasswordHash = _authorizationService.CreatePasswordHash(userDTO.Password, salt);
 
             _context.User.Add(new User()
             {
@@ -129,30 +128,11 @@ namespace backend.Controllers
             return Ok("Registration successful");
         }
 
-        // POST: api/Authorization
+        /*// POST: api/Authorization
         [HttpPost("change-password")]
         public async Task<ActionResult<UserDTO>> ChangeUserPassword(HttpRequestMessage requestMessage)
         {
             return Ok("zmienles haslo");
-        }
-
-        private string GenerateJWT(User user)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            List<Claim> claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Nickname),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-            };
-
-            var token = new JwtSecurityToken(null, null,
-                claims,
-                expires: DateTime.Now.AddMinutes(120),
-                signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        }*/
     }
 }
