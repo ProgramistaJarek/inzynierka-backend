@@ -60,7 +60,7 @@ namespace backend.Services.Authorization
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<ActionResult<UserDTO>> LoginUser(LoginDTO loginDTO)
+        public async Task<ActionResult<string>> LoginUser(LoginDTO loginDTO)
         {
             if (loginDTO == null)
             {
@@ -82,7 +82,7 @@ namespace backend.Services.Authorization
             return new OkObjectResult(GenerateJWT(user));
         }
 
-        public async Task<ActionResult<UserDTO>> SignupUser(SignupDTO signupDTO)
+        public async Task<ActionResult<string>> SignupUser(SignupDTO signupDTO)
         {
             if (signupDTO == null)
             {
@@ -129,6 +129,7 @@ namespace backend.Services.Authorization
 
             var userDTO = new UserDTO()
             {
+                Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
@@ -153,6 +154,7 @@ namespace backend.Services.Authorization
 
             var userDTO = new UserDTO()
             {
+                Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,

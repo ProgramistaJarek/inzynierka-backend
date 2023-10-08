@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public string Name { get; set; } = String.Empty;
 
-        public ICollection<VaccinationSchedule> VaccinationSchedules { get; set; }
+        public ICollection<VaccinationSchedule> VaccinationSchedules { get; set; } = null!;
     }
 }

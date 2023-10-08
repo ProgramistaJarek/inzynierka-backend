@@ -42,14 +42,14 @@ namespace backend.Controllers
 
         // POST: api/authorization
         [HttpPost("login")]
-        public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
+        public async Task<ActionResult<string>> Login(LoginDTO loginDTO)
         {
             return await _authorizationService.LoginUser(loginDTO);
         }
 
         // POST: api/Authorization
         [HttpPost("signup")]
-        public async Task<ActionResult<UserDTO>> PostRegisterUser(SignupDTO signupDTO)
+        public async Task<ActionResult<string>> PostRegisterUser(SignupDTO signupDTO)
         {
             return await _authorizationService.SignupUser(signupDTO);
         }

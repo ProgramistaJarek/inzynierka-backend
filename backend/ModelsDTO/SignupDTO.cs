@@ -13,10 +13,12 @@ namespace backend.ModelsDTO
 
         [Required]
         public string Nickname { get; set; } = string.Empty;
-        
+
+        [Required]
         [PasswordPropertyText]
         public string Password { get; set; } = string.Empty;
-        
+
+        [Required]
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
         

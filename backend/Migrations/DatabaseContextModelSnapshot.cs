@@ -96,6 +96,48 @@ namespace backend.Migrations
                         });
                 });
 
+            modelBuilder.Entity("backend.Entities.Babysitter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FisrtName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Kinship")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PESEL")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Babysitters");
+                });
+
             modelBuilder.Entity("backend.Entities.Patient", b =>
                 {
                     b.Property<int>("Id")
@@ -109,6 +151,12 @@ namespace backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("BirthDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfDeclaration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfPublication")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
@@ -127,9 +175,41 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TypeOfVaccination")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Patients");
+                });
+
+            modelBuilder.Entity("backend.Entities.Summons", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Avoid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Send")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Summons");
                 });
 
             modelBuilder.Entity("backend.Entities.TypesVaccines", b =>
@@ -231,7 +311,7 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phonenumber")
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -247,6 +327,49 @@ namespace backend.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("backend.Entities.VaccinationCard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Emigration")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Lack")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Received")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ReceivedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Send")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SendDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Year")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId")
+                        .IsUnique();
+
+                    b.ToTable("VaccinationCard");
+                });
+
             modelBuilder.Entity("backend.Entities.VaccinationSchedule", b =>
                 {
                     b.Property<int>("Id")
@@ -255,29 +378,19 @@ namespace backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AgeGroupsId")
+                    b.Property<int>("AgeGroupsId")
                         .HasColumnType("int");
 
                     b.Property<string>("Dose")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdAgeGroups")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdTypesVaccines")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TypesVaccinesId")
+                    b.Property<int>("TypesVaccinesId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AgeGroupsId");
-
-                    b.HasIndex("IdAgeGroups");
-
-                    b.HasIndex("IdTypesVaccines");
 
                     b.HasIndex("TypesVaccinesId");
 
@@ -287,149 +400,149 @@ namespace backend.Migrations
                         new
                         {
                             Id = 1,
+                            AgeGroupsId = 1,
                             Dose = "",
-                            IdAgeGroups = 1,
-                            IdTypesVaccines = 1
+                            TypesVaccinesId = 1
                         },
                         new
                         {
                             Id = 2,
+                            AgeGroupsId = 1,
                             Dose = "1",
-                            IdAgeGroups = 1,
-                            IdTypesVaccines = 2
+                            TypesVaccinesId = 2
                         },
                         new
                         {
                             Id = 3,
+                            AgeGroupsId = 2,
                             Dose = "2",
-                            IdAgeGroups = 2,
-                            IdTypesVaccines = 2
+                            TypesVaccinesId = 2
                         },
                         new
                         {
                             Id = 4,
+                            AgeGroupsId = 2,
                             Dose = "1",
-                            IdAgeGroups = 2,
-                            IdTypesVaccines = 3
+                            TypesVaccinesId = 3
                         },
                         new
                         {
                             Id = 5,
+                            AgeGroupsId = 2,
                             Dose = "1",
-                            IdAgeGroups = 2,
-                            IdTypesVaccines = 4
+                            TypesVaccinesId = 4
                         },
                         new
                         {
                             Id = 6,
+                            AgeGroupsId = 3,
                             Dose = "2",
-                            IdAgeGroups = 3,
-                            IdTypesVaccines = 3
+                            TypesVaccinesId = 3
                         },
                         new
                         {
                             Id = 7,
+                            AgeGroupsId = 3,
                             Dose = "2",
-                            IdAgeGroups = 3,
-                            IdTypesVaccines = 4
+                            TypesVaccinesId = 4
                         },
                         new
                         {
                             Id = 8,
+                            AgeGroupsId = 3,
                             Dose = "1",
-                            IdAgeGroups = 3,
-                            IdTypesVaccines = 5
+                            TypesVaccinesId = 5
                         },
                         new
                         {
                             Id = 9,
+                            AgeGroupsId = 4,
                             Dose = "3",
-                            IdAgeGroups = 4,
-                            IdTypesVaccines = 3
+                            TypesVaccinesId = 3
                         },
                         new
                         {
                             Id = 10,
+                            AgeGroupsId = 4,
                             Dose = "3",
-                            IdAgeGroups = 4,
-                            IdTypesVaccines = 4
+                            TypesVaccinesId = 4
                         },
                         new
                         {
                             Id = 11,
+                            AgeGroupsId = 4,
                             Dose = "2",
-                            IdAgeGroups = 4,
-                            IdTypesVaccines = 5
+                            TypesVaccinesId = 5
                         },
                         new
                         {
                             Id = 12,
+                            AgeGroupsId = 5,
                             Dose = "3",
-                            IdAgeGroups = 5,
-                            IdTypesVaccines = 2
+                            TypesVaccinesId = 2
                         },
                         new
                         {
                             Id = 13,
+                            AgeGroupsId = 6,
                             Dose = "1",
-                            IdAgeGroups = 6,
-                            IdTypesVaccines = 6
+                            TypesVaccinesId = 6
                         },
                         new
                         {
                             Id = 14,
+                            AgeGroupsId = 7,
                             Dose = "4",
-                            IdAgeGroups = 7,
-                            IdTypesVaccines = 3
+                            TypesVaccinesId = 3
                         },
                         new
                         {
                             Id = 15,
+                            AgeGroupsId = 7,
                             Dose = "3",
-                            IdAgeGroups = 7,
-                            IdTypesVaccines = 5
+                            TypesVaccinesId = 5
                         },
                         new
                         {
                             Id = 16,
+                            AgeGroupsId = 7,
                             Dose = "4",
-                            IdAgeGroups = 7,
-                            IdTypesVaccines = 4
+                            TypesVaccinesId = 4
                         },
                         new
                         {
                             Id = 17,
+                            AgeGroupsId = 8,
                             Dose = "1 dawka przypominająca",
-                            IdAgeGroups = 8,
-                            IdTypesVaccines = 7
+                            TypesVaccinesId = 7
                         },
                         new
                         {
                             Id = 18,
+                            AgeGroupsId = 8,
                             Dose = "",
-                            IdAgeGroups = 8,
-                            IdTypesVaccines = 8
+                            TypesVaccinesId = 8
                         },
                         new
                         {
                             Id = 19,
+                            AgeGroupsId = 9,
                             Dose = "2 dawka przypominająca",
-                            IdAgeGroups = 9,
-                            IdTypesVaccines = 6
+                            TypesVaccinesId = 6
                         },
                         new
                         {
                             Id = 20,
+                            AgeGroupsId = 10,
                             Dose = "2 dawka przypominająca",
-                            IdAgeGroups = 10,
-                            IdTypesVaccines = 9
+                            TypesVaccinesId = 9
                         },
                         new
                         {
                             Id = 21,
+                            AgeGroupsId = 11,
                             Dose = "3 dawka przypominająca",
-                            IdAgeGroups = 11,
-                            IdTypesVaccines = 9
+                            TypesVaccinesId = 9
                         });
                 });
 
@@ -459,27 +572,52 @@ namespace backend.Migrations
                     b.ToTable("Vaccinations");
                 });
 
+            modelBuilder.Entity("backend.Entities.Babysitter", b =>
+                {
+                    b.HasOne("backend.Entities.Patient", "Patient")
+                        .WithMany("Babysitters")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("backend.Entities.Summons", b =>
+                {
+                    b.HasOne("backend.Entities.Patient", "Patient")
+                        .WithMany("Summons")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("backend.Entities.VaccinationCard", b =>
+                {
+                    b.HasOne("backend.Entities.Patient", "Patient")
+                        .WithOne("VaccinationCard")
+                        .HasForeignKey("backend.Entities.VaccinationCard", "PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("backend.Entities.VaccinationSchedule", b =>
                 {
-                    b.HasOne("backend.Entities.AgeGroups", null)
-                        .WithMany("VaccinationSchedules")
-                        .HasForeignKey("AgeGroupsId");
-
                     b.HasOne("backend.Entities.AgeGroups", "AgeGroups")
-                        .WithMany()
-                        .HasForeignKey("IdAgeGroups")
+                        .WithMany("VaccinationSchedules")
+                        .HasForeignKey("AgeGroupsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("backend.Entities.TypesVaccines", "TypesVaccines")
-                        .WithMany()
-                        .HasForeignKey("IdTypesVaccines")
+                        .WithMany("VaccinationSchedules")
+                        .HasForeignKey("TypesVaccinesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("backend.Entities.TypesVaccines", null)
-                        .WithMany("VaccinationSchedules")
-                        .HasForeignKey("TypesVaccinesId");
 
                     b.Navigation("AgeGroups");
 
@@ -489,6 +627,15 @@ namespace backend.Migrations
             modelBuilder.Entity("backend.Entities.AgeGroups", b =>
                 {
                     b.Navigation("VaccinationSchedules");
+                });
+
+            modelBuilder.Entity("backend.Entities.Patient", b =>
+                {
+                    b.Navigation("Babysitters");
+
+                    b.Navigation("Summons");
+
+                    b.Navigation("VaccinationCard");
                 });
 
             modelBuilder.Entity("backend.Entities.TypesVaccines", b =>
