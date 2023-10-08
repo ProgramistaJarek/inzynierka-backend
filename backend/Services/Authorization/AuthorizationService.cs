@@ -1,6 +1,6 @@
 ﻿using backend.Entities;
 using backend.ModelsDTO;
-using backend.Repositories;
+using backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;

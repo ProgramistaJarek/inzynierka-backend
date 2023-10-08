@@ -2,6 +2,6 @@
 {
     public enum TypeOfVaccination
     {
-        Sanepid, Komercyjnie
+        Sanepid = 0, Komercyjnie = 1
     }
 }

@@ -10,6 +10,7 @@ namespace backend.Database
         public DbSet<Babysitter> Babysitters { get; set; }
         public DbSet<Summons> Summons { get; set; }
         public DbSet<VaccinationCard> VaccinationCard { get; set; }
+        public DbSet<VaccinationInfo> VaccinationInfo { get; set; }
         public DbSet<Vaccinations> Vaccinations { get; set; }
         public DbSet<AgeGroups> AgeGroups { get; set; }
         public DbSet<TypesVaccines> TypesVaccines { get; set; }
@@ -32,12 +33,6 @@ namespace backend.Database
                 .IsRequired();
 
             modelBuilder.Entity<Patient>()
-                .HasMany(e => e.Babysitters)
-                .WithOne(e => e.Patient)
-                .HasForeignKey(e => e.PatientId)
-                .IsRequired();
-
-            modelBuilder.Entity<Patient>()
                 .HasMany(e => e.Summons)
                 .WithOne(e => e.Patient)
                 .HasForeignKey(e => e.PatientId)
@@ -47,6 +42,12 @@ namespace backend.Database
                 .HasOne(e => e.VaccinationCard)
                 .WithOne(e => e.Patient)
                 .HasForeignKey<VaccinationCard>(e => e.PatientId)
+                .IsRequired();
+
+            modelBuilder.Entity<Babysitter>()
+                .HasMany(e => e.Patient)
+                .WithOne(e => e.Babysitter)
+                .HasForeignKey(e => e.BabysitterId)
                 .IsRequired();
 
             modelBuilder.Entity<AgeGroups>().HasData(

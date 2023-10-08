@@ -1,6 +1,8 @@
 using backend.Database;
 using backend.Repositories;
+using backend.Repositories.Interfaces;
 using backend.Services.Authorization;
+using backend.Services.Patients;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -30,10 +32,14 @@ builder.Services.AddDbContext<DatabaseContext>(opt =>
 );
 
 // Add services to the container.
-builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
 builder.Services.AddScoped<IVaccinationsRepository, VaccinationsRepository>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<ISummonsRepository, SummonsRepository>();
+builder.Services.AddScoped<IBabysitterRepository, BabysitterRepository>();
+
+builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
+builder.Services.AddScoped<IPatientService, PatientService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -59,6 +65,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddCors(opt => opt.AddPolicy(name: "Policy",
     policy =>

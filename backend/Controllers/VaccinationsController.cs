@@ -1,12 +1,13 @@
 ﻿using backend.Entities;
 using backend.ModelsDTO;
-using backend.Repositories;
+using backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class VaccinationsController : ControllerBase
     {
         private readonly IVaccinationsRepository _vaccinationsRepository;
@@ -17,7 +18,7 @@ namespace backend.Controllers
         }
 
         // GET: api/Vaccinations
-        [HttpGet]
+        [HttpGet(Name = "getVaccinations")]
         public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> GetVaccinations()
         {
             var vaccination = await _vaccinationsRepository.GetAll();
@@ -37,7 +38,7 @@ namespace backend.Controllers
         }
 
         // GET: api/Vaccinations/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "getVaccination")]
         public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> GetVaccinationById(int id)
         {
             var vaccination = await _vaccinationsRepository.GetById(id);
@@ -59,7 +60,7 @@ namespace backend.Controllers
         }
 
         // POST: api/Vaccinations
-        [HttpPost]
+        [HttpPost(Name = "createVaccination")]
         public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> PostVaccination(VaccinationsDTO vaccinationsDTO)
         {
             var vaccination = new Vaccinations()
@@ -77,7 +78,7 @@ namespace backend.Controllers
         }
 
         // PUT: api/Vaccinations
-        [HttpPut]
+        [HttpPut(Name = "updateVaccination")]
         public async Task<IActionResult> PutVaccination(VaccinationsDTO vaccinationsDTO)
         {
             var vaccination = new Vaccinations()
@@ -101,7 +102,7 @@ namespace backend.Controllers
         }
 
         // DELETE: api/Vaccinations/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}", Name = "deleteVaccination")]
         public async Task<IActionResult> DeleteVaccination(int id)
         {
             var vaccination = await _vaccinationsRepository.GetById(id);

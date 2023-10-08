@@ -1,24 +1,27 @@
 ﻿using backend.Entities;
 using backend.ModelsDTO;
-using backend.Repositories;
-using Microsoft.AspNetCore.Authorization;
+using backend.Repositories.Interfaces;
+using backend.Services.Patients;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class PatientController : ControllerBase
     {
         private readonly IPatientRepository _patientRepository;
+        private readonly IPatientService _patientService;
 
-        public PatientController(IPatientRepository patientRepository)
+        public PatientController(IPatientRepository patientRepository, IPatientService patientService)
         {
             _patientRepository = patientRepository;
+            _patientService = patientService;
         }
 
         // GET: api/Patient
-        [HttpGet]
+        [HttpGet(Name = "getPatients")]
         public async Task<ActionResult<IEnumerable<PatientDTO>>> GetPatients()
         {
             var patient = await _patientRepository.GetAll();
@@ -39,7 +42,7 @@ namespace backend.Controllers
         }
 
         // GET: api/Patient/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "getPatientById")]
         public async Task<ActionResult<PatientDTO>> GetPatient(int id)
         {
             var patient = await _patientRepository.GetById(id);
@@ -56,41 +59,27 @@ namespace backend.Controllers
                 Adress = patient.Adress,
                 PESEL = patient.PESEL,
                 BirthDay = patient.BirthDay,
-                PhoneNumber = patient.PhoneNumber
+                PhoneNumber = patient.PhoneNumber,
+                DateOfAbandonment = patient.DateOfAbandonment,
+                DateOfDeclaration = patient.DateOfDeclaration,
+                TypeOfVaccination = patient.TypeOfVaccination,
             };
         }
 
         // POST: api/Patient
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<PatientDTO>> PostPatient(PatientDTO patientDTO)
+        [HttpPost(Name = "createPatient")]
+        public async Task<ActionResult<string>> PostPatient(AddPatientDTO addPatientDTO)
         {
-            var patient = new Patient()
-            {
-                FirstName = patientDTO.FirstName,
-                LastName = patientDTO.LastName,
-                Adress = patientDTO.Adress,
-                PESEL = patientDTO.PESEL,
-                BirthDay = patientDTO.BirthDay,
-                PhoneNumber = patientDTO.PhoneNumber
-            };
-
-            var craetedPatient = await _patientRepository.Create(patient);
-
-            if (craetedPatient == null)
-            {
-                return Problem("Entity set 'DatabaseContext.Patients'  is null.");
-            }
-
-            return CreatedAtAction("GetPatient", new { id = craetedPatient.Id }, craetedPatient);
+            return await _patientService.AddPatientWithBabysitter(addPatientDTO);
         }
 
         // PUT: api/Patient/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPatient(int id, PatientDTO patientDTO)
+        [HttpPut(Name = "updatePatient")]
+        public async Task<IActionResult> PutPatient(PatientDTO patientDTO)
         {
-            var exisitngPatient = await _patientRepository.GetById(id);
+            var exisitngPatient = await _patientRepository.GetById(patientDTO.Id);
 
             if (exisitngPatient == null)
             {
@@ -113,7 +102,7 @@ namespace backend.Controllers
         }
 
         // DELETE: api/Patient/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}", Name = "deletePatient")]
         public async Task<IActionResult> DeletePatient(int id)
         {
             var patient = await _patientRepository.GetById(id);

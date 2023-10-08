@@ -12,10 +12,11 @@ namespace backend.Entities
         public string PhoneNumber { get; set; } = string.Empty;
         public DateTime BirthDay { get; set; }
         public DateTime DateOfDeclaration { get; set; }
-        public DateTime DateOfPublication { get; set; }
+        public DateTime DateOfAbandonment { get; set; }
         public TypeOfVaccination TypeOfVaccination { get; set; }
 
-        public ICollection<Babysitter> Babysitters { get; set; } = new List<Babysitter>();
+        public int BabysitterId { get; set; }
+        public Babysitter Babysitter { get; set; } = null!;
         public ICollection<Summons> Summons { get; set; } = new List<Summons>();
         public VaccinationCard? VaccinationCard { get; set; }
     }

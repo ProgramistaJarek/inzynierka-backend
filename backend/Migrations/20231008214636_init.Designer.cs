@@ -12,7 +12,7 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231008142408_init")]
+    [Migration("20231008214636_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -127,16 +127,11 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PatientId");
 
                     b.ToTable("Babysitters");
                 });
@@ -153,13 +148,16 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("BabysitterId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("BirthDay")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfDeclaration")
+                    b.Property<DateTime>("DateOfAbandonment")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfPublication")
+                    b.Property<DateTime>("DateOfDeclaration")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
@@ -182,6 +180,8 @@ namespace backend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BabysitterId");
 
                     b.ToTable("Patients");
                 });
@@ -371,6 +371,35 @@ namespace backend.Migrations
                         .IsUnique();
 
                     b.ToTable("VaccinationCard");
+                });
+
+            modelBuilder.Entity("backend.Entities.VaccinationInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Appointment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostCaccinationReaction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Postponement")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostponementOfCaccination")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VaccinationInfo");
                 });
 
             modelBuilder.Entity("backend.Entities.VaccinationSchedule", b =>
@@ -575,15 +604,15 @@ namespace backend.Migrations
                     b.ToTable("Vaccinations");
                 });
 
-            modelBuilder.Entity("backend.Entities.Babysitter", b =>
+            modelBuilder.Entity("backend.Entities.Patient", b =>
                 {
-                    b.HasOne("backend.Entities.Patient", "Patient")
-                        .WithMany("Babysitters")
-                        .HasForeignKey("PatientId")
+                    b.HasOne("backend.Entities.Babysitter", "Babysitter")
+                        .WithMany("Patient")
+                        .HasForeignKey("BabysitterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Patient");
+                    b.Navigation("Babysitter");
                 });
 
             modelBuilder.Entity("backend.Entities.Summons", b =>
@@ -632,10 +661,13 @@ namespace backend.Migrations
                     b.Navigation("VaccinationSchedules");
                 });
 
+            modelBuilder.Entity("backend.Entities.Babysitter", b =>
+                {
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("backend.Entities.Patient", b =>
                 {
-                    b.Navigation("Babysitters");
-
                     b.Navigation("Summons");
 
                     b.Navigation("VaccinationCard");

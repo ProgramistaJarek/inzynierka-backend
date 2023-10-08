@@ -1,6 +1,6 @@
 ﻿using backend.Entities;
 
-namespace backend.Repositories
+namespace backend.Repositories.Interfaces
 {
     public interface IBabysitterRepository : IRepositoryBase<Babysitter>
     {

@@ -1,7 +1,6 @@
 ﻿using backend.Entities;
-using backend.ModelsDTO;
 
-namespace backend.Repositories
+namespace backend.Repositories.Interfaces
 {
     public interface IAuthorizationRepository : IRepositoryBase<User>
     {

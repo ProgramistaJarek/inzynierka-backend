@@ -8,6 +8,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class AuthorizationController : ControllerBase
     {
         private readonly IAuthorizationService _authorizationService;
@@ -19,7 +20,7 @@ namespace backend.Controllers
 
         // GET: api/authorization
         [Authorize]
-        [HttpGet("user")]
+        [HttpGet(Name = "getUserAuthorize")]
         public async Task<ActionResult<UserDTO>> GetUser()
         {
             if (int.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId))
@@ -34,21 +35,21 @@ namespace backend.Controllers
 
         // GET: api/authorization/5
         [Authorize]
-        [HttpGet("user/{id}")]
+        [HttpGet("user/{id}", Name = "getUserById")]
         public async Task<ActionResult<UserDTO>> GetUserById(int id)
         {
             return await _authorizationService.GetUserById(id);
         }
 
         // POST: api/authorization
-        [HttpPost("login")]
+        [HttpPost("login", Name = "login")]
         public async Task<ActionResult<string>> Login(LoginDTO loginDTO)
         {
             return await _authorizationService.LoginUser(loginDTO);
         }
 
         // POST: api/Authorization
-        [HttpPost("signup")]
+        [HttpPost("signup", Name = "signup")]
         public async Task<ActionResult<string>> PostRegisterUser(SignupDTO signupDTO)
         {
             return await _authorizationService.SignupUser(signupDTO);
