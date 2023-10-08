@@ -1,17 +1,27 @@
-﻿namespace backend.Entities
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace backend.ModelsDTO
 {
-    public class User
+    public class SignupDTO
     {
-        public int Id { get; set; }
+        [Required]
         public string FirstName { get; set; } = string.Empty;
+        
+        [Required]
         public string LastName { get; set; } = string.Empty;
+
+        [Required]
         public string Nickname { get; set; } = string.Empty;
+        
+        [PasswordPropertyText]
         public string Password { get; set; } = string.Empty;
-        public string PasswordSalt { get; set; } = string.Empty;
+        
+        [EmailAddress]
         public string Email { get; set; } = string.Empty;
+        
+        [Required]
+        [StringLength(9, MinimumLength = 9)]
         public string PhoneNumber { get; set; } = string.Empty;
-        public string Position { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set;}
     }
 }

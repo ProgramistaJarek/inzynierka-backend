@@ -1,11 +1,7 @@
-﻿using backend.Database;
-using backend.Entities;
-using backend.ModelsDTO;
+﻿using backend.ModelsDTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using IAuthorizationService = backend.Services.Authorization.IAuthorizationService;
 
 namespace backend.Controllers
@@ -14,12 +10,10 @@ namespace backend.Controllers
     [ApiController]
     public class AuthorizationController : ControllerBase
     {
-        private readonly DatabaseContext _context;
         private readonly IAuthorizationService _authorizationService;
 
-        public AuthorizationController(DatabaseContext context, IAuthorizationService authorizationService)
+        public AuthorizationController(IAuthorizationService authorizationService)
         {
-            _context = context;
             _authorizationService = authorizationService;
         }
 
@@ -30,17 +24,7 @@ namespace backend.Controllers
         {
             if (int.TryParse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value, out int userId))
             {
-                var patient = await _context.User.FindAsync(userId);
-
-                if (patient == null)
-                {
-                    return NotFound();
-                }
-
-                return new UserDTO()
-                {
-                    Nickname = patient.Nickname
-                };
+                return await _authorizationService.GetUserAuthorize(userId);
             }
             else
             {
@@ -49,82 +33,25 @@ namespace backend.Controllers
         }
 
         // GET: api/authorization/5
+        [Authorize]
         [HttpGet("user/{id}")]
         public async Task<ActionResult<UserDTO>> GetUserById(int id)
         {
-            var patient = await _context.User.FindAsync(id);
-
-            if (patient == null)
-            {
-                return NotFound();
-            }
-
-            return new UserDTO()
-            {
-                Nickname = patient.Nickname
-            };
+            return await _authorizationService.GetUserById(id);
         }
 
         // POST: api/authorization
         [HttpPost("login")]
-        public async Task<ActionResult<UserDTO>> LoginUser(UserDTO userDTO)
+        public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
         {
-            if (userDTO == null)
-            {
-                return BadRequest();
-            }
-
-            var user = await _context.User.FirstOrDefaultAsync(u => u.Nickname == userDTO.Nickname);
-
-            if (user == null)
-            {
-                return Unauthorized("User do not exist");
-            }
-
-            if (!_authorizationService.VerifyPassword(userDTO.Password, user.Password, Convert.FromBase64String(user.PasswordSalt)))
-            {
-                return Unauthorized("Password is wrong");
-            }
-
-            return Ok(_authorizationService.GenerateJWT(user));
+            return await _authorizationService.LoginUser(loginDTO);
         }
 
         // POST: api/Authorization
         [HttpPost("signup")]
-        public async Task<ActionResult<UserDTO>> PostRegisterUser(UserDTO userDTO)
+        public async Task<ActionResult<UserDTO>> PostRegisterUser(SignupDTO signupDTO)
         {
-            if (userDTO == null)
-            {
-                return BadRequest();
-            }
-
-            var checkIfNicknameExist = await _context.User.Where(u => u.Nickname == userDTO.Nickname).ToListAsync();
-
-            if (checkIfNicknameExist.Any())
-            {
-                return BadRequest("Nickname exist");
-            }
-
-            byte[] salt = RandomNumberGenerator.GetBytes(128 / 8);
-            string userPasswordSalt = Convert.ToBase64String(salt);
-            string userPasswordHash = _authorizationService.CreatePasswordHash(userDTO.Password, salt);
-
-            _context.User.Add(new User()
-            {
-                Nickname = userDTO.Nickname,
-                Password = userPasswordHash,
-                PasswordSalt = userPasswordSalt
-            });
-            await _context.SaveChangesAsync();
-
-            return Ok("Registration successful");
+            return await _authorizationService.SignupUser(signupDTO);
         }
-
-        /*// POST: api/Authorization
-        [HttpPost("change-password")]
-        public async Task<ActionResult<UserDTO>> ChangeUserPassword(HttpRequestMessage requestMessage)
-        {
-            return Ok("zmienles haslo");
-        }*/
     }
 }

@@ -1,22 +1,28 @@
 ﻿using backend.Entities;
+using backend.ModelsDTO;
+using backend.Repositories;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace backend.Services.Authorization
 {
     public class AuthorizationService : IAuthorizationService
     {
+        private readonly IAuthorizationRepository _authorizationRepository;
         private readonly IConfiguration _configuration;
 
-        public AuthorizationService(IConfiguration configuration)
+        public AuthorizationService(IAuthorizationRepository authorizationRepository, IConfiguration configuration)
         {
+            _authorizationRepository = authorizationRepository;
             _configuration = configuration;
         }
 
-        public string CreatePasswordHash(string password, byte[] salt)
+        private string CreatePasswordHash(string password, byte[] salt)
         {
             string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: password,
@@ -27,15 +33,15 @@ namespace backend.Services.Authorization
             );
 
             return hashed;
-        }        
+        }
 
-        public bool VerifyPassword(string enterPassword, string storedHash, byte[] storedSalt)
+        private bool VerifyPassword(string enterPassword, string storedHash, byte[] storedSalt)
         {
             string hashToCompare = CreatePasswordHash(enterPassword, storedSalt);
             return hashToCompare == storedHash;
         }
 
-        public string GenerateJWT(User user)
+        private string GenerateJWT(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]!));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -52,6 +58,112 @@ namespace backend.Services.Authorization
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public async Task<ActionResult<UserDTO>> LoginUser(LoginDTO loginDTO)
+        {
+            if (loginDTO == null)
+            {
+                return new BadRequestResult();
+            }
+
+            var user = await _authorizationRepository.GetUserByNickname(loginDTO.Username);
+
+            if (user == null)
+            {
+                return new UnauthorizedObjectResult("User do not exist");
+            }
+
+            if (!VerifyPassword(loginDTO.Password, user.Password, Convert.FromBase64String(user.PasswordSalt)))
+            {
+                return new UnauthorizedObjectResult("Password is wrong");
+            }
+
+            return new OkObjectResult(GenerateJWT(user));
+        }
+
+        public async Task<ActionResult<UserDTO>> SignupUser(SignupDTO signupDTO)
+        {
+            if (signupDTO == null)
+            {
+                return new BadRequestResult();
+            }
+
+            var checkIfNicknameExist = await _authorizationRepository.GetUserByNickname(signupDTO.Nickname);
+
+            if (checkIfNicknameExist != null)
+            {
+                return new BadRequestObjectResult("Username exist");
+            }
+
+            byte[] salt = RandomNumberGenerator.GetBytes(128 / 8);
+            string userPasswordSalt = Convert.ToBase64String(salt);
+            string userPasswordHash = CreatePasswordHash(signupDTO.Password, salt);
+
+            var newUser = new User()
+            {
+                FirstName = signupDTO.FirstName,
+                LastName = signupDTO.LastName,
+                Email = signupDTO.Email,
+                Nickname = signupDTO.Nickname,
+                Password = userPasswordHash,
+                PasswordSalt = userPasswordSalt,
+                PhoneNumber = signupDTO.PhoneNumber,
+                Position = "doctor",
+                CreatedAt = DateTime.UtcNow,
+            };
+
+            await _authorizationRepository.Create(newUser);
+
+            return new OkObjectResult("Registration successful");
+        }
+
+        public async Task<ActionResult<UserDTO>> GetUserAuthorize(int id)
+        {
+            var user = await _authorizationRepository.GetById(id);
+
+            if (user == null)
+            {
+                return new NotFoundObjectResult("User do not exist");
+            }
+
+            var userDTO = new UserDTO()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Nickname = user.Nickname,
+                PhoneNumber = user.PhoneNumber,
+                Position = user.Position,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+            };
+
+            return new OkObjectResult(userDTO);
+        }
+
+        public async Task<ActionResult<UserDTO>> GetUserById(int id)
+        {
+            var user = await _authorizationRepository.GetById(id);
+
+            if (user == null)
+            {
+                return new NotFoundObjectResult("User do not exist");
+            }
+
+            var userDTO = new UserDTO()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Nickname = user.Nickname,
+                PhoneNumber = user.PhoneNumber,
+                Position = user.Position,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+            };
+
+            return new OkObjectResult(userDTO);
         }
     }
 }

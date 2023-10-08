@@ -2,12 +2,7 @@
 
 namespace backend.Repositories
 {
-    public interface IPatientRepository
+    public interface IPatientRepository : IRepositoryBase<Patient>
     {
-        Task<IEnumerable<Patient>> GetPatientsAsync();
-        Task<Patient> GetPatientById(int id);
-        Task AddPatientAsync(Patient patient);
-        Task UpdatePatientAsync(Patient patient);
-        Task DeletePatientAsync(int id);
     }
 }

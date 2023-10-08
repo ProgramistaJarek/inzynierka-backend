@@ -2,12 +2,7 @@
 
 namespace backend.Repositories
 {
-    public interface IVaccinationsRepository
+    public interface IVaccinationsRepository : IRepositoryBase<Vaccinations>
     {
-        Task<IEnumerable<Vaccinations>> GetVaccinationsAsync();
-        Task<Vaccinations> GetVaccinateByIdAsync(int id);
-        Task AddVaccinateAsync(Vaccinations vaccinations);
-        Task UpdateVaccinateAsync(Vaccinations vaccinations);
-        Task DeteleVaccinateAsync(int id);
     }
 }

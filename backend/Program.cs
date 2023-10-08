@@ -31,6 +31,7 @@ builder.Services.AddDbContext<DatabaseContext>(opt =>
 
 // Add services to the container.
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
+builder.Services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
 builder.Services.AddScoped<IVaccinationsRepository, VaccinationsRepository>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 

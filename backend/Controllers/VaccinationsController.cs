@@ -20,7 +20,7 @@ namespace backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> GetVaccinations()
         {
-            var vaccination = await _vaccinationsRepository.GetVaccinationsAsync();
+            var vaccination = await _vaccinationsRepository.GetAll();
             if (vaccination == null)
             {
                 return NotFound();
@@ -40,7 +40,7 @@ namespace backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> GetVaccinationById(int id)
         {
-            var vaccination = await _vaccinationsRepository.GetVaccinateByIdAsync(id);
+            var vaccination = await _vaccinationsRepository.GetById(id);
             if (vaccination == null)
             {
                 return NotFound();
@@ -71,7 +71,7 @@ namespace backend.Controllers
                 DateOfProduction = vaccinationsDTO.DateOfProduction,
             };
 
-            await _vaccinationsRepository.AddVaccinateAsync(vaccination);
+            await _vaccinationsRepository.Create(vaccination);
 
             return CreatedAtAction("GetVaccinationById", new { id = vaccinationsDTO.Id }, vaccinationsDTO);
         }
@@ -88,14 +88,14 @@ namespace backend.Controllers
                 DateOfProduction = vaccinationsDTO.DateOfProduction,
                 ExpirationDate = vaccinationsDTO.ExpirationDate,
             };
-            var existingVaccination = await _vaccinationsRepository.GetVaccinateByIdAsync(vaccination.Id);
+            var existingVaccination = await _vaccinationsRepository.GetById(vaccination.Id);
 
             if (existingVaccination == null)
             {
                 return NotFound();
             }
 
-            await _vaccinationsRepository.UpdateVaccinateAsync(vaccination);
+            await _vaccinationsRepository.Update(vaccination);
 
             return NoContent();
         }
@@ -104,13 +104,13 @@ namespace backend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVaccination(int id)
         {
-            var vaccination = await _vaccinationsRepository.GetVaccinateByIdAsync(id);
+            var vaccination = await _vaccinationsRepository.GetById(id);
             if (vaccination == null)
             {
                 return NotFound();
             }
 
-            await _vaccinationsRepository.DeteleVaccinateAsync(id);
+            await _vaccinationsRepository.Delete(id);
 
             return NoContent();
         }
