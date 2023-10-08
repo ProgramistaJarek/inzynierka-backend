@@ -1,4 +1,4 @@
-﻿using backend.Models;
+﻿using backend.Entities;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

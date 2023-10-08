@@ -1,9 +1,8 @@
-using backend.Models;
+using backend.Database;
 using backend.Repositories;
 using backend.Services.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;

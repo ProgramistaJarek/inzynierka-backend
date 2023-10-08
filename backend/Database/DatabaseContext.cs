@@ -1,8 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using backend.ModelsDTO;
-using System.Reflection.Metadata;
+﻿using backend.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace backend.Models
+namespace backend.Database
 {
     public class DatabaseContext : DbContext
     {

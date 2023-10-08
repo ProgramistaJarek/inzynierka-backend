@@ -1,19 +1,11 @@
-﻿using Azure;
-using backend.Models;
+﻿using backend.Database;
+using backend.Entities;
 using backend.ModelsDTO;
-using backend.Services.Authorization;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Text;
 using IAuthorizationService = backend.Services.Authorization.IAuthorizationService;
 
 namespace backend.Controllers

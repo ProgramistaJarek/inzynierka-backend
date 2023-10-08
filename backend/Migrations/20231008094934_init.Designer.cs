@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using backend.Models;
+using backend.Database;
 
 #nullable disable
 
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231002150851_init5")]
-    partial class init5
+    [Migration("20231008094934_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace backend.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("backend.Models.AgeGroups", b =>
+            modelBuilder.Entity("backend.Entities.AgeGroups", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,7 +99,7 @@ namespace backend.Migrations
                         });
                 });
 
-            modelBuilder.Entity("backend.Models.Patient", b =>
+            modelBuilder.Entity("backend.Entities.Patient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -135,7 +135,7 @@ namespace backend.Migrations
                     b.ToTable("Patients");
                 });
 
-            modelBuilder.Entity("backend.Models.TypesVaccines", b =>
+            modelBuilder.Entity("backend.Entities.TypesVaccines", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -199,7 +199,7 @@ namespace backend.Migrations
                         });
                 });
 
-            modelBuilder.Entity("backend.Models.User", b =>
+            modelBuilder.Entity("backend.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -236,7 +236,7 @@ namespace backend.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("backend.Models.VaccinationSchedule", b =>
+            modelBuilder.Entity("backend.Entities.VaccinationSchedule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -422,25 +422,51 @@ namespace backend.Migrations
                         });
                 });
 
-            modelBuilder.Entity("backend.Models.VaccinationSchedule", b =>
+            modelBuilder.Entity("backend.Entities.Vaccinations", b =>
                 {
-                    b.HasOne("backend.Models.AgeGroups", null)
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateOfProduction")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Vaccinations");
+                });
+
+            modelBuilder.Entity("backend.Entities.VaccinationSchedule", b =>
+                {
+                    b.HasOne("backend.Entities.AgeGroups", null)
                         .WithMany("VaccinationSchedules")
                         .HasForeignKey("AgeGroupsId");
 
-                    b.HasOne("backend.Models.AgeGroups", "AgeGroups")
+                    b.HasOne("backend.Entities.AgeGroups", "AgeGroups")
                         .WithMany()
                         .HasForeignKey("IdAgeGroups")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.Models.TypesVaccines", "TypesVaccines")
+                    b.HasOne("backend.Entities.TypesVaccines", "TypesVaccines")
                         .WithMany()
                         .HasForeignKey("IdTypesVaccines")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.Models.TypesVaccines", null)
+                    b.HasOne("backend.Entities.TypesVaccines", null)
                         .WithMany("VaccinationSchedules")
                         .HasForeignKey("TypesVaccinesId");
 
@@ -449,12 +475,12 @@ namespace backend.Migrations
                     b.Navigation("TypesVaccines");
                 });
 
-            modelBuilder.Entity("backend.Models.AgeGroups", b =>
+            modelBuilder.Entity("backend.Entities.AgeGroups", b =>
                 {
                     b.Navigation("VaccinationSchedules");
                 });
 
-            modelBuilder.Entity("backend.Models.TypesVaccines", b =>
+            modelBuilder.Entity("backend.Entities.TypesVaccines", b =>
                 {
                     b.Navigation("VaccinationSchedules");
                 });
