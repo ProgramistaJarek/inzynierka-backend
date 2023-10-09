@@ -1,4 +1,5 @@
-﻿using backend.Enums;
+﻿using backend.Entities;
+using backend.Enums;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,5 +18,6 @@ namespace backend.ModelsDTO
         public DateTime DateOfAbandonment { get; set; }
         [Required] public TypeOfVaccination TypeOfVaccination { get; set; }
         public BabysitterDTO Babysitter { get; set; } = null!;
+        public VaccinationCardDTO VaccinationCard { get; set; } = null!;
     }
 }

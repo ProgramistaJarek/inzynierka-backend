@@ -56,6 +56,12 @@ namespace backend.Controllers
             return await _patientService.AddPatientWithBabysitter(addPatientDTO);
         }
 
+        [HttpPost("{id}", Name = "addToPatientVaccinationCard")]
+        public async Task<ActionResult<PatientDTO>> PostPatientWithVaccinationCard(int id, VaccinationCardDTO vaccinationCardDTO)
+        {
+            return await _patientService.AddVaccinationCardToPatient(id, vaccinationCardDTO);
+        }
+
         // PUT: api/Patient/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut(Name = "updatePatient")]

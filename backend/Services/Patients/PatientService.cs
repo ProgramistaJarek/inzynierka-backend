@@ -10,13 +10,20 @@ namespace backend.Services.Patients
     {
         private readonly IPatientRepository _repository;
         private readonly IBabysitterRepository _babysitterRepository;
+        private readonly IVaccinationCardRepository _vaccinationCardRepository;
+
         private readonly IMapper _mapper;
 
-        public PatientService(IPatientRepository patientRepository, IBabysitterRepository babysitterRepository, IMapper mapper)
+        public PatientService(
+            IPatientRepository patientRepository,
+            IBabysitterRepository babysitterRepository,
+            IMapper mapper,
+            IVaccinationCardRepository vaccinationCardRepository)
         {
             _repository = patientRepository;
             _babysitterRepository = babysitterRepository;
             _mapper = mapper;
+            _vaccinationCardRepository = vaccinationCardRepository;
         }
 
         //Add patient with babysitter
@@ -82,6 +89,39 @@ namespace backend.Services.Patients
             patientDTO.Babysitter = _mapper.Map<BabysitterDTO>(babysitter);
 
             return patientDTO;
+        }
+
+        // Add vaccination card to Patient
+        public async Task<ActionResult<PatientDTO>> AddVaccinationCardToPatient(int id, VaccinationCardDTO vaccinationCardDTO)
+        {
+            var patient = await _repository.GetById(id);
+
+            if (patient == null)
+            {
+                return new BadRequestObjectResult("Patient with this ID do not exist");
+            }
+
+            var vaccinationCard = await _vaccinationCardRepository.GetVaccinationCardByPatientId(id);
+
+            if (vaccinationCard != null)
+            {
+                return new BadRequestObjectResult("Vaccination card already exist for this patient");
+            }
+
+            var newCardMap = _mapper.Map<VaccinationCard>(vaccinationCardDTO);
+            newCardMap.PatientId = id;
+
+            var newCard = await _vaccinationCardRepository.Create(newCardMap);
+
+            if (newCard == null)
+            {
+                return new BadRequestObjectResult("Something went wrong when adding vaccination card to patient");
+            }
+
+            var patientToReturn = _mapper.Map<PatientDTO>(patient);
+            patientToReturn.VaccinationCard = _mapper.Map<VaccinationCardDTO>(newCard);
+
+            return patientToReturn;
         }
     }
 }

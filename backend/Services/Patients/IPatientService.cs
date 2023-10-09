@@ -7,5 +7,6 @@ namespace backend.Services.Patients
     {
         Task<ActionResult<string>> AddPatientWithBabysitter(AddPatientDTO addPatientDTO);
         Task<ActionResult<PatientDTO>> GetPatientWithBabysitter(int id);
+        Task<ActionResult<PatientDTO>> AddVaccinationCardToPatient(int id, VaccinationCardDTO vaccinationCardDTO);
     }
 }

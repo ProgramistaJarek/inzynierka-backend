@@ -40,6 +40,8 @@ builder.Services.AddScoped<IVaccinationsRepository, VaccinationsRepository>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<ISummonsRepository, SummonsRepository>();
 builder.Services.AddScoped<IBabysitterRepository, BabysitterRepository>();
+builder.Services.AddScoped<IVaccinationCardRepository, VaccinationCardRepository>();
+builder.Services.AddScoped<IVaccinationInfoRepository, VaccinationInfoRepository>();
 
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
