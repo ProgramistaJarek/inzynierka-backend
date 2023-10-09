@@ -74,7 +74,7 @@ namespace backend.Services.Patients
         }
 
         // Get patient with babysitter
-        public async Task<ActionResult<PatientDTO>> GetPatientWithBabysitter(int id)
+        public async Task<ActionResult<PatientDTO>> GetPatient(int id)
         {
             var patient = await _repository.GetById(id);
 
@@ -84,9 +84,11 @@ namespace backend.Services.Patients
             }
 
             var babysitter = await _babysitterRepository.GetById(patient.BabysitterId);
+            var vaccinationCard = await _vaccinationCardRepository.GetVaccinationCardByPatientId(patient.Id);
 
             var patientDTO = _mapper.Map<PatientDTO>(patient);
             patientDTO.Babysitter = _mapper.Map<BabysitterDTO>(babysitter);
+            patientDTO.VaccinationCard = _mapper.Map<VaccinationCardDTO>(vaccinationCard);
 
             return patientDTO;
         }
@@ -122,6 +124,21 @@ namespace backend.Services.Patients
             patientToReturn.VaccinationCard = _mapper.Map<VaccinationCardDTO>(newCard);
 
             return patientToReturn;
+        }
+
+        // Get patients list
+        public async Task<ActionResult<IEnumerable<PatientDTO>>> GetPatients()
+        {
+            var patinets = await _repository.GetAll();
+
+            if(patinets == null)
+            {
+                return new NotFoundResult();
+            }
+
+            var patientsDTO = patinets.Select(patinet => _mapper.Map<PatientDTO>(patinet)).ToList();
+
+            return patientsDTO;
         }
     }
 }

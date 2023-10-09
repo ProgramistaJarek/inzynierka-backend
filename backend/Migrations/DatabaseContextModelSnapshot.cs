@@ -394,7 +394,12 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("VaccinationCardId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("VaccinationCardId");
 
                     b.ToTable("VaccinationInfo");
                 });
@@ -634,6 +639,17 @@ namespace backend.Migrations
                     b.Navigation("Patient");
                 });
 
+            modelBuilder.Entity("backend.Entities.VaccinationInfo", b =>
+                {
+                    b.HasOne("backend.Entities.VaccinationCard", "VaccinationCard")
+                        .WithMany("VaccinationInfo")
+                        .HasForeignKey("VaccinationCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("VaccinationCard");
+                });
+
             modelBuilder.Entity("backend.Entities.VaccinationSchedule", b =>
                 {
                     b.HasOne("backend.Entities.AgeGroups", "AgeGroups")
@@ -673,6 +689,11 @@ namespace backend.Migrations
             modelBuilder.Entity("backend.Entities.TypesVaccines", b =>
                 {
                     b.Navigation("VaccinationSchedules");
+                });
+
+            modelBuilder.Entity("backend.Entities.VaccinationCard", b =>
+                {
+                    b.Navigation("VaccinationInfo");
                 });
 #pragma warning restore 612, 618
         }

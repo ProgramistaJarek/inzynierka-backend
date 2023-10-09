@@ -24,28 +24,14 @@ namespace backend.Controllers
         [HttpGet(Name = "getPatients")]
         public async Task<ActionResult<IEnumerable<PatientDTO>>> GetPatients()
         {
-            var patient = await _patientRepository.GetAll();
-            if (patient == null)
-            {
-                return NotFound();
-            }
-            return patient.Select(patient => new PatientDTO()
-            {
-                Id = patient.Id,
-                FirstName = patient.FirstName,
-                LastName = patient.LastName,
-                Adress = patient.Adress,
-                PESEL = patient.PESEL,
-                BirthDay = patient.BirthDay,
-                PhoneNumber = patient.PhoneNumber,
-            }).ToList();
+            return await _patientService.GetPatients();
         }
 
         // GET: api/Patient/5
         [HttpGet("{id}", Name = "getPatientById")]
         public async Task<ActionResult<PatientDTO>> GetPatient(int id)
         {
-            return await _patientService.GetPatientWithBabysitter(id);
+            return await _patientService.GetPatient(id);
         }
 
         // POST: api/Patient
