@@ -31,6 +31,9 @@ builder.Services.AddDbContext<DatabaseContext>(opt =>
 }
 );
 
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddControllersWithViews();
+
 // Add services to the container.
 builder.Services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
 builder.Services.AddScoped<IVaccinationsRepository, VaccinationsRepository>();

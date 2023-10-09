@@ -1,4 +1,5 @@
-﻿using backend.Entities;
+﻿using AutoMapper;
+using backend.Entities;
 using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
@@ -15,11 +16,13 @@ namespace backend.Services.Authorization
     {
         private readonly IAuthorizationRepository _authorizationRepository;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public AuthorizationService(IAuthorizationRepository authorizationRepository, IConfiguration configuration)
+        public AuthorizationService(IAuthorizationRepository authorizationRepository, IConfiguration configuration, IMapper mapper)
         {
             _authorizationRepository = authorizationRepository;
             _configuration = configuration;
+            _mapper = mapper;
         }
 
         private string CreatePasswordHash(string password, byte[] salt)
@@ -100,18 +103,14 @@ namespace backend.Services.Authorization
             string userPasswordSalt = Convert.ToBase64String(salt);
             string userPasswordHash = CreatePasswordHash(signupDTO.Password, salt);
 
-            var newUser = new User()
-            {
-                FirstName = signupDTO.FirstName,
-                LastName = signupDTO.LastName,
-                Email = signupDTO.Email,
-                Nickname = signupDTO.Nickname,
-                Password = userPasswordHash,
-                PasswordSalt = userPasswordSalt,
-                PhoneNumber = signupDTO.PhoneNumber,
-                Position = "doctor",
-                CreatedAt = DateTime.UtcNow,
-            };
+
+            var newUser = _mapper.Map<User>(signupDTO);
+
+            newUser.Password = userPasswordHash;
+            newUser.PasswordSalt = userPasswordSalt;
+            newUser.Position = "doctor";
+            newUser.CreatedAt = DateTime.UtcNow;
+            newUser.UpdatedAt = DateTime.UtcNow;
 
             await _authorizationRepository.Create(newUser);
 
@@ -127,18 +126,7 @@ namespace backend.Services.Authorization
                 return new NotFoundObjectResult("User do not exist");
             }
 
-            var userDTO = new UserDTO()
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Nickname = user.Nickname,
-                PhoneNumber = user.PhoneNumber,
-                Position = user.Position,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-            };
+            var userDTO = _mapper.Map<UserDTO>(user);
 
             return new OkObjectResult(userDTO);
         }
@@ -152,18 +140,7 @@ namespace backend.Services.Authorization
                 return new NotFoundObjectResult("User do not exist");
             }
 
-            var userDTO = new UserDTO()
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Nickname = user.Nickname,
-                PhoneNumber = user.PhoneNumber,
-                Position = user.Position,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
-            };
+            var userDTO = _mapper.Map<User>(user);
 
             return new OkObjectResult(userDTO);
         }

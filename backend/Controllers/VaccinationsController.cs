@@ -1,4 +1,5 @@
-﻿using backend.Entities;
+﻿using AutoMapper;
+using backend.Entities;
 using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace backend.Controllers
     public class VaccinationsController : ControllerBase
     {
         private readonly IVaccinationsRepository _vaccinationsRepository;
+        private readonly IMapper _mapper;
 
-        public VaccinationsController(IVaccinationsRepository vaccinationsRepository)
+        public VaccinationsController(IVaccinationsRepository vaccinationsRepository, IMapper mapper)
         {
             _vaccinationsRepository = vaccinationsRepository;
+            _mapper = mapper;
         }
 
         // GET: api/Vaccinations
@@ -47,14 +50,7 @@ namespace backend.Controllers
                 return NotFound();
             }
 
-            var VaccinationDTO = new VaccinationsDTO()
-            {
-                Id = vaccination.Id,
-                Name = vaccination.Name,
-                DateOfProduction = vaccination.DateOfProduction,
-                ExpirationDate = vaccination.ExpirationDate,
-                Amount = vaccination.Amount,
-            };
+            var VaccinationDTO = _mapper.Map<VaccinationsDTO>(vaccination);
 
             return Ok(VaccinationDTO);
         }
@@ -63,32 +59,19 @@ namespace backend.Controllers
         [HttpPost(Name = "createVaccination")]
         public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> PostVaccination(VaccinationsDTO vaccinationsDTO)
         {
-            var vaccination = new Vaccinations()
-            {
-                Id = vaccinationsDTO.Id,
-                Name = vaccinationsDTO.Name,
-                Amount = vaccinationsDTO.Amount,
-                ExpirationDate = vaccinationsDTO.ExpirationDate,
-                DateOfProduction = vaccinationsDTO.DateOfProduction,
-            };
+            var vaccination = _mapper.Map<Vaccinations>(vaccinationsDTO);
 
-            await _vaccinationsRepository.Create(vaccination);
+            var newVaccination = await _vaccinationsRepository.Create(vaccination);
 
-            return CreatedAtAction("GetVaccinationById", new { id = vaccinationsDTO.Id }, vaccinationsDTO);
+            return CreatedAtAction("GetVaccinationById", new { id = newVaccination.Id }, newVaccination);
         }
 
         // PUT: api/Vaccinations
         [HttpPut(Name = "updateVaccination")]
         public async Task<IActionResult> PutVaccination(VaccinationsDTO vaccinationsDTO)
         {
-            var vaccination = new Vaccinations()
-            {
-                Id = vaccinationsDTO.Id,
-                Name = vaccinationsDTO.Name,
-                Amount = vaccinationsDTO.Amount,
-                DateOfProduction = vaccinationsDTO.DateOfProduction,
-                ExpirationDate = vaccinationsDTO.ExpirationDate,
-            };
+            var vaccination = _mapper.Map<Vaccinations>(vaccinationsDTO);
+
             var existingVaccination = await _vaccinationsRepository.GetById(vaccination.Id);
 
             if (existingVaccination == null)

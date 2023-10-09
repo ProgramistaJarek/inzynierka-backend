@@ -45,25 +45,7 @@ namespace backend.Controllers
         [HttpGet("{id}", Name = "getPatientById")]
         public async Task<ActionResult<PatientDTO>> GetPatient(int id)
         {
-            var patient = await _patientRepository.GetById(id);
-            if (patient == null)
-            {
-                return NotFound();
-            }
-
-            return new PatientDTO()
-            {
-                Id = patient.Id,
-                FirstName = patient.FirstName,
-                LastName = patient.LastName,
-                Adress = patient.Adress,
-                PESEL = patient.PESEL,
-                BirthDay = patient.BirthDay,
-                PhoneNumber = patient.PhoneNumber,
-                DateOfAbandonment = patient.DateOfAbandonment,
-                DateOfDeclaration = patient.DateOfDeclaration,
-                TypeOfVaccination = patient.TypeOfVaccination,
-            };
+            return await _patientService.GetPatientWithBabysitter(id);
         }
 
         // POST: api/Patient

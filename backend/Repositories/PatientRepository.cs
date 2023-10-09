@@ -14,9 +14,9 @@ namespace backend.Repositories
             _context = context;
         }
 
-        public async Task<Patient> CheckIfUsernameExistByPesel(string pesel)
+        public async Task<Patient> CheckIfPatientExistByPesel(string pesel)
         {
-            return await _context.Patients.FirstOrDefaultAsync(user => user.PESEL == pesel);
+            return await _context.Set<Patient>().FirstOrDefaultAsync(user => user.PESEL == pesel);
         }
     }
 }
