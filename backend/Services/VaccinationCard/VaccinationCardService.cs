@@ -39,5 +39,46 @@ namespace backend.Services.VaccinationCardService
 
             return new OkObjectResult(card);
         }
+
+        public async Task<ActionResult<VaccinationCardDTO>> GetVaccinationCard(int vaccinationCardId)
+        {
+            var vaccinationCard = await _repository.GetById(vaccinationCardId);
+            if (vaccinationCard == null)
+            {
+                return new BadRequestObjectResult("Vaccination card with this ID do not exist");
+            }
+
+            var card = _mapper.Map<VaccinationCardDTO>(vaccinationCard);
+
+            return new OkObjectResult(card);
+        }
+
+        public async Task<ActionResult<VaccinationCardDTO>> GetVaccinationCardByPatientId(int patientId)
+        {
+            var vaccinationCard = await _repository.GetVaccinationCardByPatientId(patientId);
+            if (vaccinationCard == null)
+            {
+                return new BadRequestObjectResult("Vaccination card with this ID do not exist");
+            }
+
+            var card = _mapper.Map<VaccinationCardDTO>(vaccinationCard);
+
+            return new OkObjectResult(card);
+        }
+
+        public async Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard(int vaccinationCardId, VaccinationCardDTO vaccinationCardDTO)
+        {
+            var vaccinationCard = await _repository.GetById(vaccinationCardId);
+            if (vaccinationCard == null)
+            {
+                return new BadRequestObjectResult("Vaccination card with this ID do not exist");
+            }
+
+            var card = _mapper.Map<VaccinationCard>(vaccinationCardDTO);
+
+            var updatedCard = await _repository.Update(card);
+
+            return new OkObjectResult(updatedCard);
+        }
     }
 }

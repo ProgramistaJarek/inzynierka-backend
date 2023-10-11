@@ -18,7 +18,9 @@ namespace backend.Controllers
             _authorizationService = authorizationService;
         }
 
-        // GET: api/authorization
+        /// <summary>
+        /// Get user by token
+        /// </summary>
         [Authorize]
         [HttpGet(Name = "getUserAuthorize")]
         public async Task<ActionResult<UserDTO>> GetUser()
@@ -33,7 +35,9 @@ namespace backend.Controllers
             }
         }
 
-        // GET: api/authorization/5
+        /// <summary>
+        /// Get user by id
+        /// </summary>
         [Authorize]
         [HttpGet("user/{id}", Name = "getUserById")]
         public async Task<ActionResult<UserDTO>> GetUserById(int id)
@@ -41,14 +45,18 @@ namespace backend.Controllers
             return await _authorizationService.GetUserById(id);
         }
 
-        // POST: api/authorization
+        /// <summary>
+        /// Login user
+        /// </summary>
         [HttpPost("login", Name = "login")]
         public async Task<ActionResult<string>> Login(LoginDTO loginDTO)
         {
             return await _authorizationService.LoginUser(loginDTO);
         }
 
-        // POST: api/Authorization
+        /// <summary>
+        /// Signup user
+        /// </summary>
         [HttpPost("signup", Name = "signup")]
         public async Task<ActionResult<string>> PostRegisterUser(SignupDTO signupDTO)
         {

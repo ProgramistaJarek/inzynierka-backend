@@ -20,36 +20,45 @@ namespace backend.Controllers
             _patientService = patientService;
         }
 
-        // GET: api/Patient
+        /// <summary>
+        /// Get all patients
+        /// </summary>
         [HttpGet(Name = "getPatients")]
         public async Task<ActionResult<IEnumerable<PatientDTO>>> GetPatients()
         {
             return await _patientService.GetPatients();
         }
 
-        // GET: api/Patient/5
+        /// <summary>
+        /// Get patient by id
+        /// </summary>
         [HttpGet("{id}", Name = "getPatientById")]
         public async Task<ActionResult<PatientDTO>> GetPatient(int id)
         {
             return await _patientService.GetPatient(id);
         }
 
-        // POST: api/Patient
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Create new patient
+        /// </summary>
         [HttpPost(Name = "createPatient")]
         public async Task<ActionResult<string>> PostPatient(AddPatientDTO addPatientDTO)
         {
             return await _patientService.AddPatientWithBabysitter(addPatientDTO);
         }
 
-        [HttpPost("{id}", Name = "addToPatientVaccinationCard")]
+        /// <summary>
+        /// Add to patient vaccination card
+        /// </summary>
+        [HttpPost("vaccinvationCard/{id}", Name = "addToPatientVaccinationCard")]
         public async Task<ActionResult<PatientDTO>> PostPatientWithVaccinationCard(int id, VaccinationCardDTO vaccinationCardDTO)
         {
             return await _patientService.AddVaccinationCardToPatient(id, vaccinationCardDTO);
         }
 
-        // PUT: api/Patient/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        /// <summary>
+        /// Update patient
+        /// </summary>
         [HttpPut(Name = "updatePatient")]
         public async Task<IActionResult> PutPatient(PatientDTO patientDTO)
         {
@@ -75,7 +84,9 @@ namespace backend.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Patient/5
+        /// <summary>
+        /// Delete patient by id
+        /// </summary>
         [HttpDelete("{id}", Name = "deletePatient")]
         public async Task<IActionResult> DeletePatient(int id)
         {
