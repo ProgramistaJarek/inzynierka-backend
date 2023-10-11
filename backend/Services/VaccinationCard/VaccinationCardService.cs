@@ -20,7 +20,7 @@ namespace backend.Services.VaccinationCardService
             _mapper = mapper;
         }
 
-        public async Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard(int vaccinationCardId, VaccinationInfoDTO vaccinationInfoDTO)
+        public async Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard(int vaccinationCardId, VaccinationInfoCreateDTO vaccinationInfoDTO)
         {
             var vaccinationCard = await _repository.GetById(vaccinationCardId);
             if (vaccinationCard == null)

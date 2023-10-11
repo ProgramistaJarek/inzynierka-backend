@@ -1,5 +1,4 @@
-﻿using backend.Entities;
-using backend.ModelsDTO;
+﻿using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using backend.Services.Patients;
 using Microsoft.AspNetCore.Mvc;
@@ -51,7 +50,7 @@ namespace backend.Controllers
         /// Add to patient vaccination card
         /// </summary>
         [HttpPost("vaccinvationCard/{id}", Name = "addToPatientVaccinationCard")]
-        public async Task<ActionResult<PatientDTO>> PostPatientWithVaccinationCard(int id, VaccinationCardDTO vaccinationCardDTO)
+        public async Task<ActionResult<PatientDTO>> PostPatientWithVaccinationCard(int id, VaccinationCardCreateDTO vaccinationCardDTO)
         {
             return await _patientService.AddVaccinationCardToPatient(id, vaccinationCardDTO);
         }
@@ -60,28 +59,9 @@ namespace backend.Controllers
         /// Update patient
         /// </summary>
         [HttpPut(Name = "updatePatient")]
-        public async Task<IActionResult> PutPatient(PatientDTO patientDTO)
+        public async Task<IActionResult> PutPatient(UpdatePatientDTO patientDTO)
         {
-            var exisitngPatient = await _patientRepository.GetById(patientDTO.Id);
-
-            if (exisitngPatient == null)
-            {
-                return NotFound();
-            }
-
-            var updatePatient = new Patient()
-            {
-                FirstName = patientDTO.FirstName,
-                LastName = patientDTO.LastName,
-                BirthDay = patientDTO.BirthDay,
-                Adress = patientDTO.Adress,
-                PESEL = patientDTO.PESEL,
-                PhoneNumber = patientDTO.PhoneNumber
-            };
-
-            await _patientRepository.Update(updatePatient);
-
-            return NoContent();
+            return await _patientService.UpdatePatient(patientDTO);
         }
 
         /// <summary>

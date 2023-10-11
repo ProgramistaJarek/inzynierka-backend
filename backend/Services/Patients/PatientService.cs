@@ -36,11 +36,24 @@ namespace backend.Services.Patients
                 return new BadRequestObjectResult("Patient with this PESEL exist");
             }
 
+            if (addPatientDTO.BabysitterId <= 0 && addPatientDTO.Babysitter == null)
+            {
+                return new BadRequestObjectResult("You need to add babysiter");
+            }
+
             if (addPatientDTO.Babysitter != null)
             {
                 if (await _babysitterRepository.CheckIfBabysitterExistByPesel(addPatientDTO.Babysitter.PESEL) != null)
                 {
                     return new BadRequestObjectResult("Babysitter with this PESEL exist");
+                }
+            }
+
+            if (addPatientDTO.BabysitterId > 0)
+            {
+                if (await _babysitterRepository.GetById(addPatientDTO.BabysitterId) == null)
+                {
+                    return new BadRequestObjectResult("Babysitter with this id do not exist");
                 }
             }
 
@@ -94,7 +107,7 @@ namespace backend.Services.Patients
         }
 
         // Add vaccination card to Patient
-        public async Task<ActionResult<PatientDTO>> AddVaccinationCardToPatient(int id, VaccinationCardDTO vaccinationCardDTO)
+        public async Task<ActionResult<PatientDTO>> AddVaccinationCardToPatient(int id, VaccinationCardCreateDTO vaccinationCardDTO)
         {
             var patient = await _repository.GetById(id);
 
@@ -131,7 +144,7 @@ namespace backend.Services.Patients
         {
             var patinets = await _repository.GetAll();
 
-            if(patinets == null)
+            if (patinets == null)
             {
                 return new NotFoundResult();
             }
@@ -139,6 +152,24 @@ namespace backend.Services.Patients
             var patientsDTO = patinets.Select(patinet => _mapper.Map<PatientDTO>(patinet)).ToList();
 
             return patientsDTO;
+        }
+
+        // Update patient
+        public async Task<ActionResult> UpdatePatient(UpdatePatientDTO patientDTO)
+        {
+            var patinet = await _repository.GetById(patientDTO.Id);
+
+            if (patinet == null)
+            {
+                return new NotFoundResult();
+            }
+
+            if (patientDTO.BabysitterId <= 0) patientDTO.BabysitterId = patinet.BabysitterId;
+
+            var patientMap = _mapper.Map<Patient>(patientDTO);
+            await _repository.Update(patientMap);
+
+            return new OkResult();
         }
     }
 }
