@@ -20,6 +20,8 @@ namespace backend
             CreateMap<PatientDTO, Patient>();
             CreateMap<VaccinationCard, VaccinationCardDTO>();
             CreateMap<VaccinationCardDTO, VaccinationCard>();
+            CreateMap<VaccinationInfo, VaccinationInfoDTO>();
+            CreateMap<VaccinationInfoDTO, VaccinationInfo>();
         }
     }
 }

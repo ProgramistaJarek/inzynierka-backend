@@ -1,5 +1,5 @@
 ﻿using backend.ModelsDTO;
-using backend.Services.VaccinationCard;
+using backend.Services.VaccinationCardService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +18,9 @@ namespace backend.Controllers
         }
 
         [HttpPost("{id}", Name = "addVaccinationToCard")]
-        public async Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard(int vaccinationCardId, VaccinationInfoDTO vaccinationInfoDTO)
+        public async Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard(int id, VaccinationInfoDTO vaccinationInfoDTO)
         {
-            return await _vaccinationCardService.AddVaccinationToCard(vaccinationCardId, vaccinationInfoDTO);
+            return await _vaccinationCardService.AddVaccinationToCard(id, vaccinationInfoDTO);
         }
     }
 }

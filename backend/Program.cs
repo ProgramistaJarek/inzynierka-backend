@@ -3,7 +3,7 @@ using backend.Repositories;
 using backend.Repositories.Interfaces;
 using backend.Services.Authorization;
 using backend.Services.Patients;
-using backend.Services.VaccinationCard;
+using backend.Services.VaccinationCardService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

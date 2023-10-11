@@ -1,7 +1,7 @@
 ﻿using backend.ModelsDTO;
 using Microsoft.AspNetCore.Mvc;
 
-namespace backend.Services.VaccinationCard
+namespace backend.Services.VaccinationCardService
 {
     public interface IVaccinationCardService
     {

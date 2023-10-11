@@ -1,4 +1,6 @@
-﻿namespace backend.ModelsDTO
+﻿using backend.Entities;
+
+namespace backend.ModelsDTO
 {
     public class VaccinationCardDTO
     {
@@ -11,5 +13,6 @@
         public string Year { get; set; } = string.Empty;
         public bool Emigration { get; set; }
         public int PatientId { get; set; }
+        public ICollection<VaccinationInfoDTO> VaccinationInfo { get; set; } = null!;
     }
 }

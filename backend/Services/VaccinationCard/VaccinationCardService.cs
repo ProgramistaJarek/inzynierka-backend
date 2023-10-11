@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using backend.Entities;
 using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace backend.Services.VaccinationCard
+namespace backend.Services.VaccinationCardService
 {
     public class VaccinationCardService : IVaccinationCardService
     {
@@ -22,14 +23,21 @@ namespace backend.Services.VaccinationCard
         public async Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard(int vaccinationCardId, VaccinationInfoDTO vaccinationInfoDTO)
         {
             var vaccinationCard = await _repository.GetById(vaccinationCardId);
-            if (vaccinationCard != null)
+            if (vaccinationCard == null)
             {
                 return new BadRequestObjectResult("Vaccination card with this ID do not exist");
             }
 
+            var vaccinvationInfo = _mapper.Map<VaccinationInfo>(vaccinationInfoDTO);
+            vaccinvationInfo.VaccinationCardId = vaccinationCardId;
+            await _infoRepository.Create(vaccinvationInfo);
 
+            var infos = await _infoRepository.GetVaccinationInfoByCardId(vaccinationCardId);
 
-            throw new NotImplementedException();
+            var card = _mapper.Map<VaccinationCardDTO>(vaccinationCard);
+            card.VaccinationInfo = infos.Select(x => _mapper.Map<VaccinationInfoDTO>(x)).ToList();
+
+            return new OkObjectResult(card);
         }
     }
 }
