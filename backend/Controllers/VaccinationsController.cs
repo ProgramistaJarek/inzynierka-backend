@@ -20,7 +20,9 @@ namespace backend.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Vaccinations
+        /// <summary>
+        /// Get all vaccination list
+        /// </summary>
         [HttpGet(Name = "getVaccinations")]
         public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> GetVaccinations()
         {
@@ -29,18 +31,14 @@ namespace backend.Controllers
             {
                 return NotFound();
             }
-
-            return vaccination.Select(v => new VaccinationsDTO()
-            {
-                Id = v.Id,
-                Name = v.Name,
-                DateOfProduction = v.DateOfProduction,
-                ExpirationDate = v.ExpirationDate,
-                Amount = v.Amount,
-            }).ToList();
+            
+            var result = vaccination.Select(v => _mapper.Map<VaccinationsDTO>(v)).ToList();
+            return Ok(result);
         }
 
-        // GET: api/Vaccinations/5
+        /// <summary>
+        /// Get vaccination by id
+        /// </summary>
         [HttpGet("{id}", Name = "getVaccination")]
         public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> GetVaccinationById(int id)
         {
@@ -55,7 +53,9 @@ namespace backend.Controllers
             return Ok(VaccinationDTO);
         }
 
-        // POST: api/Vaccinations
+        /// <summary>
+        /// Add vaccination
+        /// </summary>
         [HttpPost(Name = "createVaccination")]
         public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> PostVaccination(VaccinationsDTO vaccinationsDTO)
         {
@@ -66,7 +66,9 @@ namespace backend.Controllers
             return CreatedAtAction("GetVaccinationById", new { id = newVaccination.Id }, newVaccination);
         }
 
-        // PUT: api/Vaccinations
+        /// <summary>
+        /// Update vaccination
+        /// </summary>
         [HttpPut(Name = "updateVaccination")]
         public async Task<IActionResult> PutVaccination(VaccinationsDTO vaccinationsDTO)
         {
@@ -84,7 +86,9 @@ namespace backend.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Vaccinations/5
+        /// <summary>
+        /// Delete vaccination by id
+        /// </summary>
         [HttpDelete("{id}", Name = "deleteVaccination")]
         public async Task<IActionResult> DeleteVaccination(int id)
         {
