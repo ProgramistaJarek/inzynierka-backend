@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,6 +79,11 @@ builder.Services.AddSwaggerGen(options =>
         $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"));
 });
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 builder.Services.AddCors(opt => opt.AddPolicy(name: "Policy",
     policy =>

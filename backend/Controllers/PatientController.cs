@@ -1,6 +1,7 @@
 ﻿using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using backend.Services.Patients;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
@@ -22,6 +23,7 @@ namespace backend.Controllers
         /// <summary>
         /// Get all patients
         /// </summary>
+        [Authorize]
         [HttpGet(Name = "getPatients")]
         public async Task<ActionResult<IEnumerable<PatientDTO>>> GetPatients()
         {
