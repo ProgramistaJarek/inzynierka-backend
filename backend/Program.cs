@@ -50,6 +50,7 @@ builder.Services.AddScoped<IVaccinationInfoRepository, VaccinationInfoRepository
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IVaccinationCardService, VaccinationCardService>();
+builder.Services.AddScoped<IBabysitterRepository, BabysitterRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

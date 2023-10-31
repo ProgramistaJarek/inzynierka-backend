@@ -16,6 +16,8 @@ namespace backend
             CreateMap<VaccinationsDTO, Vaccinations>();
             CreateMap<Babysitter, BabysitterDTO>();
             CreateMap<BabysitterDTO, Babysitter>();
+            CreateMap<Babysitter, BabysitterCreateDTO>();
+            CreateMap<BabysitterCreateDTO, Babysitter>();
             CreateMap<Patient, PatientDTO>();
             CreateMap<PatientDTO, Patient>();
             CreateMap<AddPatientDTO, Patient>();

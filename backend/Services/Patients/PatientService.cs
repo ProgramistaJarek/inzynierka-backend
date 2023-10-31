@@ -171,5 +171,30 @@ namespace backend.Services.Patients
 
             return new OkResult();
         }
+
+        // Add babysitter to patient
+        public async Task<ActionResult<PatientDTO>> AddBabysitterToPatient(int id, BabysitterDTO babysitterDTO)
+        {
+            var patient = await _repository.GetById(id);
+
+            if (patient == null)
+            {
+                return new NotFoundResult();
+            }
+
+            if (babysitterDTO == null)
+            {
+                return new BadRequestObjectResult("You need to provide babysiter");
+            }
+
+            var babysitter = _mapper.Map<Babysitter>(babysitterDTO);
+
+            var newBabysitter = await _babysitterRepository.Create(babysitter);
+
+            patient.BabysitterId = newBabysitter.Id;
+            var newPatient = await _repository.Update(patient);
+
+            return new OkObjectResult(newPatient);
+        }
     }
 }
