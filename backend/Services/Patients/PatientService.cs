@@ -3,7 +3,6 @@ using backend.Entities;
 using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services.Patients
 {
@@ -30,7 +29,11 @@ namespace backend.Services.Patients
             _vaccinationInfoRepository = vaccinationInfoRepository;
         }
 
-        //Add patient with babysitter
+        /// <summary>
+        /// Add patient with babysitter
+        /// </summary>
+        /// <param name="addPatientDTO"></param>
+        /// <returns></returns>
         public async Task<ActionResult<string>> AddPatientWithBabysitter(AddPatientWithBabysitterDTO addPatientDTO)
         {
             var patientExistByPesel = await _repository.CheckIfPatientExistByPesel(addPatientDTO.PESEL);
@@ -91,7 +94,11 @@ namespace backend.Services.Patients
             }
         }
 
-        // Get patient with babysitter
+        /// <summary>
+        /// Get patient with babysitter
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ActionResult<PatientDTO>> GetPatient(int id)
         {
             var patient = await _repository.GetPatient(id);
@@ -106,7 +113,12 @@ namespace backend.Services.Patients
             return patientDTO;
         }
 
-        // Add vaccination card to Patient
+        /// <summary>
+        /// Add vaccination card to Patient
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="vaccinationCardDTO"></param>
+        /// <returns></returns>
         public async Task<ActionResult<PatientDTO>> AddVaccinationCardToPatient(int id, VaccinationCardCreateDTO vaccinationCardDTO)
         {
             var patient = await _repository.GetById(id);
@@ -139,7 +151,10 @@ namespace backend.Services.Patients
             return patientToReturn;
         }
 
-        // Get patients list
+        /// <summary>
+        /// Get patients list
+        /// </summary>
+        /// <returns></returns>
         public async Task<ActionResult<IEnumerable<PatientDTO>>> GetPatients()
         {
             var patients = await _repository.GetPatients();
@@ -154,7 +169,11 @@ namespace backend.Services.Patients
             return patientDTOs.ToList();
         }
 
-        // Update patient
+        /// <summary>
+        /// Update patient
+        /// </summary>
+        /// <param name="patientDTO"></param>
+        /// <returns></returns>
         public async Task<ActionResult> UpdatePatient(UpdatePatientDTO patientDTO)
         {
             var patinet = await _repository.GetById(patientDTO.Id);
@@ -172,7 +191,12 @@ namespace backend.Services.Patients
             return new OkResult();
         }
 
-        // Add babysitter to patient
+        /// <summary>
+        /// Add babysitter to patient
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="babysitterDTO"></param>
+        /// <returns></returns>
         public async Task<ActionResult<PatientDTO>> AddBabysitterToPatient(int id, BabysitterDTO babysitterDTO)
         {
             var patient = await _repository.GetById(id);
@@ -202,6 +226,11 @@ namespace backend.Services.Patients
             return new OkObjectResult(newPatient);
         }
 
+        /// <summary>
+        /// Add patient
+        /// </summary>
+        /// <param name="addPatientDTO"></param>
+        /// <returns></returns>
         public async Task<ActionResult<string>> AddPatient(AddPatientDTO addPatientDTO)
         {
             var patientExistByPesel = await _repository.CheckIfPatientExistByPesel(addPatientDTO.PESEL);

@@ -20,6 +20,12 @@ namespace backend.Services.VaccinationCardService
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Add vaccination info to vaccination card
+        /// </summary>
+        /// <param name="vaccinationCardId"></param>
+        /// <param name="vaccinationInfoDTO"></param>
+        /// <returns></returns>
         public async Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard(int vaccinationCardId, VaccinationInfoCreateDTO vaccinationInfoDTO)
         {
             var vaccinationCard = await _repository.GetById(vaccinationCardId);
@@ -38,6 +44,11 @@ namespace backend.Services.VaccinationCardService
             return new OkObjectResult(card);
         }
 
+        /// <summary>
+        /// Return vaccinvation card object by id
+        /// </summary>
+        /// <param name="vaccinationCardId"></param>
+        /// <returns></returns>
         public async Task<ActionResult<VaccinationCardDTO>> GetVaccinationCard(int vaccinationCardId)
         {
             var vaccinationCard = await _repository.GetById(vaccinationCardId);
@@ -52,6 +63,11 @@ namespace backend.Services.VaccinationCardService
             return new OkObjectResult(card);
         }
 
+        /// <summary>
+        /// Return vaccination card by patient id
+        /// </summary>
+        /// <param name="patientId"></param>
+        /// <returns></returns>
         public async Task<ActionResult<VaccinationCardDTO>> GetVaccinationCardByPatientId(int patientId)
         {
             var vaccinationCard = await _repository.GetVaccinationCardByPatientId(patientId);
@@ -66,6 +82,12 @@ namespace backend.Services.VaccinationCardService
             return new OkObjectResult(card);
         }
 
+        /// <summary>
+        /// Update existing vaccination card
+        /// </summary>
+        /// <param name="vaccinationCardId"></param>
+        /// <param name="vaccinationCardDTO"></param>
+        /// <returns></returns>
         public async Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard(int vaccinationCardId, VaccinationCardDTO vaccinationCardDTO)
         {
             var vaccinationCard = await _repository.GetById(vaccinationCardId);

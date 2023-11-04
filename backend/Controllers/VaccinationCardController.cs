@@ -37,7 +37,7 @@ namespace backend.Controllers
         /// <summary>
         /// Add new vaccination information to vaccination card
         /// </summary>
-        [HttpPost("{id}", Name = "addVaccinationToCard")]
+        [HttpPost("{id}", Name = "addVaccinationInfoToCard")]
         public async Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard(int id, VaccinationInfoCreateDTO vaccinationInfoDTO)
         {
             return await _vaccinationCardService.AddVaccinationToCard(id, vaccinationInfoDTO);

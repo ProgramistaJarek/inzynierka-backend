@@ -20,6 +20,12 @@ namespace backend.Services.Babysitters
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Create new babysitter and add to patient
+        /// </summary>
+        /// <param name="patientId"></param>
+        /// <param name="babysitterDTO"></param>
+        /// <returns></returns>
         public async Task<ActionResult<IEnumerable<BabysitterDTO>>> CreateNewBabysitter(int patientId, BabysitterCreateDTO babysitterDTO)
         {
             var patient = await _patientRepository.GetById(patientId);
@@ -52,6 +58,10 @@ namespace backend.Services.Babysitters
             return new OkObjectResult(mapToBabysitterDTO);
         }
 
+        /// <summary>
+        /// Return all babysitters
+        /// </summary>
+        /// <returns></returns>
         public async Task<ActionResult<IEnumerable<BabysitterDTO>>> GetBabysitters()
         {
             var list = await _babysitterRepository.GetAll();
