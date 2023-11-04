@@ -16,16 +16,34 @@ namespace backend.Repositories
 
         public async Task<VaccinationCard> GetVaccinationCardById(int id)
         {
-            return await _context.Set<VaccinationCard>()
+            var card = await _context.Set<VaccinationCard>()
                 .Include(info => info.VaccinationInfo)
                 .FirstOrDefaultAsync(card => card.Id == id);
+
+            if (card != null)
+            {
+                return card;
+            }
+            else
+            {
+                return null!;
+            }
         }
 
         public async Task<VaccinationCard> GetVaccinationCardByPatientId(int id)
         {
-            return await _context.Set<VaccinationCard>()
+            var card = await _context.Set<VaccinationCard>()
                 .Include(info => info.VaccinationInfo)
                 .FirstOrDefaultAsync(card => card.PatientId == id);
+
+            if (card != null)
+            {
+                return card;
+            }
+            else
+            {
+                return null!;
+            }
         }
     }
 }

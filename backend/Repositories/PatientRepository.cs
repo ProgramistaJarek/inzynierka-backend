@@ -21,20 +21,38 @@ namespace backend.Repositories
 
         public async Task<Patient> GetPatient(int id)
         {
-            return await _context.Set<Patient>()
+            var patient = await _context.Set<Patient>()
                 .Include(b => b.Babysitter)
                 .Include(card => card.VaccinationCard)
                 .Include(patient => patient.VaccinationCard.VaccinationInfo)
                 .FirstOrDefaultAsync(patient => patient.Id == id);
+
+            if (patient != null)
+            {
+                return patient;
+            }
+            else
+            {
+                return null!;
+            }
         }
 
         public async Task<IEnumerable<Patient>> GetPatients()
         {
-            return await _context.Set<Patient>()
+            var patients = await _context.Set<Patient>()
                 .Include(b => b.Babysitter)
                 .Include(card => card.VaccinationCard)
                 .Include(patient => patient.VaccinationCard.VaccinationInfo)
                 .ToListAsync();
+
+            if (patients != null)
+            {
+                return patients;
+            }
+            else
+            {
+                return null!;
+            }
         }
     }
 }
