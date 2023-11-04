@@ -12,7 +12,7 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231031072507_init")]
+    [Migration("20231104103043_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -148,7 +148,7 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("BabysitterId")
+                    b.Property<int?>("BabysitterId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("BirthDay")
@@ -457,9 +457,7 @@ namespace backend.Migrations
                 {
                     b.HasOne("backend.Entities.Babysitter", "Babysitter")
                         .WithMany("Patient")
-                        .HasForeignKey("BabysitterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BabysitterId");
 
                     b.Navigation("Babysitter");
                 });

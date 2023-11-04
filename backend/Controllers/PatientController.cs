@@ -23,7 +23,6 @@ namespace backend.Controllers
         /// <summary>
         /// Get all patients
         /// </summary>
-        [Authorize]
         [HttpGet(Name = "getPatients")]
         public async Task<ActionResult<IEnumerable<PatientDTO>>> GetPatients()
         {
@@ -40,12 +39,21 @@ namespace backend.Controllers
         }
 
         /// <summary>
-        /// Create new patient
+        /// Create new patient with babysitter
         /// </summary>
-        [HttpPost(Name = "createPatient")]
-        public async Task<ActionResult<string>> PostPatient(AddPatientDTO addPatientDTO)
+        [HttpPost("createPatientWithBabysitter", Name = "createPatientWithBabysitter")]
+        public async Task<ActionResult<string>> PostPatientWithBabysitter(AddPatientWithBabysitterDTO addPatientDTO)
         {
             return await _patientService.AddPatientWithBabysitter(addPatientDTO);
+        }
+
+        /// <summary>
+        /// Create new patient
+        /// </summary>
+        [HttpPost("createPatient", Name = "createPatient")]
+        public async Task<ActionResult<string>> PostPatient(AddPatientDTO addPatientDTO)
+        {
+            return await _patientService.AddPatient(addPatientDTO);
         }
 
         /// <summary>

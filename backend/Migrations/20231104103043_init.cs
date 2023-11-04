@@ -111,7 +111,7 @@ namespace backend.Migrations
                     DateOfDeclaration = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateOfAbandonment = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TypeOfVaccination = table.Column<int>(type: "int", nullable: false),
-                    BabysitterId = table.Column<int>(type: "int", nullable: false)
+                    BabysitterId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -120,8 +120,7 @@ namespace backend.Migrations
                         name: "FK_Patients_Babysitters_BabysitterId",
                         column: x => x.BabysitterId,
                         principalTable: "Babysitters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

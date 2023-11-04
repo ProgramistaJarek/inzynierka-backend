@@ -25,12 +25,12 @@ namespace backend.Controllers
         }
 
         /// <summary>
-        /// Add new babysitter
+        /// Add new babysitter to patient by patientId
         /// </summary>
-        [HttpPost(Name = "addNewBabysitter")]
-        public async Task<ActionResult<IEnumerable<BabysitterDTO>>> AddBabysitter(BabysitterCreateDTO babysitterDTO)
+        [HttpPost("{patientId}", Name = "addNewBabysitter")]
+        public async Task<ActionResult<IEnumerable<BabysitterDTO>>> AddBabysitter(int patientId, [FromBody] BabysitterCreateDTO babysitterDTO)
         {
-            return await _babysittersService.GetBabysitters();
+            return await _babysittersService.CreateNewBabysitter(patientId, babysitterDTO);
         }
     }
 }

@@ -2,6 +2,7 @@ using backend.Database;
 using backend.Repositories;
 using backend.Repositories.Interfaces;
 using backend.Services.Authorization;
+using backend.Services.Babysitters;
 using backend.Services.Patients;
 using backend.Services.VaccinationCardService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,7 +12,6 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +50,7 @@ builder.Services.AddScoped<IVaccinationInfoRepository, VaccinationInfoRepository
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IVaccinationCardService, VaccinationCardService>();
-builder.Services.AddScoped<IBabysitterRepository, BabysitterRepository>();
+builder.Services.AddScoped<IBabysittersService, BabysittersService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

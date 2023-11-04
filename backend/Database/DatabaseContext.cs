@@ -34,8 +34,7 @@ namespace backend.Database
             modelBuilder.Entity<Babysitter>()
                 .HasMany(e => e.Patient)
                 .WithOne(e => e.Babysitter)
-                .HasForeignKey(e => e.BabysitterId)
-                .IsRequired();
+                .HasForeignKey(e => e.BabysitterId);
 
             modelBuilder.Entity<VaccinationCard>()
                 .HasMany(e => e.VaccinationInfo)

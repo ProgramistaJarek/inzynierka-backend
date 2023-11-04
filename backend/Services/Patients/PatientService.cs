@@ -27,7 +27,7 @@ namespace backend.Services.Patients
         }
 
         //Add patient with babysitter
-        public async Task<ActionResult<string>> AddPatientWithBabysitter(AddPatientDTO addPatientDTO)
+        public async Task<ActionResult<string>> AddPatientWithBabysitter(AddPatientWithBabysitterDTO addPatientDTO)
         {
             var patientExistByPesel = await _repository.CheckIfPatientExistByPesel(addPatientDTO.PESEL);
 
@@ -57,7 +57,8 @@ namespace backend.Services.Patients
                 }
             }
 
-            var patient = await AddPatient(addPatientDTO, addPatientDTO.Babysitter);
+            var patientMap = _mapper.Map<AddPatientDTO>(addPatientDTO);
+            var patient = await CreatePatient(patientMap, addPatientDTO.Babysitter);
 
             if (patient == null)
             {
@@ -67,7 +68,7 @@ namespace backend.Services.Patients
             return new OkResult();
         }
 
-        private async Task<Patient> AddPatient(AddPatientDTO newPatientDTO, BabysitterDTO? babysitterDTO)
+        private async Task<Patient> CreatePatient(AddPatientDTO newPatientDTO, BabysitterDTO? babysitterDTO)
         {
             if (babysitterDTO != null)
             {
@@ -93,10 +94,10 @@ namespace backend.Services.Patients
 
             if (patient == null)
             {
-                return new BadRequestObjectResult("Patient with this ID do not exist");
+                return new NotFoundObjectResult("Patient with this ID do not exist");
             }
 
-            var babysitter = await _babysitterRepository.GetById(patient.BabysitterId);
+            var babysitter = patient.BabysitterId != null ? await _babysitterRepository.GetById((int)patient.BabysitterId) : null;
             var vaccinationCard = await _vaccinationCardRepository.GetVaccinationCardByPatientId(patient.Id);
 
             var patientDTO = _mapper.Map<PatientDTO>(patient);
@@ -164,7 +165,7 @@ namespace backend.Services.Patients
                 return new NotFoundResult();
             }
 
-            if (patientDTO.BabysitterId <= 0) patientDTO.BabysitterId = patinet.BabysitterId;
+            if (patientDTO.BabysitterId <= 0) patientDTO.BabysitterId = (int)patinet.BabysitterId;
 
             var patientMap = _mapper.Map<Patient>(patientDTO);
             await _repository.Update(patientMap);
@@ -187,6 +188,11 @@ namespace backend.Services.Patients
                 return new BadRequestObjectResult("You need to provide babysiter");
             }
 
+            if (await _babysitterRepository.CheckIfBabysitterExistByPesel(babysitterDTO.PESEL) != null)
+            {
+                return new BadRequestObjectResult("Babysitter with this PESEL exist");
+            }
+
             var babysitter = _mapper.Map<Babysitter>(babysitterDTO);
 
             var newBabysitter = await _babysitterRepository.Create(babysitter);
@@ -195,6 +201,26 @@ namespace backend.Services.Patients
             var newPatient = await _repository.Update(patient);
 
             return new OkObjectResult(newPatient);
+        }
+
+        public async Task<ActionResult<string>> AddPatient(AddPatientDTO addPatientDTO)
+        {
+            var patientExistByPesel = await _repository.CheckIfPatientExistByPesel(addPatientDTO.PESEL);
+
+            if (patientExistByPesel != null)
+            {
+                return new BadRequestObjectResult("Patient with this PESEL exist");
+            }
+
+            var patientMap = _mapper.Map<AddPatientDTO>(addPatientDTO);
+            var patient = await CreatePatient(patientMap, null);
+
+            if (patient == null)
+            {
+                return new BadRequestObjectResult("Patient do not added");
+            }
+
+            return new OkResult();
         }
     }
 }
