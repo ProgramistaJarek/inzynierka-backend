@@ -25,7 +25,7 @@ namespace backend.Services.VaccinationCardService
             var vaccinationCard = await _repository.GetById(vaccinationCardId);
             if (vaccinationCard == null)
             {
-                return new BadRequestObjectResult("Vaccination card with this ID do not exist");
+                return new NotFoundObjectResult("Vaccination card with this ID do not exist");
             }
 
             var vaccinvationInfo = _mapper.Map<VaccinationInfo>(vaccinationInfoDTO);
@@ -43,7 +43,7 @@ namespace backend.Services.VaccinationCardService
             var vaccinationCard = await _repository.GetById(vaccinationCardId);
             if (vaccinationCard == null)
             {
-                return new BadRequestObjectResult("Vaccination card with this ID do not exist");
+                return new NotFoundObjectResult("Vaccination card with this ID do not exist");
             }
 
             var card = _mapper.Map<VaccinationCardDTO>(vaccinationCard);
@@ -57,11 +57,11 @@ namespace backend.Services.VaccinationCardService
             var vaccinationCard = await _repository.GetVaccinationCardByPatientId(patientId);
             if (vaccinationCard == null)
             {
-                return new BadRequestObjectResult("Vaccination card with this ID do not exist");
+                return new NotFoundObjectResult("Vaccination card with this patient ID do not exist");
             }
 
             var card = _mapper.Map<VaccinationCardDTO>(vaccinationCard);
-            card.VaccinationInfo = await GetVaccinationInfos(card.Id);
+            // card.VaccinationInfo = await GetVaccinationInfos(card.Id);
 
             return new OkObjectResult(card);
         }
@@ -71,7 +71,7 @@ namespace backend.Services.VaccinationCardService
             var vaccinationCard = await _repository.GetById(vaccinationCardId);
             if (vaccinationCard == null)
             {
-                return new BadRequestObjectResult("Vaccination card with this ID do not exist");
+                return new NotFoundObjectResult("Vaccination card with this ID do not exist");
             }
 
             var card = _mapper.Map<VaccinationCard>(vaccinationCardDTO);
@@ -79,7 +79,6 @@ namespace backend.Services.VaccinationCardService
             var updatedCard = await _repository.Update(card);
 
             var cardMap = _mapper.Map<VaccinationCardDTO>(updatedCard);
-            cardMap.VaccinationInfo = await GetVaccinationInfos(updatedCard.Id);
 
             return new OkObjectResult(cardMap);
         }

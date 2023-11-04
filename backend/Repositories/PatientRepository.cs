@@ -18,5 +18,23 @@ namespace backend.Repositories
         {
             return await _context.Set<Patient>().FirstOrDefaultAsync(user => user.PESEL == pesel);
         }
+
+        public async Task<Patient> GetPatient(int id)
+        {
+            return await _context.Set<Patient>()
+                .Include(b => b.Babysitter)
+                .Include(card => card.VaccinationCard)
+                .Include(patient => patient.VaccinationCard.VaccinationInfo)
+                .FirstOrDefaultAsync(patient => patient.Id == id);
+        }
+
+        public async Task<IEnumerable<Patient>> GetPatients()
+        {
+            return await _context.Set<Patient>()
+                .Include(b => b.Babysitter)
+                .Include(card => card.VaccinationCard)
+                .Include(patient => patient.VaccinationCard.VaccinationInfo)
+                .ToListAsync();
+        }
     }
 }

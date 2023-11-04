@@ -42,7 +42,7 @@ namespace backend.Controllers
         /// Create new patient with babysitter
         /// </summary>
         [HttpPost("createPatientWithBabysitter", Name = "createPatientWithBabysitter")]
-        public async Task<ActionResult<string>> PostPatientWithBabysitter(AddPatientWithBabysitterDTO addPatientDTO)
+        public async Task<ActionResult<string>> PostPatientWithBabysitter([FromBody] AddPatientWithBabysitterDTO addPatientDTO)
         {
             return await _patientService.AddPatientWithBabysitter(addPatientDTO);
         }
@@ -51,7 +51,7 @@ namespace backend.Controllers
         /// Create new patient
         /// </summary>
         [HttpPost("createPatient", Name = "createPatient")]
-        public async Task<ActionResult<string>> PostPatient(AddPatientDTO addPatientDTO)
+        public async Task<ActionResult<string>> PostPatient([FromBody] AddPatientDTO addPatientDTO)
         {
             return await _patientService.AddPatient(addPatientDTO);
         }
@@ -60,7 +60,7 @@ namespace backend.Controllers
         /// Add to patient vaccination card
         /// </summary>
         [HttpPost("vaccinvationCard/{id}", Name = "addToPatientVaccinationCard")]
-        public async Task<ActionResult<PatientDTO>> PostPatientWithVaccinationCard(int id, VaccinationCardCreateDTO vaccinationCardDTO)
+        public async Task<ActionResult<PatientDTO>> PostPatientWithVaccinationCard(int id, [FromBody] VaccinationCardCreateDTO vaccinationCardDTO)
         {
             return await _patientService.AddVaccinationCardToPatient(id, vaccinationCardDTO);
         }
@@ -69,7 +69,7 @@ namespace backend.Controllers
         /// Update patient
         /// </summary>
         [HttpPut(Name = "updatePatient")]
-        public async Task<IActionResult> PutPatient(UpdatePatientDTO patientDTO)
+        public async Task<IActionResult> PutPatient([FromBody] UpdatePatientDTO patientDTO)
         {
             return await _patientService.UpdatePatient(patientDTO);
         }
