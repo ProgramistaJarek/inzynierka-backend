@@ -18,5 +18,10 @@ namespace backend.Repositories
         {
             return await _context.Set<Babysitter>().FirstOrDefaultAsync(user => user.PESEL == pesel);
         }
+
+        public async Task<IEnumerable<Babysitter>> GetAllBabysttiersByPatientId(int id)
+        {
+            return await _context.Set<Babysitter>().Where(x => x.PatientId == id).ToListAsync();
+        }
     }
 }

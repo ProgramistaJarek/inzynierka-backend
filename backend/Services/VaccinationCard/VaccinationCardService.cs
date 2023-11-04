@@ -32,10 +32,8 @@ namespace backend.Services.VaccinationCardService
             vaccinvationInfo.VaccinationCardId = vaccinationCardId;
             await _infoRepository.Create(vaccinvationInfo);
 
-            var infos = await _infoRepository.GetVaccinationInfoByCardId(vaccinationCardId);
-
             var card = _mapper.Map<VaccinationCardDTO>(vaccinationCard);
-            card.VaccinationInfo = infos.Select(x => _mapper.Map<VaccinationInfoDTO>(x)).ToList();
+            card.VaccinationInfo = await GetVaccinationInfos(vaccinationCardId);
 
             return new OkObjectResult(card);
         }
@@ -49,6 +47,7 @@ namespace backend.Services.VaccinationCardService
             }
 
             var card = _mapper.Map<VaccinationCardDTO>(vaccinationCard);
+            card.VaccinationInfo = await GetVaccinationInfos(vaccinationCardId);
 
             return new OkObjectResult(card);
         }
@@ -62,6 +61,7 @@ namespace backend.Services.VaccinationCardService
             }
 
             var card = _mapper.Map<VaccinationCardDTO>(vaccinationCard);
+            card.VaccinationInfo = await GetVaccinationInfos(card.Id);
 
             return new OkObjectResult(card);
         }
@@ -78,7 +78,17 @@ namespace backend.Services.VaccinationCardService
 
             var updatedCard = await _repository.Update(card);
 
-            return new OkObjectResult(updatedCard);
+            var cardMap = _mapper.Map<VaccinationCardDTO>(updatedCard);
+            cardMap.VaccinationInfo = await GetVaccinationInfos(updatedCard.Id);
+
+            return new OkObjectResult(cardMap);
+        }
+
+        private async Task<IEnumerable<VaccinationInfoDTO>> GetVaccinationInfos(int cardId)
+        {
+            var infos = await _infoRepository.GetVaccinationInfoByCardId(cardId);
+
+            return infos.Select(x => _mapper.Map<VaccinationInfoDTO>(x)).ToList();
         }
     }
 }

@@ -6,6 +6,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class BabysittersController : ControllerBase
     {
         private readonly IBabysittersService _babysittersService;

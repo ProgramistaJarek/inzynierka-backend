@@ -11,6 +11,6 @@
         public string Year { get; set; } = string.Empty;
         public bool Emigration { get; set; }
         public int PatientId { get; set; }
-        public ICollection<VaccinationInfoDTO> VaccinationInfo { get; set; } = null!;
+        public IEnumerable<VaccinationInfoDTO> VaccinationInfo { get; set; } = null!;
     }
 }

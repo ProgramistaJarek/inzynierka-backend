@@ -10,6 +10,7 @@
         public string Adress { get; set; } = string.Empty;
         public string Kinship { get; set; } = string.Empty;
 
-        public ICollection<Patient> Patient { get; set; } = new List<Patient>();
+        public int? PatientId { get; set; }
+        public Patient? Patient { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace backend.Services.Babysitters
                 return new BadRequestObjectResult("Something go wrong");
             }
 
-            patient.BabysitterId = babysitter.Id;
+            patient.Babysitter.Add(babysitter);
             await _patientRepository.Update(patient);
 
             var mapToBabysitterDTO = _mapper.Map<BabysitterDTO>(babysitter);

@@ -12,7 +12,7 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231104103043_init")]
+    [Migration("20231104113616_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -127,11 +127,16 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Babysitters");
                 });
@@ -147,9 +152,6 @@ namespace backend.Migrations
                     b.Property<string>("Adress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("BabysitterId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("BirthDay")
                         .HasColumnType("datetime2");
@@ -180,8 +182,6 @@ namespace backend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BabysitterId");
 
                     b.ToTable("Patients");
                 });
@@ -453,13 +453,13 @@ namespace backend.Migrations
                     b.ToTable("Vaccinations");
                 });
 
-            modelBuilder.Entity("backend.Entities.Patient", b =>
+            modelBuilder.Entity("backend.Entities.Babysitter", b =>
                 {
-                    b.HasOne("backend.Entities.Babysitter", "Babysitter")
-                        .WithMany("Patient")
-                        .HasForeignKey("BabysitterId");
+                    b.HasOne("backend.Entities.Patient", "Patient")
+                        .WithMany("Babysitter")
+                        .HasForeignKey("PatientId");
 
-                    b.Navigation("Babysitter");
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("backend.Entities.Summons", b =>
@@ -495,13 +495,10 @@ namespace backend.Migrations
                     b.Navigation("VaccinationCard");
                 });
 
-            modelBuilder.Entity("backend.Entities.Babysitter", b =>
-                {
-                    b.Navigation("Patient");
-                });
-
             modelBuilder.Entity("backend.Entities.Patient", b =>
                 {
+                    b.Navigation("Babysitter");
+
                     b.Navigation("Summons");
 
                     b.Navigation("VaccinationCard");

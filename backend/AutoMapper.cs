@@ -34,8 +34,8 @@ namespace backend
             CreateMap<VaccinationInfoDTO, VaccinationInfo>();
             CreateMap<VaccinationCardCreateDTO, VaccinationCard>();
             CreateMap<VaccinationCard, VaccinationCardCreateDTO>();
-            CreateMap<VaccinationCard, VaccinationInfoCreateDTO>();
-            CreateMap<VaccinationInfoCreateDTO, VaccinationCard>();
+            CreateMap<VaccinationInfo, VaccinationInfoCreateDTO>();
+            CreateMap<VaccinationInfoCreateDTO, VaccinationInfo>();
         }
     }
 }

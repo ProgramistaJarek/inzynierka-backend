@@ -27,7 +27,7 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Babysitters",
+                name: "Patients",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -35,13 +35,16 @@ namespace backend.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PESEL = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Kinship = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BirthDay = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateOfDeclaration = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateOfAbandonment = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TypeOfVaccination = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Babysitters", x => x.Id);
+                    table.PrimaryKey("PK_Patients", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -97,7 +100,7 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Patients",
+                name: "Babysitters",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -105,21 +108,18 @@ namespace backend.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PESEL = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BirthDay = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateOfDeclaration = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateOfAbandonment = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TypeOfVaccination = table.Column<int>(type: "int", nullable: false),
-                    BabysitterId = table.Column<int>(type: "int", nullable: true)
+                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Kinship = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PatientId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Patients", x => x.Id);
+                    table.PrimaryKey("PK_Babysitters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Patients_Babysitters_BabysitterId",
-                        column: x => x.BabysitterId,
-                        principalTable: "Babysitters",
+                        name: "FK_Babysitters_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
                         principalColumn: "Id");
                 });
 
@@ -233,9 +233,9 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patients_BabysitterId",
-                table: "Patients",
-                column: "BabysitterId");
+                name: "IX_Babysitters_PatientId",
+                table: "Babysitters",
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Summons_PatientId",
@@ -261,6 +261,9 @@ namespace backend.Migrations
                 name: "AgeGroups");
 
             migrationBuilder.DropTable(
+                name: "Babysitters");
+
+            migrationBuilder.DropTable(
                 name: "Summons");
 
             migrationBuilder.DropTable(
@@ -280,9 +283,6 @@ namespace backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "Patients");
-
-            migrationBuilder.DropTable(
-                name: "Babysitters");
         }
     }
 }

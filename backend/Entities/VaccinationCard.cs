@@ -13,6 +13,6 @@
 
         public int PatientId { get; set; }
         public Patient Patient { get; set; } = null!;
-        public ICollection<VaccinationInfo> VaccinationInfo { get; set; } = null!;
+        public IEnumerable<VaccinationInfo> VaccinationInfo { get; set; } = null!;
     }
 }

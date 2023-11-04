@@ -3,6 +3,7 @@ using backend.Entities;
 using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services.Patients
 {
@@ -11,6 +12,7 @@ namespace backend.Services.Patients
         private readonly IPatientRepository _repository;
         private readonly IBabysitterRepository _babysitterRepository;
         private readonly IVaccinationCardRepository _vaccinationCardRepository;
+        private readonly IVaccinationInfoRepository _vaccinationInfoRepository;
 
         private readonly IMapper _mapper;
 
@@ -18,12 +20,14 @@ namespace backend.Services.Patients
             IPatientRepository patientRepository,
             IBabysitterRepository babysitterRepository,
             IMapper mapper,
-            IVaccinationCardRepository vaccinationCardRepository)
+            IVaccinationCardRepository vaccinationCardRepository,
+            IVaccinationInfoRepository vaccinationInfoRepository)
         {
             _repository = patientRepository;
             _babysitterRepository = babysitterRepository;
             _mapper = mapper;
             _vaccinationCardRepository = vaccinationCardRepository;
+            _vaccinationInfoRepository = vaccinationInfoRepository;
         }
 
         //Add patient with babysitter
@@ -76,7 +80,7 @@ namespace backend.Services.Patients
                 var babysitter = await _babysitterRepository.Create(newBabysitter);
 
                 var newPatient = _mapper.Map<Patient>(newPatientDTO);
-                newPatient.BabysitterId = babysitter.Id;
+                newPatient.Babysitter.Add(babysitter);
 
                 return await _repository.Create(newPatient);
             }
@@ -97,12 +101,11 @@ namespace backend.Services.Patients
                 return new NotFoundObjectResult("Patient with this ID do not exist");
             }
 
-            var babysitter = patient.BabysitterId != null ? await _babysitterRepository.GetById((int)patient.BabysitterId) : null;
-            var vaccinationCard = await _vaccinationCardRepository.GetVaccinationCardByPatientId(patient.Id);
+            var babysitter = await _babysitterRepository.GetAllBabysttiersByPatientId(patient.Id);
 
             var patientDTO = _mapper.Map<PatientDTO>(patient);
-            patientDTO.Babysitter = _mapper.Map<BabysitterDTO>(babysitter);
-            patientDTO.VaccinationCard = _mapper.Map<VaccinationCardDTO>(vaccinationCard);
+            patientDTO.Babysitter = _mapper.Map<IEnumerable<BabysitterDTO>>(babysitter).ToList();
+            patientDTO.VaccinationCard = await GetVaccinvationCardByPatientId(patientDTO.Id);
 
             return patientDTO;
         }
@@ -143,16 +146,37 @@ namespace backend.Services.Patients
         // Get patients list
         public async Task<ActionResult<IEnumerable<PatientDTO>>> GetPatients()
         {
-            var patinets = await _repository.GetAll();
+            var patients = await _repository.GetAll();
 
-            if (patinets == null)
+            if (patients == null)
             {
                 return new NotFoundResult();
             }
 
-            var patientsDTO = patinets.Select(patinet => _mapper.Map<PatientDTO>(patinet)).ToList();
 
-            return patientsDTO;
+            var patientDTOs = _mapper.Map<IEnumerable<PatientDTO>>(patients);
+
+            foreach (var patientDTO in patientDTOs)
+            {
+                var babysitters = await _babysitterRepository.GetAllBabysttiersByPatientId(patientDTO.Id);
+                patientDTO.Babysitter = _mapper.Map<IEnumerable<BabysitterDTO>>(babysitters).ToList();
+                patientDTO.VaccinationCard = await GetVaccinvationCardByPatientId(patientDTO.Id);
+            }
+
+            return patientDTOs.ToList();
+
+        }
+
+        private async Task<VaccinationCardDTO?> GetVaccinvationCardByPatientId(int patientId)
+        {
+            var vaccinationCard = await _vaccinationCardRepository.GetVaccinationCardByPatientId(patientId);
+            if (vaccinationCard == null) return null;
+            var vaccinationCardDTO = _mapper.Map<VaccinationCardDTO>(vaccinationCard);
+
+            var infos = await _vaccinationInfoRepository.GetVaccinationInfoByCardId(vaccinationCardDTO.Id);
+            vaccinationCardDTO.VaccinationInfo = _mapper.Map<IEnumerable<VaccinationInfoDTO>>(infos);
+
+            return vaccinationCardDTO;
         }
 
         // Update patient
@@ -165,7 +189,7 @@ namespace backend.Services.Patients
                 return new NotFoundResult();
             }
 
-            if (patientDTO.BabysitterId <= 0) patientDTO.BabysitterId = (int)patinet.BabysitterId;
+            /*if (patientDTO.BabysitterId <= 0) patientDTO.BabysitterId = (int)patinet.BabysitterId;*/
 
             var patientMap = _mapper.Map<Patient>(patientDTO);
             await _repository.Update(patientMap);
@@ -197,7 +221,7 @@ namespace backend.Services.Patients
 
             var newBabysitter = await _babysitterRepository.Create(babysitter);
 
-            patient.BabysitterId = newBabysitter.Id;
+            patient.Babysitter.Add(newBabysitter);
             var newPatient = await _repository.Update(patient);
 
             return new OkObjectResult(newPatient);

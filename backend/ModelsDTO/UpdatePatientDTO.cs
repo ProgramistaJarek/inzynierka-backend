@@ -15,6 +15,6 @@ namespace backend.ModelsDTO
         public DateTime DateOfDeclaration { get; set; }
         public DateTime DateOfAbandonment { get; set; }
         [Required] public TypeOfVaccination TypeOfVaccination { get; set; }
-        public int BabysitterId { get; set; }
+        // public int BabysitterId { get; set; }
     }
 }
