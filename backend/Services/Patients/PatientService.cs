@@ -110,7 +110,7 @@ namespace backend.Services.Patients
 
             var patientDTO = _mapper.Map<PatientDTO>(patient);
 
-            return patientDTO;
+            return new OkObjectResult(patientDTO);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace backend.Services.Patients
             var patientToReturn = _mapper.Map<PatientDTO>(patient);
             patientToReturn.VaccinationCard = _mapper.Map<VaccinationCardDTO>(newCard);
 
-            return patientToReturn;
+            return new OkObjectResult(patientToReturn);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace backend.Services.Patients
 
             var patientDTOs = _mapper.Map<IEnumerable<PatientDTO>>(patients);
 
-            return patientDTOs.ToList();
+            return new OkObjectResult(patientDTOs.ToList());
         }
 
         /// <summary>
