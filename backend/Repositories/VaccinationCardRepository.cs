@@ -18,6 +18,7 @@ namespace backend.Repositories
         {
             var card = await _context.Set<VaccinationCard>()
                 .Include(info => info.VaccinationInfo)
+                .Include(patient => patient.Patient)
                 .FirstOrDefaultAsync(card => card.Id == id);
 
             if (card != null)

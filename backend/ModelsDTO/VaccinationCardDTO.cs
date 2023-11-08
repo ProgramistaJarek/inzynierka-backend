@@ -10,7 +10,7 @@
         public bool Lack { get; set; }
         public string Year { get; set; } = string.Empty;
         public bool Emigration { get; set; }
-        public int PatientId { get; set; }
+        public PatientInfoDTO Patient {  get; set; }
         public IEnumerable<VaccinationInfoDTO> VaccinationInfo { get; set; } = null!;
     }
 }

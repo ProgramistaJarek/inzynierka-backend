@@ -24,7 +24,6 @@ namespace backend.Repositories
             var patient = await _context.Set<Patient>()
                 .Include(b => b.Babysitter)
                 .Include(card => card.VaccinationCard)
-                .Include(patient => patient.VaccinationCard.VaccinationInfo)
                 .FirstOrDefaultAsync(patient => patient.Id == id);
 
             if (patient != null)
