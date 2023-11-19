@@ -1,6 +1,7 @@
 using backend.Database;
 using backend.Repositories;
 using backend.Repositories.Interfaces;
+using backend.Services.AgeGroups;
 using backend.Services.Authorization;
 using backend.Services.Babysitters;
 using backend.Services.Patients;
@@ -46,11 +47,13 @@ builder.Services.AddScoped<ISummonsRepository, SummonsRepository>();
 builder.Services.AddScoped<IBabysitterRepository, BabysitterRepository>();
 builder.Services.AddScoped<IVaccinationCardRepository, VaccinationCardRepository>();
 builder.Services.AddScoped<IVaccinationInfoRepository, VaccinationInfoRepository>();
+builder.Services.AddScoped<IAgeGroupsRepository, AgeGroupsRepository>();
 
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 builder.Services.AddScoped<IVaccinationCardService, VaccinationCardService>();
 builder.Services.AddScoped<IBabysittersService, BabysittersService>();
+builder.Services.AddScoped<IAgeGroupService, AgeGroupService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

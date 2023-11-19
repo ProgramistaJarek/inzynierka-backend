@@ -179,12 +179,13 @@ namespace backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PostponementOfVaccination = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostVaccinationReaction = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Postponement = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Appointment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VaccinationName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VaccinvationSeries = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AgeGroup = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TypeVaccinations = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VaccinationCardId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

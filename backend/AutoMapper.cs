@@ -38,6 +38,8 @@ namespace backend
             CreateMap<VaccinationCard, VaccinationCardCreateDTO>();
             CreateMap<VaccinationInfo, VaccinationInfoCreateDTO>();
             CreateMap<VaccinationInfoCreateDTO, VaccinationInfo>();
+            CreateMap<AgeGroups, AgeGroupsDTO>();
+            CreateMap<AgeGroupsDTO, AgeGroups>();
         }
     }
 }

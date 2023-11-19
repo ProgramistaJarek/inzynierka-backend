@@ -12,7 +12,7 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231104113616_init")]
+    [Migration("20231119153737_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -381,6 +381,10 @@ namespace backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AgeGroup")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Appointment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -397,11 +401,11 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Postponement")
+                    b.Property<string>("PostponementOfVaccination")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PostponementOfVaccination")
+                    b.Property<string>("TypeVaccinations")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
