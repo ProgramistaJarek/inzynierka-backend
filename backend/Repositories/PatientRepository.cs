@@ -39,9 +39,6 @@ namespace backend.Repositories
         public async Task<IEnumerable<Patient>> GetPatients()
         {
             var patients = await _context.Set<Patient>()
-                .Include(b => b.Babysitter)
-                .Include(card => card.VaccinationCard)
-                .Include(patient => patient.VaccinationCard.VaccinationInfo)
                 .ToListAsync();
 
             if (patients != null)
