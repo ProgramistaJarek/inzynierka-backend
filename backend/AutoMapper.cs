@@ -40,8 +40,8 @@ namespace backend
             CreateMap<VaccinationInfoCreateDTO, VaccinationInfo>();
             CreateMap<AgeGroups, AgeGroupsDTO>();
             CreateMap<AgeGroupsDTO, AgeGroups>();
-            CreateMap<TypesVaccines, TypeVaccinationDTO>();
-            CreateMap<TypeVaccinationDTO, TypesVaccines>();
+            CreateMap<VaccinationType, VaccinationTypeDTO>();
+            CreateMap<VaccinationTypeDTO, VaccinationType>();
         }
     }
 }

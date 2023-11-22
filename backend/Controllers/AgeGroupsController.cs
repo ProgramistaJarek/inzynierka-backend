@@ -7,6 +7,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class AgeGroupsController : ControllerBase
     {
         private readonly IAgeGroupService _ageGroupService;
@@ -17,7 +18,7 @@ namespace backend.Controllers
         }
 
         /// <summary>
-        /// Get user by token
+        /// Get age groups list
         /// </summary>
         [Authorize]
         [HttpGet(Name = "getAgeGroups")]

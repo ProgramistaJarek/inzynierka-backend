@@ -16,6 +16,6 @@
         public int AgeGroupId { get; set; }
         public AgeGroups AgeGroups { get; set; } = null!;
         public int TypeVaccinationId { get; set; }
-        public TypesVaccines TypeVaccinations { get; set; } = null!;
+        public VaccinationType TypeVaccinations { get; set; } = null!;
     }
 }

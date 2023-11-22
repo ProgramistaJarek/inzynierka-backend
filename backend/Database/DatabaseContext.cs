@@ -13,7 +13,7 @@ namespace backend.Database
         public DbSet<VaccinationInfo> VaccinationInfo { get; set; }
         public DbSet<Vaccinations> Vaccinations { get; set; }
         public DbSet<AgeGroups> AgeGroups { get; set; }
-        public DbSet<TypesVaccines> TypesVaccines { get; set; }
+        public DbSet<VaccinationType> TypesVaccines { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> opt) : base(opt) { }
 
@@ -52,7 +52,7 @@ namespace backend.Database
                 .WithOne(e => e.AgeGroups)
                 .HasForeignKey(e => e.AgeGroupId);
 
-            modelBuilder.Entity<TypesVaccines>()
+            modelBuilder.Entity<VaccinationType>()
                 .HasMany(e => e.VaccinationInfo)
                 .WithOne(e => e.TypeVaccinations)
                 .HasForeignKey(e => e.TypeVaccinationId);
@@ -71,16 +71,16 @@ namespace backend.Database
                 new AgeGroups { Id = 11, Name = "19 rok życia" }
             );
 
-            modelBuilder.Entity<TypesVaccines>().HasData(
-                new TypesVaccines { Id = 1, Name = "Gruźlica BCG" },
-                new TypesVaccines { Id = 2, Name = "wzw B" },
-                new TypesVaccines { Id = 3, Name = "DTP" },
-                new TypesVaccines { Id = 4, Name = "Hib" },
-                new TypesVaccines { Id = 5, Name = "polio IPV" },
-                new TypesVaccines { Id = 6, Name = "odra, świnka, różyczka" },
-                new TypesVaccines { Id = 7, Name = "DTaP" },
-                new TypesVaccines { Id = 8, Name = "polio OPV" },
-                new TypesVaccines { Id = 9, Name = "Td" }
+            modelBuilder.Entity<VaccinationType>().HasData(
+                new VaccinationType { Id = 1, Name = "Gruźlica BCG" },
+                new VaccinationType { Id = 2, Name = "wzw B" },
+                new VaccinationType { Id = 3, Name = "DTP" },
+                new VaccinationType { Id = 4, Name = "Hib" },
+                new VaccinationType { Id = 5, Name = "polio IPV" },
+                new VaccinationType { Id = 6, Name = "odra, świnka, różyczka" },
+                new VaccinationType { Id = 7, Name = "DTaP" },
+                new VaccinationType { Id = 8, Name = "polio OPV" },
+                new VaccinationType { Id = 9, Name = "Td" }
             );
         }
     }
