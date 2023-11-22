@@ -42,6 +42,21 @@ namespace backend.Database
                 .HasForeignKey(e => e.VaccinationCardId)
                 .IsRequired();
 
+            modelBuilder.Entity<Vaccinations>()
+                .HasMany(e => e.VaccinationInfo)
+                .WithOne(e => e.Vaccinations)
+                .HasForeignKey(e => e.VaccinationId);
+
+            modelBuilder.Entity<AgeGroups>()
+                .HasMany(e => e.VaccinationInfo)
+                .WithOne(e => e.AgeGroups)
+                .HasForeignKey(e => e.AgeGroupId);
+
+            modelBuilder.Entity<TypesVaccines>()
+                .HasMany(e => e.VaccinationInfo)
+                .WithOne(e => e.TypeVaccinations)
+                .HasForeignKey(e => e.TypeVaccinationId);
+
             modelBuilder.Entity<AgeGroups>().HasData(
                 new AgeGroups { Id = 1, Name = "Noworodek" },
                 new AgeGroups { Id = 2, Name = "2 miesiąc życia" },

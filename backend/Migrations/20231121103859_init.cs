@@ -186,7 +186,8 @@ namespace backend.Migrations
                     VaccinvationSeries = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AgeGroup = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TypeVaccinations = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VaccinationCardId = table.Column<int>(type: "int", nullable: false)
+                    VaccinationCardId = table.Column<int>(type: "int", nullable: false),
+                    VaccinationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -195,6 +196,12 @@ namespace backend.Migrations
                         name: "FK_VaccinationInfo_VaccinationCard_VaccinationCardId",
                         column: x => x.VaccinationCardId,
                         principalTable: "VaccinationCard",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_VaccinationInfo_Vaccinations_VaccinationId",
+                        column: x => x.VaccinationId,
+                        principalTable: "Vaccinations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -253,6 +260,11 @@ namespace backend.Migrations
                 name: "IX_VaccinationInfo_VaccinationCardId",
                 table: "VaccinationInfo",
                 column: "VaccinationCardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VaccinationInfo_VaccinationId",
+                table: "VaccinationInfo",
+                column: "VaccinationId");
         }
 
         /// <inheritdoc />
@@ -277,10 +289,10 @@ namespace backend.Migrations
                 name: "VaccinationInfo");
 
             migrationBuilder.DropTable(
-                name: "Vaccinations");
+                name: "VaccinationCard");
 
             migrationBuilder.DropTable(
-                name: "VaccinationCard");
+                name: "Vaccinations");
 
             migrationBuilder.DropTable(
                 name: "Patients");

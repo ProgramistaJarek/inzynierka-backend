@@ -8,12 +8,14 @@
         public string Appointment { get; set; } = string.Empty;
         public string Place { get; set; } = string.Empty;
         public string Date { get; set; } = string.Empty;
-        public string VaccinationName { get; set; } = string.Empty;
-        public string VaccinvationSeries { get; set; } = string.Empty;
-        public string AgeGroup { get; set; } = string.Empty;
-        public string TypeVaccinations { get; set; } = string.Empty;
 
         public int VaccinationCardId { get; set; }
         public VaccinationCard VaccinationCard { get; set; } = null!;
+        public int VaccinationId { get; set; }
+        public Vaccinations Vaccinations { get; set; } = null!;
+        public int AgeGroupId { get; set; }
+        public AgeGroups AgeGroups { get; set; } = null!;
+        public int TypeVaccinationId { get; set; }
+        public TypesVaccines TypeVaccinations { get; set; } = null!;
     }
 }

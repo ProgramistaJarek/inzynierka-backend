@@ -18,6 +18,11 @@ namespace backend.Repositories
         {
             var card = await _context.Set<VaccinationCard>()
                 .Include(info => info.VaccinationInfo)
+                .ThenInclude(info => info.Vaccinations)
+                .Include(info => info.VaccinationInfo)
+                .ThenInclude(info => info.AgeGroups)
+                .Include(info => info.VaccinationInfo)
+                .ThenInclude(info => info.TypeVaccinations)
                 .Include(patient => patient.Patient)
                 .FirstOrDefaultAsync(card => card.Id == id);
 
@@ -35,6 +40,9 @@ namespace backend.Repositories
         {
             var card = await _context.Set<VaccinationCard>()
                 .Include(info => info.VaccinationInfo)
+                .ThenInclude(info => info.AgeGroups)
+                .Include(info => info.VaccinationInfo)
+                .ThenInclude(info => info.TypeVaccinations)
                 .FirstOrDefaultAsync(card => card.PatientId == id);
 
             if (card != null)

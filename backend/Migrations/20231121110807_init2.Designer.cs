@@ -12,8 +12,8 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231119153737_init")]
-    partial class init
+    [Migration("20231121110807_init2")]
+    partial class init2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -381,9 +381,8 @@ namespace backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AgeGroup")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("AgeGroupId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Appointment")
                         .IsRequired()
@@ -405,24 +404,24 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TypeVaccinations")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TypeVaccinationId")
+                        .HasColumnType("int");
 
                     b.Property<int>("VaccinationCardId")
                         .HasColumnType("int");
 
-                    b.Property<string>("VaccinationName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VaccinvationSeries")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("VaccinationId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AgeGroupId");
+
+                    b.HasIndex("TypeVaccinationId");
+
                     b.HasIndex("VaccinationCardId");
+
+                    b.HasIndex("VaccinationId");
 
                     b.ToTable("VaccinationInfo");
                 });
@@ -490,13 +489,42 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Entities.VaccinationInfo", b =>
                 {
+                    b.HasOne("backend.Entities.AgeGroups", "AgeGroups")
+                        .WithMany("VaccinationInfo")
+                        .HasForeignKey("AgeGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Entities.TypesVaccines", "TypesVaccines")
+                        .WithMany("VaccinationInfo")
+                        .HasForeignKey("TypeVaccinationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("backend.Entities.VaccinationCard", "VaccinationCard")
                         .WithMany("VaccinationInfo")
                         .HasForeignKey("VaccinationCardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("backend.Entities.Vaccinations", "Vaccinations")
+                        .WithMany("VaccinationInfo")
+                        .HasForeignKey("VaccinationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AgeGroups");
+
+                    b.Navigation("TypesVaccines");
+
                     b.Navigation("VaccinationCard");
+
+                    b.Navigation("Vaccinations");
+                });
+
+            modelBuilder.Entity("backend.Entities.AgeGroups", b =>
+                {
+                    b.Navigation("VaccinationInfo");
                 });
 
             modelBuilder.Entity("backend.Entities.Patient", b =>
@@ -508,7 +536,17 @@ namespace backend.Migrations
                     b.Navigation("VaccinationCard");
                 });
 
+            modelBuilder.Entity("backend.Entities.TypesVaccines", b =>
+                {
+                    b.Navigation("VaccinationInfo");
+                });
+
             modelBuilder.Entity("backend.Entities.VaccinationCard", b =>
+                {
+                    b.Navigation("VaccinationInfo");
+                });
+
+            modelBuilder.Entity("backend.Entities.Vaccinations", b =>
                 {
                     b.Navigation("VaccinationInfo");
                 });

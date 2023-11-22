@@ -8,5 +8,7 @@
         public DateTime DateOfProduction { get; set; }
         public DateTime ExpirationDate { get; set; }
         public int Amount { get; set; }
+
+        public IEnumerable<VaccinationInfo> VaccinationInfo { get; set; } = null!;
     }
 }

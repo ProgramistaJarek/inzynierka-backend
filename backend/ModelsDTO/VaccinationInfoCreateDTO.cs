@@ -7,9 +7,8 @@
         public string Appointment { get; set; } = string.Empty;
         public string Place { get; set; } = string.Empty;
         public string Date { get; set; } = string.Empty;
-        public string VaccinationName { get; set; } = string.Empty;
-        public string VaccinvationSeries { get; set; } = string.Empty;
-        public string AgeGroup { get; set; } = string.Empty;
-        public string TypeVaccinations { get; set; } = string.Empty;
+        public int VaccinationId { get; set; }
+        public int AgeGroupId { get; set; }
+        public int TypeVaccinationId { get; set; }
     }
 }
