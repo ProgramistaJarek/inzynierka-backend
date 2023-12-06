@@ -3,6 +3,7 @@ using backend.Entities;
 using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Packaging;
 
 namespace backend.Services.Patients
 {
@@ -83,7 +84,7 @@ namespace backend.Services.Patients
                 var babysitter = await _babysitterRepository.Create(newBabysitter);
 
                 var newPatient = _mapper.Map<Patient>(newPatientDTO);
-                newPatient.Babysitter.Add(babysitter);
+                await _babysitterRepository.Create(babysitter);
 
                 return await _repository.Create(newPatient);
             }
@@ -108,7 +109,10 @@ namespace backend.Services.Patients
                 return new NotFoundObjectResult("Patient with this ID do not exist");
             }
 
+            var babysitterList = patient.PatientBabysitter.Select(pb=> _mapper.Map<BabysitterDTO>(pb.Babysitter)).ToList();
+
             var patientDTO = _mapper.Map<PatientDTO>(patient);
+            patientDTO.Babysitter = babysitterList;
 
             return new OkObjectResult(patientDTO);
         }
@@ -166,6 +170,16 @@ namespace backend.Services.Patients
 
             var patientDTOs = _mapper.Map<IEnumerable<PatientDTO>>(patients);
 
+            foreach (var patientDTO in patientDTOs)
+            {
+                var patientBabysitters = patients
+                    .Where(patient => patient.Id == patientDTO.Id)
+                    .SelectMany(patient => patient.PatientBabysitter)
+                    .Select(pb => _mapper.Map<BabysitterDTO>(pb.Babysitter))
+                    .ToList();
+
+                patientDTO.Babysitter.AddRange(patientBabysitters);
+            }
             return new OkObjectResult(patientDTOs.ToList());
         }
 
@@ -220,8 +234,8 @@ namespace backend.Services.Patients
 
             var newBabysitter = await _babysitterRepository.Create(babysitter);
 
-            patient.Babysitter.Add(newBabysitter);
-            var newPatient = await _repository.Update(patient);
+            await _babysitterRepository.Create(newBabysitter);
+            var newPatient = await _repository.Update(patient);            
 
             return new OkObjectResult(newPatient);
         }

@@ -21,7 +21,7 @@ namespace backend.Repositories
 
         public async Task<IEnumerable<Babysitter>> GetAllBabysttiersByPatientId(int id)
         {
-            return await _context.Set<Babysitter>().Where(x => x.PatientId == id).ToListAsync();
+            return await _context.Set<Babysitter>().Include(e => e.PatientBabysitter).ThenInclude(e => e.PatientId == id).ToListAsync();
         }
     }
 }

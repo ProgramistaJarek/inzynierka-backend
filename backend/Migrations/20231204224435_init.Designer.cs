@@ -12,8 +12,8 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231121110807_init2")]
-    partial class init2
+    [Migration("20231204224435_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -127,16 +127,11 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PatientId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PatientId");
 
                     b.ToTable("Babysitters");
                 });
@@ -186,6 +181,21 @@ namespace backend.Migrations
                     b.ToTable("Patients");
                 });
 
+            modelBuilder.Entity("backend.Entities.PatientBabysitter", b =>
+                {
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BabysitterId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PatientId", "BabysitterId");
+
+                    b.HasIndex("BabysitterId");
+
+                    b.ToTable("PatientBabysitter");
+                });
+
             modelBuilder.Entity("backend.Entities.Summons", b =>
                 {
                     b.Property<int>("Id")
@@ -213,70 +223,6 @@ namespace backend.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("Summons");
-                });
-
-            modelBuilder.Entity("backend.Entities.TypesVaccines", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TypesVaccines");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Gruźlica BCG"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "wzw B"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "DTP"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Hib"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "polio IPV"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "odra, świnka, różyczka"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "DTaP"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "polio OPV"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Td"
-                        });
                 });
 
             modelBuilder.Entity("backend.Entities.User", b =>
@@ -426,6 +372,70 @@ namespace backend.Migrations
                     b.ToTable("VaccinationInfo");
                 });
 
+            modelBuilder.Entity("backend.Entities.VaccinationType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TypesVaccines");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Gruźlica BCG"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "wzw B"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "DTP"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Hib"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "polio IPV"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "odra, świnka, różyczka"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "DTaP"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "polio OPV"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Td"
+                        });
+                });
+
             modelBuilder.Entity("backend.Entities.Vaccinations", b =>
                 {
                     b.Property<int>("Id")
@@ -456,11 +466,21 @@ namespace backend.Migrations
                     b.ToTable("Vaccinations");
                 });
 
-            modelBuilder.Entity("backend.Entities.Babysitter", b =>
+            modelBuilder.Entity("backend.Entities.PatientBabysitter", b =>
                 {
+                    b.HasOne("backend.Entities.Babysitter", "Babysitter")
+                        .WithMany("PatientBabysitter")
+                        .HasForeignKey("BabysitterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("backend.Entities.Patient", "Patient")
-                        .WithMany("Babysitter")
-                        .HasForeignKey("PatientId");
+                        .WithMany("PatientBabysitter")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Babysitter");
 
                     b.Navigation("Patient");
                 });
@@ -495,7 +515,7 @@ namespace backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.Entities.TypesVaccines", "TypesVaccines")
+                    b.HasOne("backend.Entities.VaccinationType", "TypeVaccinations")
                         .WithMany("VaccinationInfo")
                         .HasForeignKey("TypeVaccinationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -515,7 +535,7 @@ namespace backend.Migrations
 
                     b.Navigation("AgeGroups");
 
-                    b.Navigation("TypesVaccines");
+                    b.Navigation("TypeVaccinations");
 
                     b.Navigation("VaccinationCard");
 
@@ -527,21 +547,26 @@ namespace backend.Migrations
                     b.Navigation("VaccinationInfo");
                 });
 
+            modelBuilder.Entity("backend.Entities.Babysitter", b =>
+                {
+                    b.Navigation("PatientBabysitter");
+                });
+
             modelBuilder.Entity("backend.Entities.Patient", b =>
                 {
-                    b.Navigation("Babysitter");
+                    b.Navigation("PatientBabysitter");
 
                     b.Navigation("Summons");
 
                     b.Navigation("VaccinationCard");
                 });
 
-            modelBuilder.Entity("backend.Entities.TypesVaccines", b =>
+            modelBuilder.Entity("backend.Entities.VaccinationCard", b =>
                 {
                     b.Navigation("VaccinationInfo");
                 });
 
-            modelBuilder.Entity("backend.Entities.VaccinationCard", b =>
+            modelBuilder.Entity("backend.Entities.VaccinationType", b =>
                 {
                     b.Navigation("VaccinationInfo");
                 });

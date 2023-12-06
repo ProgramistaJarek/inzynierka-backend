@@ -22,7 +22,8 @@ namespace backend.Repositories
         public async Task<Patient> GetPatient(int id)
         {
             var patient = await _context.Set<Patient>()
-                .Include(b => b.Babysitter)
+                .Include(b => b.PatientBabysitter)
+                .ThenInclude(e => e.Babysitter)
                 .Include(card => card.VaccinationCard)
                 .FirstOrDefaultAsync(patient => patient.Id == id);
 
@@ -39,6 +40,8 @@ namespace backend.Repositories
         public async Task<IEnumerable<Patient>> GetPatients()
         {
             var patients = await _context.Set<Patient>()
+                .Include(b => b.PatientBabysitter)
+                .ThenInclude(e => e.Babysitter)
                 .ToListAsync();
 
             if (patients != null)

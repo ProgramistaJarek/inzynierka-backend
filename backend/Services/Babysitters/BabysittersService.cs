@@ -3,6 +3,8 @@ using backend.Entities;
 using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 
 namespace backend.Services.Babysitters
 {
@@ -10,14 +12,16 @@ namespace backend.Services.Babysitters
     {
         private readonly IBabysitterRepository _babysitterRepository;
         private readonly IPatientRepository _patientRepository;
+        private readonly IPatientBabysitterRepository _patientBabysitterRepository;
 
         private readonly IMapper _mapper;
 
-        public BabysittersService(IBabysitterRepository babysitterRepository, IPatientRepository patientRepository, IMapper mapper)
+        public BabysittersService(IBabysitterRepository babysitterRepository, IPatientRepository patientRepository, IMapper mapper, IPatientBabysitterRepository patientBabysitterRepository)
         {
             _babysitterRepository = babysitterRepository;
             _patientRepository = patientRepository;
             _mapper = mapper;
+            _patientBabysitterRepository = patientBabysitterRepository;
         }
 
         /// <summary>
@@ -50,8 +54,13 @@ namespace backend.Services.Babysitters
                 return new BadRequestObjectResult("Something go wrong");
             }
 
-            patient.Babysitter.Add(babysitter);
-            await _patientRepository.Update(patient);
+            var patientBabysitter = new PatientBabysitter
+            {
+                PatientId = patient.Id,
+                BabysitterId = babysitter.Id
+            };
+
+            await _patientBabysitterRepository.Create(patientBabysitter);
 
             var mapToBabysitterDTO = _mapper.Map<BabysitterDTO>(babysitter);
 

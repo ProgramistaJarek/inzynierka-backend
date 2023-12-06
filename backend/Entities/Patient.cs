@@ -15,7 +15,7 @@ namespace backend.Entities
         public DateTime DateOfAbandonment { get; set; }
         public TypeOfVaccination TypeOfVaccination { get; set; }
 
-        public ICollection<Babysitter> Babysitter { get; set; } = new List<Babysitter>();
+        public ICollection<PatientBabysitter> PatientBabysitter { get; set; } = new List<PatientBabysitter>();
         public ICollection<Summons> Summons { get; set; } = new List<Summons>();
         public VaccinationCard? VaccinationCard { get; set; }
     }

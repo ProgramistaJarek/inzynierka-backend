@@ -14,11 +14,14 @@ namespace backend.Database
         public DbSet<Vaccinations> Vaccinations { get; set; }
         public DbSet<AgeGroups> AgeGroups { get; set; }
         public DbSet<VaccinationType> TypesVaccines { get; set; }
+        public DbSet<PatientBabysitter> PatientBabysitter { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> opt) : base(opt) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<PatientBabysitter>().HasKey((pb) => new { pb.PatientId, pb.BabysitterId });
+
             modelBuilder.Entity<Patient>()
                 .HasMany(e => e.Summons)
                 .WithOne(e => e.Patient)
@@ -31,10 +34,15 @@ namespace backend.Database
                 .HasForeignKey<VaccinationCard>(e => e.PatientId)
                 .IsRequired();
 
-            modelBuilder.Entity<Patient>()
-                .HasMany(e => e.Babysitter)
-                .WithOne(e => e.Patient)
+            modelBuilder.Entity<PatientBabysitter>()
+                .HasOne<Patient>(e => e.Patient)
+                .WithMany(e=>e.PatientBabysitter)
                 .HasForeignKey(e => e.PatientId);
+
+            modelBuilder.Entity<PatientBabysitter>()
+                .HasOne<Babysitter>(e => e.Babysitter)
+                .WithMany(e => e.PatientBabysitter)
+                .HasForeignKey(e => e.BabysitterId);
 
             modelBuilder.Entity<VaccinationCard>()
                 .HasMany(e => e.VaccinationInfo)
