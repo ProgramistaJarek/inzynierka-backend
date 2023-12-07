@@ -76,6 +76,12 @@ namespace backend.Services.Patients
             return new OkResult();
         }
 
+        /// <summary>
+        /// Create patient
+        /// </summary>
+        /// <param name="newPatientDTO"></param>
+        /// <param name="babysitterDTO"></param>
+        /// <returns></returns>
         private async Task<Patient> CreatePatient(AddPatientDTO newPatientDTO, BabysitterDTO? babysitterDTO)
         {
             if (babysitterDTO != null)

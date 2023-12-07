@@ -9,8 +9,9 @@
         public string Appointment { get; set; } = string.Empty;
         public string Place { get; set; } = string.Empty;
         public string Date { get; set; } = string.Empty;
-        public VaccinationTypeDTO TypeVaccinations { get; set; } = null!;
-        public AgeGroupsDTO AgeGroups { get; set; } = null!;
-        public VaccinationsDTO Vaccinations { get; set; } = null!;
+        public string TypeVaccinationName { get; set; } = string.Empty;
+        public string AgeGroup { get; set; } = string.Empty;
+        public string VaccinationName { get; set; } = string.Empty;
+        public string VaccinationSeries { get; set; } = string.Empty;
     }
 }
