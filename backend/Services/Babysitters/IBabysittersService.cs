@@ -7,7 +7,9 @@ namespace backend.Services.Babysitters
     public interface IBabysittersService
     {
         Task<ActionResult<IEnumerable<BabysitterDTO>>> GetBabysitters();
-        Task<ActionResult<IEnumerable<BabysitterDTO>>> CreateNewBabysitter(int patientId, BabysitterCreateDTO babysitterDTO);
+        Task<ActionResult<BabysitterDTO>> CreateNewBabysitter(int patientId, BabysitterCreateDTO babysitterDTO);
+        Task<ActionResult<BabysitterDTO>> UpdateBabysitter(int id, BabysitterDTO babysitterDTO);
+        Task<ActionResult> RemoveBabysitter(int babysitterId, int patientId);
     }
 #pragma warning restore CS1591 // Brak komentarza XML dla widocznego publicznie typu lub składowej
 }

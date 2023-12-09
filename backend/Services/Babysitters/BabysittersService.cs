@@ -30,7 +30,7 @@ namespace backend.Services.Babysitters
         /// <param name="patientId"></param>
         /// <param name="babysitterDTO"></param>
         /// <returns></returns>
-        public async Task<ActionResult<IEnumerable<BabysitterDTO>>> CreateNewBabysitter(int patientId, BabysitterCreateDTO babysitterDTO)
+        public async Task<ActionResult<BabysitterDTO>> CreateNewBabysitter(int patientId, BabysitterCreateDTO babysitterDTO)
         {
             var patient = await _patientRepository.GetById(patientId);
 
@@ -83,6 +83,84 @@ namespace backend.Services.Babysitters
             var babysittersDTO = list.Select(babysitter => _mapper.Map<BabysitterDTO>(babysitter)).ToList();
 
             return babysittersDTO;
+        }
+
+        /// <summary>
+        /// Edit babysitter
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="babysitterDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<ActionResult<BabysitterDTO>> UpdateBabysitter(int id, BabysitterDTO babysitterDTO)
+        {
+            if (id != babysitterDTO.Id)
+            {
+                return new NotFoundObjectResult("Id's are not correct");
+            }
+
+            var babysitter = await _babysitterRepository.GetById(id);
+            if (babysitter == null)
+            {
+                return new NotFoundObjectResult("Babysitter with this ID do not exist");
+            }
+
+            var checkBabysitterPesel = await _babysitterRepository.CheckIfBabysitterExistByPesel(babysitterDTO.PESEL);
+            if (checkBabysitterPesel != null && checkBabysitterPesel.Id != id)
+            {
+                return new ConflictObjectResult("Something go wrong! Babysitter with this PESEL already exists");
+            }
+
+            try
+            {
+                babysitter= _mapper.Map<Babysitter>(babysitterDTO);
+                var updatedBabysitter = await _babysitterRepository.Update(babysitter);
+                babysitterDTO = _mapper.Map<BabysitterDTO>(updatedBabysitter);
+                return new OkObjectResult(babysitterDTO);
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult("Babysitter cannot be updated");
+            }
+        }
+        
+        /// <summary>
+        /// Remove babysitter from many-to-many and delete from table babysitter
+        /// </summary>
+        /// <param name="babysitterId"></param>
+        /// <param name="patientId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<ActionResult> RemoveBabysitter(int babysitterId, int patientId)
+        {
+            var babysitter = await _babysitterRepository.GetById(babysitterId);
+            if (babysitter == null)
+            {
+                return new NotFoundObjectResult("Babysitter with this ID do not exist");
+            }
+
+            var patient = await _babysitterRepository.GetById(patientId);
+            if (patient == null)
+            {
+                return new NotFoundObjectResult("Patient with this ID do not exist");
+            }
+
+            try
+            {
+                var checkRelationsPB = await _patientBabysitterRepository.DoesPatientBabysitterExist(babysitterId, patientId);
+                if (checkRelationsPB == null)
+                {
+                    return new NotFoundObjectResult("This relation do not exist");
+                }
+
+                await _patientBabysitterRepository.RemovePatientBabysitter(checkRelationsPB);
+                await _babysitterRepository.Delete(babysitterId);
+                return new OkObjectResult("Success");
+            }
+            catch (Exception)
+            {
+                return new BadRequestObjectResult("The removal action encountered an error");
+            }
         }
     }
 }

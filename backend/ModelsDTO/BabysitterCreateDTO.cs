@@ -10,5 +10,6 @@ namespace backend.ModelsDTO
         [Required] public string PhoneNumber { get; set; } = string.Empty;
         [Required] public string Adress { get; set; } = string.Empty;
         [Required] public string Kinship { get; set; } = string.Empty;
+        public string Comments { get; set; } = string.Empty;
     }
 }
