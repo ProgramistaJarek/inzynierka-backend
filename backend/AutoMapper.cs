@@ -48,6 +48,9 @@ namespace backend
                 .ForMember(dest => dest.AgeGroup, opt => opt.MapFrom(src => src.AgeGroups.Name))
                 .ForMember(dest => dest.VaccinationName, opt => opt.MapFrom(src => src.Vaccinations.Name))
                 .ForMember(dest => dest.VaccinationSeries, opt => opt.MapFrom(src => src.Vaccinations.Series));
+
+            CreateMap<VaccinationCard, VaccinationCardDTO>()
+                .ForMember(dest => dest.PatientId, opt => opt.MapFrom(src => src.Patient.Id));
         }
 
     }

@@ -8,7 +8,7 @@ namespace backend.Entities
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string PESEL { get; set; } = string.Empty;
-        public string Adress { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
         public DateTime BirthDay { get; set; }
         public DateTime DateOfDeclaration { get; set; }

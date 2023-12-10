@@ -3,6 +3,7 @@ using backend.Entities;
 using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace backend.Controllers
 {
@@ -32,7 +33,7 @@ namespace backend.Controllers
             {
                 return NotFound();
             }
-            
+
             var result = vaccination.Select(v => _mapper.Map<VaccinationsDTO>(v)).ToList();
             return Ok(result);
         }
@@ -40,8 +41,8 @@ namespace backend.Controllers
         /// <summary>
         /// Get vaccination by id
         /// </summary>
-        [HttpGet("{id}", Name = "getVaccination")]
-        public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> GetVaccinationById(int id)
+        [HttpGet("vaccinationById", Name = "getVaccination")]
+        public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> GetVaccinationById([Required] int id)
         {
             var vaccination = await _vaccinationsRepository.GetById(id);
             if (vaccination == null)
@@ -90,8 +91,8 @@ namespace backend.Controllers
         /// <summary>
         /// Delete vaccination by id
         /// </summary>
-        [HttpDelete("{id}", Name = "deleteVaccination")]
-        public async Task<IActionResult> DeleteVaccination(int id)
+        [HttpDelete("removeVaccination", Name = "deleteVaccination")]
+        public async Task<IActionResult> DeleteVaccination([Required] int id)
         {
             var vaccination = await _vaccinationsRepository.GetById(id);
             if (vaccination == null)

@@ -15,6 +15,7 @@ namespace backend.Database
         public DbSet<AgeGroups> AgeGroups { get; set; }
         public DbSet<VaccinationType> TypesVaccines { get; set; }
         public DbSet<PatientBabysitter> PatientBabysitter { get; set; }
+        public DbSet<OtherVaccination> OtherVaccination { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> opt) : base(opt) { }
 
@@ -35,12 +36,12 @@ namespace backend.Database
                 .IsRequired();
 
             modelBuilder.Entity<PatientBabysitter>()
-                .HasOne<Patient>(e => e.Patient)
+                .HasOne(e => e.Patient)
                 .WithMany(e=>e.PatientBabysitter)
                 .HasForeignKey(e => e.PatientId);
 
             modelBuilder.Entity<PatientBabysitter>()
-                .HasOne<Babysitter>(e => e.Babysitter)
+                .HasOne(e => e.Babysitter)
                 .WithMany(e => e.PatientBabysitter)
                 .HasForeignKey(e => e.BabysitterId);
 
@@ -64,6 +65,17 @@ namespace backend.Database
                 .HasMany(e => e.VaccinationInfo)
                 .WithOne(e => e.TypeVaccinations)
                 .HasForeignKey(e => e.TypeVaccinationId);
+
+            modelBuilder.Entity<VaccinationCard>()
+                .HasMany(e => e.OtherVaccination)
+                .WithOne(e => e.VaccinationCard)
+                .HasForeignKey(e => e.VaccinationCardId)
+                .IsRequired();
+
+            modelBuilder.Entity<Vaccinations>()
+                .HasMany(e => e.OtherVaccination)
+                .WithOne(e => e.Vaccinations)
+                .HasForeignKey(e => e.VaccinationId);
 
             modelBuilder.Entity<AgeGroups>().HasData(
                 new AgeGroups { Id = 1, Name = "Noworodek" },

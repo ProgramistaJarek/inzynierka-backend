@@ -1,6 +1,7 @@
 ﻿using backend.ModelsDTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using IAuthorizationService = backend.Services.Authorization.IAuthorizationService;
 
@@ -40,8 +41,8 @@ namespace backend.Controllers
         /// Get user by id
         /// </summary>
         [Authorize]
-        [HttpGet("user/{id}", Name = "getUserById")]
-        public async Task<ActionResult<UserDTO>> GetUserById(int id)
+        [HttpGet("userById", Name = "getUserById")]
+        public async Task<ActionResult<UserDTO>> GetUserById([Required] int id)
         {
             return await _authorizationService.GetUserById(id);
         }
@@ -50,7 +51,7 @@ namespace backend.Controllers
         /// Login user
         /// </summary>
         [HttpPost("login", Name = "login")]
-        public async Task<ActionResult<string>> Login(LoginDTO loginDTO)
+        public async Task<ActionResult<string>> Login([FromBody] LoginDTO loginDTO)
         {
             return await _authorizationService.LoginUser(loginDTO);
         }

@@ -12,8 +12,8 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231209124601_init2")]
-    partial class init2
+    [Migration("20231210095245_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -138,6 +138,48 @@ namespace backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Babysitters");
+                });
+
+            modelBuilder.Entity("backend.Entities.OtherVaccination", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Place")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostVaccinationReaction")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostponementOfVaccination")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TypeVaccination")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VaccinationCardId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VaccinationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VaccinationCardId");
+
+                    b.HasIndex("VaccinationId");
+
+                    b.ToTable("OtherVaccination");
                 });
 
             modelBuilder.Entity("backend.Entities.Patient", b =>
@@ -338,9 +380,8 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Date")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Place")
                         .IsRequired()
@@ -470,6 +511,25 @@ namespace backend.Migrations
                     b.ToTable("Vaccinations");
                 });
 
+            modelBuilder.Entity("backend.Entities.OtherVaccination", b =>
+                {
+                    b.HasOne("backend.Entities.VaccinationCard", "VaccinationCard")
+                        .WithMany("OtherVaccination")
+                        .HasForeignKey("VaccinationCardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Entities.Vaccinations", "Vaccinations")
+                        .WithMany("OtherVaccination")
+                        .HasForeignKey("VaccinationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("VaccinationCard");
+
+                    b.Navigation("Vaccinations");
+                });
+
             modelBuilder.Entity("backend.Entities.PatientBabysitter", b =>
                 {
                     b.HasOne("backend.Entities.Babysitter", "Babysitter")
@@ -567,6 +627,8 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Entities.VaccinationCard", b =>
                 {
+                    b.Navigation("OtherVaccination");
+
                     b.Navigation("VaccinationInfo");
                 });
 
@@ -577,6 +639,8 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Entities.Vaccinations", b =>
                 {
+                    b.Navigation("OtherVaccination");
+
                     b.Navigation("VaccinationInfo");
                 });
 #pragma warning restore 612, 618

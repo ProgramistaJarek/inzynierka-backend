@@ -1,6 +1,7 @@
 ﻿using backend.ModelsDTO;
 using backend.Services.Babysitters;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace backend.Controllers
 {
@@ -29,8 +30,8 @@ namespace backend.Controllers
         /// <summary>
         /// Add new babysitter to patient by patientId
         /// </summary>
-        [HttpPost("{patientId}", Name = "addNewBabysitter")]
-        public async Task<ActionResult<BabysitterDTO>> AddBabysitter(int patientId, [FromBody] BabysitterCreateDTO babysitterDTO)
+        [HttpPost("create", Name = "addNewBabysitter")]
+        public async Task<ActionResult<BabysitterDTO>> AddBabysitter([Required] int patientId, [FromBody] BabysitterCreateDTO babysitterDTO)
         {
             return await _babysittersService.CreateNewBabysitter(patientId, babysitterDTO);
         }
@@ -38,8 +39,8 @@ namespace backend.Controllers
         /// <summary>
         /// Update babysitter
         /// </summary>
-        [HttpPut("{id}", Name = "updateBabysitter")]
-        public async Task<ActionResult<BabysitterDTO>> UpdateBabysitter(int id, [FromBody] BabysitterDTO babysitterDTO)
+        [HttpPut("update", Name = "updateBabysitter")]
+        public async Task<ActionResult<BabysitterDTO>> UpdateBabysitter([Required] int id, [FromBody] BabysitterDTO babysitterDTO)
         {
             return await _babysittersService.UpdateBabysitter(id, babysitterDTO);
         }
@@ -47,8 +48,8 @@ namespace backend.Controllers
         /// <summary>
         /// Remove babysitter
         /// </summary>
-        [HttpDelete("{babysitterId}/patientId", Name = "removeBabysitter")]
-        public async Task<ActionResult> removeBabysitter(int babysitterId, int patientId)
+        [HttpDelete("removeBabysitter", Name = "removeBabysitter")]
+        public async Task<ActionResult> removeBabysitter([Required] int babysitterId, [Required] int patientId)
         {
             return await _babysittersService.RemoveBabysitter(babysitterId, patientId);
         }

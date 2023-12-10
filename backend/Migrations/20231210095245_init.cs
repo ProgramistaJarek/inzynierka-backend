@@ -37,7 +37,8 @@ namespace backend.Migrations
                     PESEL = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Kinship = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Kinship = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -190,6 +191,37 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OtherVaccination",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PostponementOfVaccination = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostVaccinationReaction = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TypeVaccination = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    VaccinationCardId = table.Column<int>(type: "int", nullable: false),
+                    VaccinationId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OtherVaccination", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OtherVaccination_VaccinationCard_VaccinationCardId",
+                        column: x => x.VaccinationCardId,
+                        principalTable: "VaccinationCard",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OtherVaccination_Vaccinations_VaccinationId",
+                        column: x => x.VaccinationId,
+                        principalTable: "Vaccinations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "VaccinationInfo",
                 columns: table => new
                 {
@@ -199,7 +231,7 @@ namespace backend.Migrations
                     PostVaccinationReaction = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Appointment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Date = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     VaccinationCardId = table.Column<int>(type: "int", nullable: false),
                     VaccinationId = table.Column<int>(type: "int", nullable: false),
                     AgeGroupId = table.Column<int>(type: "int", nullable: false),
@@ -269,6 +301,16 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_OtherVaccination_VaccinationCardId",
+                table: "OtherVaccination",
+                column: "VaccinationCardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OtherVaccination_VaccinationId",
+                table: "OtherVaccination",
+                column: "VaccinationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PatientBabysitter_BabysitterId",
                 table: "PatientBabysitter",
                 column: "BabysitterId");
@@ -308,6 +350,9 @@ namespace backend.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "OtherVaccination");
+
             migrationBuilder.DropTable(
                 name: "PatientBabysitter");
 

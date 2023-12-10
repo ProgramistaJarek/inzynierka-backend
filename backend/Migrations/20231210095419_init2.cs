@@ -11,8 +11,8 @@ namespace backend.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Comments",
-                table: "Babysitters",
+                name: "Appointment",
+                table: "OtherVaccination",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
@@ -22,8 +22,8 @@ namespace backend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Comments",
-                table: "Babysitters");
+                name: "Appointment",
+                table: "OtherVaccination");
         }
     }
 }

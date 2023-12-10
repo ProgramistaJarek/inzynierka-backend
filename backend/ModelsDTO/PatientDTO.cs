@@ -1,22 +1,19 @@
-﻿using backend.Entities;
-using backend.Enums;
-using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
+﻿using backend.Enums;
 
 namespace backend.ModelsDTO
 {
     public class PatientDTO
     {
         public int Id { get; set; }
-        [Required] public string FirstName { get; set; } = string.Empty;
-        [Required] public string LastName { get; set; } = string.Empty;
-        [Required] public string PESEL { get; set; } = string.Empty;
-        [Required] public string Adress { get; set; } = string.Empty;
-        [Required] public string PhoneNumber { get; set; } = string.Empty;
-        [Required] public DateTime BirthDay { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string PESEL { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public DateTime BirthDay { get; set; }
         public DateTime DateOfDeclaration { get; set; }
         public DateTime DateOfAbandonment { get; set; }
-        [Required] public TypeOfVaccination TypeOfVaccination { get; set; }
+        public TypeOfVaccination TypeOfVaccination { get; set; }
         public ICollection<BabysitterDTO> Babysitter { get; set; } = new List<BabysitterDTO>();
         public VaccinationCardDTO VaccinationCard { get; set; } = null!;
     }

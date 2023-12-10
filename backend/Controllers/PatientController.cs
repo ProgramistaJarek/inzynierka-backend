@@ -2,6 +2,7 @@
 using backend.Repositories.Interfaces;
 using backend.Services.Patients;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace backend.Controllers
 {
@@ -24,7 +25,7 @@ namespace backend.Controllers
         /// Get all patients
         /// </summary>
         [HttpGet(Name = "getPatients")]
-        public async Task<ActionResult<IEnumerable<PatientDTO>>> GetPatients()
+        public async Task<ActionResult<IEnumerable<PatientInfoDTO>>> GetPatients()
         {
             return await _patientService.GetPatients();
         }
@@ -32,8 +33,8 @@ namespace backend.Controllers
         /// <summary>
         /// Get patient by id
         /// </summary>
-        [HttpGet("{id}", Name = "getPatientById")]
-        public async Task<ActionResult<PatientDTO>> GetPatient(int id)
+        [HttpGet("byId", Name = "getPatientById")]
+        public async Task<ActionResult<PatientDTO>> GetPatient([Required] int id)
         {
             return await _patientService.GetPatient(id);
         }
@@ -41,11 +42,11 @@ namespace backend.Controllers
         /// <summary>
         /// Create new patient with babysitter
         /// </summary>
-        [HttpPost("createPatientWithBabysitter", Name = "createPatientWithBabysitter")]
+        /*[HttpPost("createPatientWithBabysitter", Name = "createPatientWithBabysitter")]
         public async Task<ActionResult<string>> PostPatientWithBabysitter([FromBody] AddPatientWithBabysitterDTO addPatientDTO)
         {
             return await _patientService.AddPatientWithBabysitter(addPatientDTO);
-        }
+        }*/
 
         /// <summary>
         /// Create new patient
@@ -59,8 +60,8 @@ namespace backend.Controllers
         /// <summary>
         /// Add to patient vaccination card
         /// </summary>
-        [HttpPost("vaccinvationCard/{id}", Name = "addToPatientVaccinationCard")]
-        public async Task<ActionResult<PatientDTO>> PostPatientWithVaccinationCard(int id, [FromBody] VaccinationCardCreateDTO vaccinationCardDTO)
+        [HttpPost("vaccinvationCard", Name = "addToPatientVaccinationCard")]
+        public async Task<ActionResult<PatientDTO>> PostPatientWithVaccinationCard([Required] int id, [FromBody] VaccinationCardCreateDTO vaccinationCardDTO)
         {
             return await _patientService.AddVaccinationCardToPatient(id, vaccinationCardDTO);
         }
@@ -77,8 +78,8 @@ namespace backend.Controllers
         /// <summary>
         /// Delete patient by id
         /// </summary>
-        [HttpDelete("{id}", Name = "deletePatient")]
-        public async Task<IActionResult> DeletePatient(int id)
+        [HttpDelete("remove", Name = "deletePatient")]
+        public async Task<IActionResult> DeletePatient([Required] int id)
         {
             var patient = await _patientRepository.GetById(id);
             if (patient == null)

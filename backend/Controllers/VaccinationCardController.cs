@@ -1,6 +1,7 @@
 ﻿using backend.ModelsDTO;
 using backend.Services.VaccinationCardService;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace backend.Controllers
 {
@@ -20,8 +21,8 @@ namespace backend.Controllers
         /// <summary>
         /// Get vaccination card by card id
         /// </summary>
-        [HttpGet("{id}", Name = "getVaccinationCard")]
-        public async Task<ActionResult<VaccinationCardDTO>> GetVaccinvationCard(int id)
+        [HttpGet("vaccinationCardById", Name = "getVaccinationCard")]
+        public async Task<ActionResult<VaccinationCardDTO>> GetVaccinvationCard([Required] int id)
         {
             return await _vaccinationCardService.GetVaccinationCard(id);
         }
@@ -29,8 +30,8 @@ namespace backend.Controllers
         /// <summary>
         /// Get vaccination card by patient id
         /// </summary>
-        [HttpGet("patient/{id}", Name = "getVaccinationCardByPatient")]
-        public async Task<ActionResult<VaccinationCardDTO>> GetVaccinvationCardByPatient(int id)
+        [HttpGet("vaccinationCardByPatientId", Name = "getVaccinationCardByPatient")]
+        public async Task<ActionResult<VaccinationCardDTO>> GetVaccinvationCardByPatient([Required] int id)
         {
             return await _vaccinationCardService.GetVaccinationCardByPatientId(id);
         }
@@ -38,8 +39,8 @@ namespace backend.Controllers
         /// <summary>
         /// Add new vaccination information to vaccination card
         /// </summary>
-        [HttpPost("{id}", Name = "addVaccinationInfoToCard")]
-        public async Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard(int id, [FromBody] VaccinationInfoCreateDTO vaccinationInfoDTO)
+        [HttpPost("addVaccinationInfoToCard", Name = "addVaccinationInfoToCard")]
+        public async Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard([Required] int id, [FromBody] VaccinationInfoCreateDTO vaccinationInfoDTO)
         {
             return await _vaccinationCardService.AddVaccinationToCard(id, vaccinationInfoDTO);
         }
@@ -47,8 +48,8 @@ namespace backend.Controllers
         /// <summary>
         /// Update existing vaccinvation card
         /// </summary>
-        [HttpPut("{id}", Name = "updateVaccinationCard")]
-        public async Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard(int id, [FromBody] VaccinationCardDTO vaccinationCardDTO)
+        [HttpPut("update", Name = "updateVaccinationCard")]
+        public async Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard([Required] int id, [FromBody] VaccinationCardDTO vaccinationCardDTO)
         {
             return await _vaccinationCardService.UpdateVaccinationCard(id, vaccinationCardDTO);
         }

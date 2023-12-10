@@ -115,7 +115,7 @@ namespace backend.Services.Patients
                 return new NotFoundObjectResult("Patient with this ID do not exist");
             }
 
-            var babysitterList = patient.PatientBabysitter.Select(pb=> _mapper.Map<BabysitterDTO>(pb.Babysitter)).ToList();
+            var babysitterList = patient.PatientBabysitter.Select(pb => _mapper.Map<BabysitterDTO>(pb.Babysitter)).ToList();
 
             var patientDTO = _mapper.Map<PatientDTO>(patient);
             patientDTO.Babysitter = babysitterList;
@@ -165,7 +165,7 @@ namespace backend.Services.Patients
         /// Get patients list
         /// </summary>
         /// <returns></returns>
-        public async Task<ActionResult<IEnumerable<PatientDTO>>> GetPatients()
+        public async Task<ActionResult<IEnumerable<PatientInfoDTO>>> GetPatients()
         {
             var patients = await _repository.GetPatients();
 
@@ -174,18 +174,7 @@ namespace backend.Services.Patients
                 return new NotFoundResult();
             }
 
-            var patientDTOs = _mapper.Map<IEnumerable<PatientDTO>>(patients);
-
-            foreach (var patientDTO in patientDTOs)
-            {
-                var patientBabysitters = patients
-                    .Where(patient => patient.Id == patientDTO.Id)
-                    .SelectMany(patient => patient.PatientBabysitter)
-                    .Select(pb => _mapper.Map<BabysitterDTO>(pb.Babysitter))
-                    .ToList();
-
-                patientDTO.Babysitter.AddRange(patientBabysitters);
-            }
+            var patientDTOs = _mapper.Map<IEnumerable<PatientInfoDTO>>(patients);
             return new OkObjectResult(patientDTOs.ToList());
         }
 
@@ -241,7 +230,7 @@ namespace backend.Services.Patients
             var newBabysitter = await _babysitterRepository.Create(babysitter);
 
             await _babysitterRepository.Create(newBabysitter);
-            var newPatient = await _repository.Update(patient);            
+            var newPatient = await _repository.Update(patient);
 
             return new OkObjectResult(newPatient);
         }

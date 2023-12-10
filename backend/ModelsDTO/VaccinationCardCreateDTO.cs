@@ -9,5 +9,6 @@
         public bool Lack { get; set; }
         public string Year { get; set; } = string.Empty;
         public bool Emigration { get; set; }
+        public bool Archive { get; set; }
     }
 }

@@ -10,5 +10,6 @@
         public int Amount { get; set; }
 
         public IEnumerable<VaccinationInfo> VaccinationInfo { get; set; } = null!;
+        public IEnumerable<OtherVaccination> OtherVaccination { get; set; } = null!;
     }
 }
