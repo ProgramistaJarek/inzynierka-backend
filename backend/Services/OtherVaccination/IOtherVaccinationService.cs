@@ -5,9 +5,9 @@ namespace backend.Services.OtherVaccinationService
 {
     public interface IOtherVaccinationService
     {
-        Task<ActionResult<IEnumerable<OtherVaccinationDetailsDTO>>> GetOtherVaccinationsByCardId(int cardId);
-        Task<ActionResult<OtherVaccinationDetailsDTO>> CreateOtherVaccinvationToCard(int cardId, OtherVaccinationDTO OtherVaccinationDTO);
-        Task<ActionResult<OtherVaccinationDetailsDTO>> UpdateOtherVaccinvationToCard(int id, OtherVaccinationDTO UpdateOtherVaccinationDTO);
+        Task<ActionResult<IEnumerable<OtherVaccinationDTO>>> GetOtherVaccinationsByCardId(int cardId);
+        Task<ActionResult<OtherVaccinationDTO>> CreateOtherVaccinvationToCard(int cardId, OtherVaccinationCreateDTO OtherVaccinationDTO);
+        Task<ActionResult<OtherVaccinationDTO>> UpdateOtherVaccinvationToCard(int id, OtherVaccinationCreateDTO UpdateOtherVaccinationDTO);
         Task<ActionResult<OtherVaccinationDTO>> DeleteOtherVaccinvationToCard(int id);
     }
 }

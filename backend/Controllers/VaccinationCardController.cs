@@ -39,17 +39,17 @@ namespace backend.Controllers
         /// <summary>
         /// Add new vaccination information to vaccination card
         /// </summary>
-        [HttpPost("addVaccinationInfoToCard", Name = "addVaccinationInfoToCard")]
+        /*[HttpPost("addVaccinationInfoToCard", Name = "addVaccinationInfoToCard")]
         public async Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard([Required] int id, [FromBody] VaccinationInfoCreateDTO vaccinationInfoDTO)
         {
             return await _vaccinationCardService.AddVaccinationToCard(id, vaccinationInfoDTO);
-        }
+        }*/
 
         /// <summary>
         /// Update existing vaccinvation card
         /// </summary>
         [HttpPut("update", Name = "updateVaccinationCard")]
-        public async Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard([Required] int id, [FromBody] VaccinationCardDTO vaccinationCardDTO)
+        public async Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard([Required] int id, [FromBody] VaccinationCardCreateDTO vaccinationCardDTO)
         {
             return await _vaccinationCardService.UpdateVaccinationCard(id, vaccinationCardDTO);
         }

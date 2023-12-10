@@ -28,8 +28,8 @@ namespace backend
             CreateMap<AddPatientDTO, Patient>();
             CreateMap<AddPatientDTO, AddPatientWithBabysitterDTO>();
             CreateMap<AddPatientWithBabysitterDTO, AddPatientDTO>();
-            CreateMap<Patient, UpdatePatientDTO>();
-            CreateMap<UpdatePatientDTO, Patient>();
+            CreateMap<Patient, PatientUpdateDTO>();
+            CreateMap<PatientUpdateDTO, Patient>();
             CreateMap<VaccinationCard, VaccinationCardDTO>();
             CreateMap<VaccinationCardDTO, VaccinationCard>();
             // CreateMap<VaccinationInfo, VaccinationInfoDTO>();
@@ -45,19 +45,20 @@ namespace backend
             CreateMap<OtherVaccinationDTO, OtherVaccination>();
             CreateMap<OtherVaccination, OtherVaccinationDTO>();
 
-            CreateMap<VaccinationInfo, VaccinationInfoDTO>()
-                .ForMember(dest => dest.TypeVaccinationName, opt => opt.MapFrom(src => src.TypeVaccinations.Name))
-                .ForMember(dest => dest.AgeGroup, opt => opt.MapFrom(src => src.AgeGroups.Name))
-                .ForMember(dest => dest.VaccinationName, opt => opt.MapFrom(src => src.Vaccinations.Name))
-                .ForMember(dest => dest.VaccinationSeries, opt => opt.MapFrom(src => src.Vaccinations.Series));
-
             CreateMap<VaccinationCard, VaccinationCardDTO>()
                 .ForMember(dest => dest.PatientId, opt => opt.MapFrom(src => src.Patient.Id));
 
-            CreateMap<OtherVaccination, OtherVaccinationDetailsDTO>()
+            CreateMap<OtherVaccination, OtherVaccinationDTO>()
                 .ForMember(dest => dest.VaccinationName, opt => opt.MapFrom(src => src.Vaccinations.Name))
                 .ForMember(dest => dest.VaccinationSeries, opt => opt.MapFrom(src => src.Vaccinations.Series))
                 .ForMember(dest => dest.VaccinationCardId, opt => opt.MapFrom(src => src.VaccinationCard.Id));
+
+            CreateMap<VaccinationInfo, VaccinationInfoDTO>()
+                .ForMember(dest => dest.VaccinationName, opt => opt.MapFrom(src => src.Vaccinations.Name))
+                .ForMember(dest => dest.VaccinationSeries, opt => opt.MapFrom(src => src.Vaccinations.Series))
+                .ForMember(dest => dest.VaccinationCardId, opt => opt.MapFrom(src => src.VaccinationCard.Id))
+                .ForMember(dest => dest.AgeGroup, opt => opt.MapFrom(src => src.AgeGroups.Name))
+                .ForMember(dest => dest.TypeVaccinationName, opt => opt.MapFrom(src => src.TypeVaccinations.Name));
         }
 
     }

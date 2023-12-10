@@ -52,7 +52,7 @@ namespace backend.Controllers
         /// Create new patient
         /// </summary>
         [HttpPost("createPatient", Name = "createPatient")]
-        public async Task<ActionResult<string>> PostPatient([FromBody] AddPatientDTO addPatientDTO)
+        public async Task<ActionResult<PatientInfoDTO>> PostPatient([FromBody] AddPatientDTO addPatientDTO)
         {
             return await _patientService.AddPatient(addPatientDTO);
         }
@@ -70,7 +70,7 @@ namespace backend.Controllers
         /// Update patient
         /// </summary>
         [HttpPut(Name = "updatePatient")]
-        public async Task<IActionResult> PutPatient([FromBody] UpdatePatientDTO patientDTO)
+        public async Task<ActionResult<PatientInfoDTO>> PutPatient([FromBody] PatientUpdateDTO patientDTO)
         {
             return await _patientService.UpdatePatient(patientDTO);
         }

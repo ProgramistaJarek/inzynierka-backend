@@ -10,5 +10,6 @@
         public int VaccinationId { get; set; }
         public int AgeGroupId { get; set; }
         public int TypeVaccinationId { get; set; }
+        public int VaccinationCardId { get; set; }
     }
 }

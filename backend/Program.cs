@@ -7,6 +7,7 @@ using backend.Services.Babysitters;
 using backend.Services.OtherVaccinationService;
 using backend.Services.Patients;
 using backend.Services.VaccinationCardService;
+using backend.Services.VaccinationInfoService;
 using backend.Services.VaccinationType;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -61,6 +62,7 @@ builder.Services.AddScoped<IBabysittersService, BabysittersService>();
 builder.Services.AddScoped<IAgeGroupService, AgeGroupService>();
 builder.Services.AddScoped<IVaccinationTypeService, VaccinationTypeService>();
 builder.Services.AddScoped<IOtherVaccinationService, OtherVaccinationService>();
+builder.Services.AddScoped<IVaccinationInfoService, VaccinationInfoService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

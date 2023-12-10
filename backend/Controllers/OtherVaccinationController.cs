@@ -22,7 +22,7 @@ namespace backend.Controllers
         /// Get vaccination card by card id
         /// </summary>
         [HttpGet("getAllotherVaccinvationByCardId", Name = "getOtherVaccinationsByCardId")]
-        public async Task<ActionResult<IEnumerable<OtherVaccinationDetailsDTO>>> GetOtherVaccinationsByCardId([Required] int cardId)
+        public async Task<ActionResult<IEnumerable<OtherVaccinationDTO>>> GetOtherVaccinationsByCardId([Required] int cardId)
         {
             return await _otherVaccinationService.GetOtherVaccinationsByCardId(cardId);
         }
@@ -31,7 +31,7 @@ namespace backend.Controllers
         /// Add other vaccinvation info to card
         /// </summary>
         [HttpPost("create/vaccinationCardId", Name = "createOtherVaccinvationToCard")]
-        public async Task<ActionResult<OtherVaccinationDetailsDTO>> CreateOtherVaccinvationToCard([Required] int cardI, OtherVaccinationDTO otherVaccinationDTO)
+        public async Task<ActionResult<OtherVaccinationDTO>> CreateOtherVaccinvationToCard([Required] int cardI, OtherVaccinationCreateDTO otherVaccinationDTO)
         {
             return await _otherVaccinationService.CreateOtherVaccinvationToCard(cardI, otherVaccinationDTO);
         }
@@ -40,7 +40,7 @@ namespace backend.Controllers
         /// Update other vaccinvation info to card bi vaccination id
         /// </summary>
         [HttpPut("update/otherVaccinationId", Name = "updateOtherVaccinvationToCard")]
-        public async Task<ActionResult<OtherVaccinationDetailsDTO>> UpdateOtherVaccinvationToCard([Required] int id, OtherVaccinationDTO otherVaccinationDTO)
+        public async Task<ActionResult<OtherVaccinationDTO>> UpdateOtherVaccinvationToCard([Required] int id, OtherVaccinationCreateDTO otherVaccinationDTO)
         {
             return await _otherVaccinationService.UpdateOtherVaccinvationToCard(id, otherVaccinationDTO);
         }

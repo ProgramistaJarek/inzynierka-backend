@@ -16,7 +16,7 @@ namespace backend.Repositories
 
         public async Task<IEnumerable<VaccinationInfo>> GetVaccinationInfoByCardId(int id)
         {
-            return await _context.Set<VaccinationInfo>().Where(x => x.VaccinationCardId == id).ToListAsync();
+            return await _context.Set<VaccinationInfo>().Include(e => e.TypeVaccinations).Include(e => e.AgeGroups).Include(e => e.Vaccinations).Where(x => x.VaccinationCardId == id).ToListAsync();
         }
     }
 }

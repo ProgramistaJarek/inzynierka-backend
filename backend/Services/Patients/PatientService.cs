@@ -183,7 +183,7 @@ namespace backend.Services.Patients
         /// </summary>
         /// <param name="patientDTO"></param>
         /// <returns></returns>
-        public async Task<ActionResult> UpdatePatient(UpdatePatientDTO patientDTO)
+        public async Task<ActionResult<PatientInfoDTO>> UpdatePatient(PatientUpdateDTO patientDTO)
         {
             var patinet = await _repository.GetById(patientDTO.Id);
 
@@ -195,9 +195,11 @@ namespace backend.Services.Patients
             /*if (patientDTO.BabysitterId <= 0) patientDTO.BabysitterId = (int)patinet.BabysitterId;*/
 
             var patientMap = _mapper.Map<Patient>(patientDTO);
-            await _repository.Update(patientMap);
+            var result = await _repository.Update(patientMap);
 
-            return new OkResult();
+            var resultDTO = _mapper.Map<PatientInfoDTO>(result);
+
+            return new OkObjectResult(resultDTO);
         }
 
         /// <summary>
@@ -240,7 +242,7 @@ namespace backend.Services.Patients
         /// </summary>
         /// <param name="addPatientDTO"></param>
         /// <returns></returns>
-        public async Task<ActionResult<string>> AddPatient(AddPatientDTO addPatientDTO)
+        public async Task<ActionResult<PatientInfoDTO>> AddPatient(AddPatientDTO addPatientDTO)
         {
             var patientExistByPesel = await _repository.CheckIfPatientExistByPesel(addPatientDTO.PESEL);
 
@@ -257,7 +259,9 @@ namespace backend.Services.Patients
                 return new BadRequestObjectResult("Patient do not added");
             }
 
-            return new OkResult();
+            var result = _mapper.Map<PatientInfoDTO>(patient);
+
+            return new OkObjectResult(result);
         }
 
         // For now it is not neccessery to use
@@ -268,7 +272,7 @@ namespace backend.Services.Patients
             var vaccinationCardDTO = _mapper.Map<VaccinationCardDTO>(vaccinationCard);
 
             var infos = await _vaccinationInfoRepository.GetVaccinationInfoByCardId(vaccinationCardDTO.Id);
-            vaccinationCardDTO.VaccinationInfo = _mapper.Map<IEnumerable<VaccinationInfoDTO>>(infos);
+            // vaccinationCardDTO.VaccinationInfo = _mapper.Map<IEnumerable<VaccinationInfoDTO>>(infos);
 
             return vaccinationCardDTO;
         }
