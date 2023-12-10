@@ -8,6 +8,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Consumes("application/json")]
     [Produces("application/json")]
     public class AuthorizationController : ControllerBase
     {
@@ -58,7 +59,7 @@ namespace backend.Controllers
         /// Signup user
         /// </summary>
         [HttpPost("signup", Name = "signup")]
-        public async Task<ActionResult<string>> PostRegisterUser(SignupDTO signupDTO)
+        public async Task<ActionResult<string>> PostRegisterUser([FromBody] SignupDTO signupDTO)
         {
             return await _authorizationService.SignupUser(signupDTO);
         }

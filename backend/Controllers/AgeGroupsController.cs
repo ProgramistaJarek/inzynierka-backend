@@ -7,6 +7,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Consumes("application/json")]
     [Produces("application/json")]
     public class AgeGroupsController : ControllerBase
     {

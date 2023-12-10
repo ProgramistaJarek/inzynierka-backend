@@ -1,13 +1,13 @@
 ﻿using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using backend.Services.Patients;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Consumes("application/json")]
     [Produces("application/json")]
     public class PatientController : ControllerBase
     {

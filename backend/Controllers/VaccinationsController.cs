@@ -8,6 +8,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Consumes("application/json")]
     [Produces("application/json")]
     public class VaccinationsController : ControllerBase
     {
@@ -57,7 +58,7 @@ namespace backend.Controllers
         /// Add vaccination
         /// </summary>
         [HttpPost(Name = "createVaccination")]
-        public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> PostVaccination(VaccinationsDTO vaccinationsDTO)
+        public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> PostVaccination([FromBody] VaccinationsDTO vaccinationsDTO)
         {
             var vaccination = _mapper.Map<Vaccinations>(vaccinationsDTO);
 
@@ -70,7 +71,7 @@ namespace backend.Controllers
         /// Update vaccination
         /// </summary>
         [HttpPut(Name = "updateVaccination")]
-        public async Task<IActionResult> PutVaccination(VaccinationsDTO vaccinationsDTO)
+        public async Task<IActionResult> PutVaccination([FromBody] VaccinationsDTO vaccinationsDTO)
         {
             var vaccination = _mapper.Map<Vaccinations>(vaccinationsDTO);
 

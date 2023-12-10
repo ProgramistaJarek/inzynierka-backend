@@ -6,6 +6,7 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Consumes("application/json")]
     [Produces("application/json")]
     public class VaccinationCardController : ControllerBase
     {
@@ -38,7 +39,7 @@ namespace backend.Controllers
         /// Add new vaccination information to vaccination card
         /// </summary>
         [HttpPost("{id}", Name = "addVaccinationInfoToCard")]
-        public async Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard(int id, VaccinationInfoCreateDTO vaccinationInfoDTO)
+        public async Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard(int id, [FromBody] VaccinationInfoCreateDTO vaccinationInfoDTO)
         {
             return await _vaccinationCardService.AddVaccinationToCard(id, vaccinationInfoDTO);
         }
@@ -47,7 +48,7 @@ namespace backend.Controllers
         /// Update existing vaccinvation card
         /// </summary>
         [HttpPut("{id}", Name = "updateVaccinationCard")]
-        public async Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard(int id, VaccinationCardDTO vaccinationCardDTO)
+        public async Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard(int id, [FromBody] VaccinationCardDTO vaccinationCardDTO)
         {
             return await _vaccinationCardService.UpdateVaccinationCard(id, vaccinationCardDTO);
         }
