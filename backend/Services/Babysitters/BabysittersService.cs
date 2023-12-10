@@ -3,8 +3,6 @@ using backend.Entities;
 using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging;
 
 namespace backend.Services.Babysitters
 {
@@ -113,7 +111,7 @@ namespace backend.Services.Babysitters
 
             try
             {
-                babysitter= _mapper.Map<Babysitter>(babysitterDTO);
+                babysitter = _mapper.Map<Babysitter>(babysitterDTO);
                 var updatedBabysitter = await _babysitterRepository.Update(babysitter);
                 babysitterDTO = _mapper.Map<BabysitterDTO>(updatedBabysitter);
                 return new OkObjectResult(babysitterDTO);
@@ -123,7 +121,7 @@ namespace backend.Services.Babysitters
                 return new BadRequestObjectResult("Babysitter cannot be updated");
             }
         }
-        
+
         /// <summary>
         /// Remove babysitter from many-to-many and delete from table babysitter
         /// </summary>

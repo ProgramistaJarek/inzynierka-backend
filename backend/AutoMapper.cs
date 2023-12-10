@@ -42,6 +42,8 @@ namespace backend
             CreateMap<AgeGroupsDTO, AgeGroups>();
             CreateMap<VaccinationType, VaccinationTypeDTO>();
             CreateMap<VaccinationTypeDTO, VaccinationType>();
+            CreateMap<OtherVaccinationDTO, OtherVaccination>();
+            CreateMap<OtherVaccination, OtherVaccinationDTO>();
 
             CreateMap<VaccinationInfo, VaccinationInfoDTO>()
                 .ForMember(dest => dest.TypeVaccinationName, opt => opt.MapFrom(src => src.TypeVaccinations.Name))
@@ -51,6 +53,11 @@ namespace backend
 
             CreateMap<VaccinationCard, VaccinationCardDTO>()
                 .ForMember(dest => dest.PatientId, opt => opt.MapFrom(src => src.Patient.Id));
+
+            CreateMap<OtherVaccination, OtherVaccinationDetailsDTO>()
+                .ForMember(dest => dest.VaccinationName, opt => opt.MapFrom(src => src.Vaccinations.Name))
+                .ForMember(dest => dest.VaccinationSeries, opt => opt.MapFrom(src => src.Vaccinations.Series))
+                .ForMember(dest => dest.VaccinationCardId, opt => opt.MapFrom(src => src.VaccinationCard.Id));
         }
 
     }
