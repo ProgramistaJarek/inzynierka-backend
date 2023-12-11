@@ -36,7 +36,7 @@ namespace backend.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PESEL = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Kinship = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Comments = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -54,7 +54,7 @@ namespace backend.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PESEL = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BirthDay = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateOfDeclaration = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -177,6 +177,7 @@ namespace backend.Migrations
                     Lack = table.Column<bool>(type: "bit", nullable: false),
                     Year = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Emigration = table.Column<bool>(type: "bit", nullable: false),
+                    Archive = table.Column<bool>(type: "bit", nullable: false),
                     PatientId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -200,6 +201,7 @@ namespace backend.Migrations
                     PostVaccinationReaction = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TypeVaccination = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Appointment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     VaccinationCardId = table.Column<int>(type: "int", nullable: false),
                     VaccinationId = table.Column<int>(type: "int", nullable: false)
@@ -232,6 +234,7 @@ namespace backend.Migrations
                     Appointment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ScheduledVaccination = table.Column<DateTime>(type: "datetime2", nullable: false),
                     VaccinationCardId = table.Column<int>(type: "int", nullable: false),
                     VaccinationId = table.Column<int>(type: "int", nullable: false),
                     AgeGroupId = table.Column<int>(type: "int", nullable: false),

@@ -39,6 +39,22 @@ namespace backend.Controllers
         }
 
         /// <summary>
+        /// Get vaccination before expiration date
+        /// </summary>
+        [HttpGet("vaccinationBeforeExirationDate", Name = "returnVaccinationBeforeExirationDate")]
+        public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> ReturnVaccinationBeforeExirationDate()
+        {
+            var vaccination = await _vaccinationsRepository.ReturnVaccinationBeforeExirationDate();
+            if (vaccination == null)
+            {
+                return NotFound();
+            }
+
+            var result = _mapper.Map<IEnumerable<VaccinationsDTO>>(vaccination);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Get vaccination by id
         /// </summary>
         [HttpGet("vaccinationById", Name = "getVaccination")]

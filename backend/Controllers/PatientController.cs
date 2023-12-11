@@ -40,6 +40,15 @@ namespace backend.Controllers
         }
 
         /// <summary>
+        /// Get all patients
+        /// </summary>
+        [HttpGet("latestScheduledVaccination", Name = "GetLatestVaccinationScheduled")]
+        public async Task<ActionResult<IEnumerable<LatestVaccinationInfoDTO>>> GetLatestVaccinationScheduled([Required] int count, [Required] DateTime date)
+        {
+            return await _patientService.GetLatestScheduledVaccination(count, date);
+        }
+
+        /// <summary>
         /// Create new patient with babysitter
         /// </summary>
         /*[HttpPost("createPatientWithBabysitter", Name = "createPatientWithBabysitter")]
@@ -52,7 +61,7 @@ namespace backend.Controllers
         /// Create new patient
         /// </summary>
         [HttpPost("createPatient", Name = "createPatient")]
-        public async Task<ActionResult<string>> PostPatient([FromBody] AddPatientDTO addPatientDTO)
+        public async Task<ActionResult<PatientInfoDTO>> PostPatient([FromBody] AddPatientDTO addPatientDTO)
         {
             return await _patientService.AddPatient(addPatientDTO);
         }
@@ -70,7 +79,7 @@ namespace backend.Controllers
         /// Update patient
         /// </summary>
         [HttpPut(Name = "updatePatient")]
-        public async Task<IActionResult> PutPatient([FromBody] UpdatePatientDTO patientDTO)
+        public async Task<ActionResult<PatientInfoDTO>> PutPatient([FromBody] PatientUpdateDTO patientDTO)
         {
             return await _patientService.UpdatePatient(patientDTO);
         }

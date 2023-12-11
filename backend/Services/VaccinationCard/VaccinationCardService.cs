@@ -34,7 +34,7 @@ namespace backend.Services.VaccinationCardService
                 return new NotFoundObjectResult("Vaccination card with this ID do not exist");
             }
 
-            var vaccinvationInfo = _mapper.Map<VaccinationInfo>(vaccinationInfoDTO);
+            var vaccinvationInfo = _mapper.Map<Entities.VaccinationInfo>(vaccinationInfoDTO);
             vaccinvationInfo.VaccinationCardId = vaccinationCardId;
             var info = await _infoRepository.Create(vaccinvationInfo);
 
@@ -44,7 +44,6 @@ namespace backend.Services.VaccinationCardService
             }
 
             var card = _mapper.Map<VaccinationCardDTO>(vaccinationCard);
-            card.VaccinationInfo = await GetVaccinationInfos(vaccinationCardId);
 
             return new OkObjectResult(card);
         }
@@ -91,7 +90,7 @@ namespace backend.Services.VaccinationCardService
         /// <param name="vaccinationCardId"></param>
         /// <param name="vaccinationCardDTO"></param>
         /// <returns></returns>
-        public async Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard(int vaccinationCardId, VaccinationCardDTO vaccinationCardDTO)
+        public async Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard(int vaccinationCardId, VaccinationCardCreateDTO vaccinationCardDTO)
         {
             var vaccinationCard = await _repository.GetById(vaccinationCardId);
             if (vaccinationCard == null)
@@ -100,12 +99,19 @@ namespace backend.Services.VaccinationCardService
             }
 
             var card = _mapper.Map<VaccinationCard>(vaccinationCardDTO);
+            card.Id = vaccinationCardId;
+            card.PatientId = vaccinationCard.PatientId;
 
-            var updatedCard = await _repository.Update(card);
-
-            var cardMap = _mapper.Map<VaccinationCardDTO>(updatedCard);
-
-            return new OkObjectResult(cardMap);
+            try
+            {
+                var updatedCard = await _repository.Update(card);
+                var result = _mapper.Map<VaccinationCardDTO>(updatedCard);
+                return new OkObjectResult(result);
+            }
+            catch (Exception)
+            {
+                return new NotFoundObjectResult("Vaccination card cannot be updated");
+            }
         }
 
         private async Task<IEnumerable<VaccinationInfoDTO>> GetVaccinationInfos(int cardId)

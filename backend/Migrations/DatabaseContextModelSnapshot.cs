@@ -399,6 +399,15 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime>("ScheduledVaccination")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("TypeVaccinationId")
                         .HasColumnType("int");
 

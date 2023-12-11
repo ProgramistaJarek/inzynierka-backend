@@ -7,7 +7,7 @@ namespace backend.Services.VaccinationCardService
     public interface IVaccinationCardService
     {
         Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard(int vaccinationCardId, VaccinationInfoCreateDTO vaccinationInfoDTO);
-        Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard(int vaccinationCardId, VaccinationCardDTO vaccinationCardDTO);
+        Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard(int vaccinationCardId, VaccinationCardCreateDTO vaccinationCardDTO);
         Task<ActionResult<VaccinationCardDTO>> GetVaccinationCard(int vaccinationCardId);
         Task<ActionResult<VaccinationCardDTO>> GetVaccinationCardByPatientId(int patientId);
     }

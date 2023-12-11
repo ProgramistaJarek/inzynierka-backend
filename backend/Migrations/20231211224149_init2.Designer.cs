@@ -12,7 +12,7 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231210095419_init2")]
+    [Migration("20231211224149_init2")]
     partial class init2
     {
         /// <inheritdoc />
@@ -107,7 +107,7 @@ namespace backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adress")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -194,7 +194,7 @@ namespace backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adress")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -334,6 +334,9 @@ namespace backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Archive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Emigration")
                         .HasColumnType("bit");
 
@@ -398,6 +401,15 @@ namespace backend.Migrations
                     b.Property<string>("PostponementOfVaccination")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime>("ScheduledVaccination")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("TypeVaccinationId")
                         .HasColumnType("int");

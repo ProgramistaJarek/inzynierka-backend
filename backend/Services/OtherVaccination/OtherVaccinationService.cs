@@ -19,7 +19,7 @@ namespace backend.Services.OtherVaccinationService
             _vaccinationCardRepository = vaccinationCardRepository;
         }
 
-        public async Task<ActionResult<OtherVaccinationDetailsDTO>> CreateOtherVaccinvationToCard(int cardId, OtherVaccinationDTO OtherVaccinationDTO)
+        public async Task<ActionResult<OtherVaccinationDTO>> CreateOtherVaccinvationToCard(int cardId, OtherVaccinationCreateDTO OtherVaccinationDTO)
         {
             var vaccinationCard = await _vaccinationCardRepository.GetById(cardId);
             if (vaccinationCard == null)
@@ -33,7 +33,7 @@ namespace backend.Services.OtherVaccinationService
             try
             {
                 var result = await _otherVaccinationRepository.Create(otherVaccination);
-                var resultDTO = _mapper.Map<OtherVaccinationDetailsDTO>(result);
+                var resultDTO = _mapper.Map<OtherVaccinationDTO>(result);
                 return new OkObjectResult(resultDTO);
             }
             catch (Exception)
@@ -42,7 +42,7 @@ namespace backend.Services.OtherVaccinationService
             }
         }
 
-        public async Task<ActionResult<IEnumerable<OtherVaccinationDetailsDTO>>> GetOtherVaccinationsByCardId(int cardId)
+        public async Task<ActionResult<IEnumerable<OtherVaccinationDTO>>> GetOtherVaccinationsByCardId(int cardId)
         {
             var vaccinationCard = await _vaccinationCardRepository.GetById(cardId);
             if (vaccinationCard == null)
@@ -53,15 +53,15 @@ namespace backend.Services.OtherVaccinationService
             var otherVaccination = await _otherVaccinationRepository.GetOtherVaccinvationByCardId(cardId);
             if (otherVaccination == null)
             {
-                return new NotFoundObjectResult("Not found other caccination belongs to card");
+                return new NotFoundObjectResult("Not found other vaccination belongs to card");
             }
 
-            var result = _mapper.Map<IEnumerable<OtherVaccinationDetailsDTO>>(otherVaccination);
+            var result = _mapper.Map<IEnumerable<OtherVaccinationDTO>>(otherVaccination);
 
             return new OkObjectResult(result);
         }
 
-        public async Task<ActionResult<OtherVaccinationDetailsDTO>> UpdateOtherVaccinvationToCard(int id, OtherVaccinationDTO UpdateOtherVaccinationDTO)
+        public async Task<ActionResult<OtherVaccinationDTO>> UpdateOtherVaccinvationToCard(int id, OtherVaccinationCreateDTO UpdateOtherVaccinationDTO)
         {
             var vaccination = await _otherVaccinationRepository.GetById(id);
             if (vaccination == null)
@@ -80,7 +80,7 @@ namespace backend.Services.OtherVaccinationService
             try
             {
                 var result = await _otherVaccinationRepository.Update(updateOtherVaccination);
-                var resultDTO = _mapper.Map<OtherVaccinationDetailsDTO>(result);
+                var resultDTO = _mapper.Map<OtherVaccinationDTO>(result);
                 return new OkObjectResult(resultDTO);
             }
             catch (Exception)
