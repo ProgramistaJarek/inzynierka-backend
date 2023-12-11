@@ -1,5 +1,4 @@
-﻿using backend.Entities;
-using backend.ModelsDTO;
+﻿using backend.ModelsDTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Services.VaccinationInfoService

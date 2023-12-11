@@ -1,10 +1,4 @@
-﻿using AutoMapper;
-using backend.Entities;
-using backend.ModelsDTO;
-using backend.Repositories.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-
-namespace backend.Services.VaccinationInfoService
+﻿namespace backend.Services.VaccinationInfoService
 {
     public class VaccinationInfoService : IVaccinationInfoService
     {
@@ -27,7 +21,7 @@ namespace backend.Services.VaccinationInfoService
                 return new NotFoundObjectResult("Vaccination card with this ID do not exist");
             }
 
-            var vaccinationInfo = _mapper.Map<Entities.VaccinationInfo>(vaccinationInfoCreateDTO);
+            var vaccinationInfo = _mapper.Map<VaccinationInfo>(vaccinationInfoCreateDTO);
             vaccinationInfo.VaccinationCardId = cardId;
 
             try
