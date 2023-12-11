@@ -28,8 +28,8 @@ namespace backend
             CreateMap<AddPatientDTO, Patient>();
             CreateMap<AddPatientDTO, AddPatientWithBabysitterDTO>();
             CreateMap<AddPatientWithBabysitterDTO, AddPatientDTO>();
-            CreateMap<Patient, UpdatePatientDTO>();
-            CreateMap<UpdatePatientDTO, Patient>();
+            CreateMap<Patient, PatientUpdateDTO>();
+            CreateMap<PatientUpdateDTO, Patient>();
             CreateMap<VaccinationCard, VaccinationCardDTO>();
             CreateMap<VaccinationCardDTO, VaccinationCard>();
             // CreateMap<VaccinationInfo, VaccinationInfoDTO>();

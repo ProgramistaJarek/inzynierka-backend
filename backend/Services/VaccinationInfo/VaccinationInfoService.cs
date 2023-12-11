@@ -1,4 +1,10 @@
-﻿namespace backend.Services.VaccinationInfoService
+﻿using AutoMapper;
+using backend.Entities;
+using backend.ModelsDTO;
+using backend.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
+namespace backend.Services.VaccinationInfoService
 {
     public class VaccinationInfoService : IVaccinationInfoService
     {
