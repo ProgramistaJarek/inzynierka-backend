@@ -10,13 +10,15 @@ namespace backend.Services.VaccinationInfoService
     {
         private readonly IVaccinationInfoRepository _vaccinationInfoRepository;
         private readonly IVaccinationCardRepository _vaccinationCardRepository;
+        private readonly IVaccinationsRepository _vaccinationsRepository;
         private readonly IMapper _mapper;
 
-        public VaccinationInfoService(IVaccinationInfoRepository vaccinationInfoRepository, IMapper mapper, IVaccinationCardRepository vaccinationCardRepository)
+        public VaccinationInfoService(IVaccinationInfoRepository vaccinationInfoRepository, IMapper mapper, IVaccinationCardRepository vaccinationCardRepository, IVaccinationsRepository vaccinationsRepository)
         {
             _vaccinationInfoRepository = vaccinationInfoRepository;
             _mapper = mapper;
             _vaccinationCardRepository = vaccinationCardRepository;
+            _vaccinationsRepository = vaccinationsRepository;
         }
 
         public async Task<ActionResult<VaccinationInfoDTO>> CreateVaccinationInfoToCard(int cardId, VaccinationInfoCreateDTO vaccinationInfoCreateDTO)
@@ -29,6 +31,23 @@ namespace backend.Services.VaccinationInfoService
 
             var vaccinationInfo = _mapper.Map<VaccinationInfo>(vaccinationInfoCreateDTO);
             vaccinationInfo.VaccinationCardId = cardId;
+
+            TimeZoneInfo targetTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            if (vaccinationInfoCreateDTO.Date != null)
+            {
+                vaccinationInfo.Date = TimeZoneInfo.ConvertTimeFromUtc(vaccinationInfo.Date, targetTimeZone);
+            }
+            if (vaccinationInfoCreateDTO.ScheduledVaccination != null)
+            {
+                vaccinationInfo.ScheduledVaccination = TimeZoneInfo.ConvertTimeFromUtc(vaccinationInfo.ScheduledVaccination, targetTimeZone);
+            }
+
+            var reductionResult = await _vaccinationsRepository.ReduceVaccinationLeft(vaccinationInfo.VaccinationId, 1);
+
+            if (!reductionResult)
+            {
+                return new BadRequestObjectResult("No available vaccinations left");
+            }
 
             try
             {

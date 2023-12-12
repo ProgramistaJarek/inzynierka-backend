@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Database;
 
@@ -11,9 +12,11 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20231212191243_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,9 +155,6 @@ namespace backend.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Dose")
-                        .HasColumnType("int");
-
                     b.Property<string>("Place")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -166,9 +166,6 @@ namespace backend.Migrations
                     b.Property<string>("PostponementOfVaccination")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ScheduledVaccination")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("TypeVaccination")
                         .IsRequired()
@@ -392,9 +389,6 @@ namespace backend.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("Dose")
-                        .HasColumnType("int");
 
                     b.Property<string>("Place")
                         .IsRequired()

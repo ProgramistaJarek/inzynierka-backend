@@ -55,6 +55,22 @@ namespace backend.Controllers
         }
 
         /// <summary>
+        /// Get vaccination expiring within days
+        /// </summary>
+        [HttpGet("vaccinationExpiringWithinDays", Name = "getVaccinationExpiringWithinDays")]
+        public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> GetVaccinationExpiringWithinDays([Required] int days)
+        {
+            var vaccination = await _vaccinationsRepository.GetVaccinationExpiringWithinDays(days);
+            if (vaccination == null)
+            {
+                return NotFound();
+            }
+
+            var result = _mapper.Map<IEnumerable<VaccinationsDTO>>(vaccination);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Get vaccination by id
         /// </summary>
         [HttpGet("vaccinationById", Name = "getVaccination")]
@@ -75,20 +91,23 @@ namespace backend.Controllers
         /// Add vaccination
         /// </summary>
         [HttpPost(Name = "createVaccination")]
-        public async Task<ActionResult<IEnumerable<VaccinationsDTO>>> PostVaccination([FromBody] VaccinationsDTO vaccinationsDTO)
+        public async Task<ActionResult<VaccinationsDTO>> PostVaccination([FromBody] VaccinationsDTO vaccinationsDTO)
         {
             var vaccination = _mapper.Map<Vaccinations>(vaccinationsDTO);
+            vaccination.Left = vaccination.Amount;
 
             var newVaccination = await _vaccinationsRepository.Create(vaccination);
 
-            return CreatedAtAction("GetVaccinationById", new { id = newVaccination.Id }, newVaccination);
+            var result = _mapper.Map<VaccinationsDTO>(newVaccination);
+
+            return CreatedAtAction("GetVaccinationById", new { id = newVaccination.Id }, result);
         }
 
         /// <summary>
         /// Update vaccination
         /// </summary>
         [HttpPut(Name = "updateVaccination")]
-        public async Task<IActionResult> PutVaccination([FromBody] VaccinationsDTO vaccinationsDTO)
+        public async Task<ActionResult<VaccinationsDTO>> PutVaccination([FromBody] VaccinationsDTO vaccinationsDTO)
         {
             var vaccination = _mapper.Map<Vaccinations>(vaccinationsDTO);
 
@@ -99,9 +118,11 @@ namespace backend.Controllers
                 return NotFound();
             }
 
-            await _vaccinationsRepository.Update(vaccination);
+            var updateVaccination = await _vaccinationsRepository.Update(vaccination);
 
-            return NoContent();
+            var result = _mapper.Map<VaccinationsDTO>(updateVaccination);
+
+            return Ok(result);
         }
 
         /// <summary>

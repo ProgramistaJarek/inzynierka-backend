@@ -111,7 +111,8 @@ namespace backend.Migrations
                     Series = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfProduction = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false)
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    Left = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -238,7 +239,8 @@ namespace backend.Migrations
                     VaccinationCardId = table.Column<int>(type: "int", nullable: false),
                     VaccinationId = table.Column<int>(type: "int", nullable: false),
                     AgeGroupId = table.Column<int>(type: "int", nullable: false),
-                    TypeVaccinationId = table.Column<int>(type: "int", nullable: false)
+                    TypeVaccinationId = table.Column<int>(type: "int", nullable: false),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {

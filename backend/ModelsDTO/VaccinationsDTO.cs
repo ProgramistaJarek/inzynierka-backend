@@ -8,5 +8,6 @@
         public DateTime DateOfProduction { get; set; }
         public DateTime ExpirationDate { get; set; }
         public int Amount { get; set; }
+        public int Left { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231211224149_init2")]
+    [Migration("20231212192849_init2")]
     partial class init2
     {
         /// <inheritdoc />
@@ -155,6 +155,9 @@ namespace backend.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Dose")
+                        .HasColumnType("int");
+
                     b.Property<string>("Place")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -166,6 +169,9 @@ namespace backend.Migrations
                     b.Property<string>("PostponementOfVaccination")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ScheduledVaccination")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("TypeVaccination")
                         .IsRequired()
@@ -390,6 +396,9 @@ namespace backend.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Dose")
+                        .HasColumnType("int");
+
                     b.Property<string>("Place")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -513,6 +522,9 @@ namespace backend.Migrations
 
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Left")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()

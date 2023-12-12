@@ -1,7 +1,4 @@
-﻿using backend.Utilities;
-using System.Text.Json.Serialization;
-
-namespace backend.ModelsDTO
+﻿namespace backend.ModelsDTO
 {
     public class VaccinationInfoCreateDTO
     {
@@ -11,6 +8,7 @@ namespace backend.ModelsDTO
         public string Place { get; set; } = string.Empty;
         public DateTime? Date { get; set; }
         public DateTime? ScheduledVaccination { get; set; }
+        public int Dose { get; set; }
         public int VaccinationId { get; set; }
         public int AgeGroupId { get; set; }
         public int TypeVaccinationId { get; set; }

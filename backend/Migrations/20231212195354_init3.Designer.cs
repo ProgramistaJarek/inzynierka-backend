@@ -12,8 +12,8 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231211190015_init")]
-    partial class init
+    [Migration("20231212195354_init3")]
+    partial class init3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -155,6 +155,9 @@ namespace backend.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Dose")
+                        .HasColumnType("int");
+
                     b.Property<string>("Place")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -166,6 +169,9 @@ namespace backend.Migrations
                     b.Property<string>("PostponementOfVaccination")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ScheduledVaccination")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("TypeVaccination")
                         .IsRequired()
@@ -390,6 +396,9 @@ namespace backend.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Dose")
+                        .HasColumnType("int");
+
                     b.Property<string>("Place")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -401,6 +410,12 @@ namespace backend.Migrations
                     b.Property<string>("PostponementOfVaccination")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<DateTime>("ScheduledVaccination")
                         .HasColumnType("datetime2");
@@ -507,6 +522,9 @@ namespace backend.Migrations
 
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Left")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
