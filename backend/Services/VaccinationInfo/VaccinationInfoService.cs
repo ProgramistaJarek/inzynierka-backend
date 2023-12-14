@@ -107,9 +107,22 @@ namespace backend.Services.VaccinationInfoService
             }
         }
 
-        public Task<ActionResult<OtherVaccinationDTO>> DeleteVaccinvationInfoFromCard(int id)
+        public Task<ActionResult<VaccinationInfoDTO>> DeleteVaccinvationInfoFromCard(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ActionResult<VaccinationInfoCreateDTO>> GetVaccinationInfo(int id)
+        {
+            var info = await _vaccinationInfoRepository.GetById(id);
+            if (info == null)
+            {
+                return new NotFoundObjectResult("Vaccination info do not exist");
+            }
+
+            var result = _mapper.Map<VaccinationInfoCreateDTO>(info);
+
+            return new OkObjectResult(result);
         }
     }
 }

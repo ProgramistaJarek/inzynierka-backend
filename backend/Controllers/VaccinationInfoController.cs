@@ -20,6 +20,15 @@ namespace backend.Controllers
         }
 
         /// <summary>
+        /// Get vaccination info by id
+        /// </summary>
+        [HttpGet("getVaccinationInfo", Name = "GetVaccinationInfo")]
+        public async Task<ActionResult<VaccinationInfoCreateDTO>> GetVaccinationInfo([Required] int id)
+        {
+            return await _vaccinationInfoService.GetVaccinationInfo(id);
+        }
+
+        /// <summary>
         /// Get vaccination infos card by card id
         /// </summary>
         [HttpGet("getAllVaccinvationInfosByCardId", Name = "GetVaccinationInfosByCardId")]

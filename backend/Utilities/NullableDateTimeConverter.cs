@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace backend.Utilities
@@ -8,20 +7,27 @@ namespace backend.Utilities
     {
         public override DateTime? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            Console.WriteLine("Reading");
-            Debug.Assert(typeToConvert == typeof(DateTime?));
-            return reader.GetString() == "" ? null : reader.GetDateTime();
+            string strValue = reader.GetString();
+            if (string.IsNullOrEmpty(strValue))
+            {
+                return null; // Jeśli wartość w JSON jest pusta, zwróć null dla DateTime?
+            }
+
+            if (DateTime.TryParse(strValue, out DateTime dateTimeValue))
+            {
+                return DateTime.SpecifyKind(dateTimeValue, DateTimeKind.Utc); // Ustaw wartość DateTime z odpowiednią wartością Kind
+            }
+            else
+            {
+                throw new JsonException(); // Rzuć wyjątek w przypadku problemów z parsowaniem wartości do DateTime
+            }
         }
 
-        // This method will be ignored on serialization, and the default typeof(DateTime) converter is used instead.
-        // This is a bug: https://github.com/dotnet/corefx/issues/41070#issuecomment-560949493
         public override void Write(Utf8JsonWriter writer, DateTime? value, JsonSerializerOptions options)
         {
-            Console.WriteLine("Here - writing");
-
-            if (!value.HasValue)
+            if (value == null || value == DateTime.MinValue)
             {
-                writer.WriteStringValue("");
+                writer.WriteNullValue();
             }
             else
             {
@@ -29,5 +35,4 @@ namespace backend.Utilities
             }
         }
     }
-
 }
