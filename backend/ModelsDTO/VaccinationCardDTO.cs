@@ -12,6 +12,7 @@
         public bool Emigration { get; set; }
         public bool Archive { get; set; }
         public int PatientId { get; set; }
+        public string BirthType { get; set; } = string.Empty;
         // public IEnumerable<VaccinationInfoDTO> VaccinationInfo { get; set; } = null!;
     }
 }

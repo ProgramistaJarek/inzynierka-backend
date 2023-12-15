@@ -179,6 +179,7 @@ namespace backend.Migrations
                     Year = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Emigration = table.Column<bool>(type: "bit", nullable: false),
                     Archive = table.Column<bool>(type: "bit", nullable: false),
+                    BirthType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PatientId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -204,6 +205,8 @@ namespace backend.Migrations
                     Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Appointment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ScheduledVaccination = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Dose = table.Column<int>(type: "int", nullable: false),
                     VaccinationCardId = table.Column<int>(type: "int", nullable: false),
                     VaccinationId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -236,6 +239,7 @@ namespace backend.Migrations
                     Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ScheduledVaccination = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Dose = table.Column<int>(type: "int", nullable: false),
                     VaccinationCardId = table.Column<int>(type: "int", nullable: false),
                     VaccinationId = table.Column<int>(type: "int", nullable: false),
                     AgeGroupId = table.Column<int>(type: "int", nullable: false),

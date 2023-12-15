@@ -12,8 +12,8 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231212192849_init2")]
-    partial class init2
+    [Migration("20231214232945_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -342,6 +342,10 @@ namespace backend.Migrations
 
                     b.Property<bool>("Archive")
                         .HasColumnType("bit");
+
+                    b.Property<string>("BirthType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Emigration")
                         .HasColumnType("bit");

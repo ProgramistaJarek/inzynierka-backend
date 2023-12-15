@@ -340,6 +340,10 @@ namespace backend.Migrations
                     b.Property<bool>("Archive")
                         .HasColumnType("bit");
 
+                    b.Property<string>("BirthType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Emigration")
                         .HasColumnType("bit");
 

@@ -11,6 +11,7 @@
         public string Year { get; set; } = string.Empty;
         public bool Emigration { get; set; }
         public bool Archive { get; set; }
+        public string BirthType { get; set; } = string.Empty;
 
         public int PatientId { get; set; }
         public Patient Patient { get; set; } = null!;
