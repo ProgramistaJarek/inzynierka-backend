@@ -21,7 +21,8 @@ namespace backend.Entities
         public AgeGroups AgeGroups { get; set; } = null!;
         public int TypeVaccinationId { get; set; }
         public VaccinationType TypeVaccinations { get; set; } = null!;
+
         [Timestamp]
-        public byte[] RowVersion { get; set; }
+        public byte[] Version { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using backend.Entities;
 using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services.VaccinationInfoService
 {
@@ -94,6 +95,7 @@ namespace backend.Services.VaccinationInfoService
             }
 
             var vaccinationInfoUpdate = _mapper.Map<VaccinationInfo>(vaccinationInfoCreateDTO);
+            UpdateVaccinationInfoEntity(vaccinationInfoUpdate, vaccination);
 
             try
             {
@@ -103,7 +105,7 @@ namespace backend.Services.VaccinationInfoService
             }
             catch (Exception)
             {
-                return new BadRequestObjectResult("Vaccination info cannot be updated");
+                return new BadRequestObjectResult("Cannot update vaccination info");
             }
         }
 
@@ -123,6 +125,17 @@ namespace backend.Services.VaccinationInfoService
             var result = _mapper.Map<VaccinationInfoCreateDTO>(info);
 
             return new OkObjectResult(result);
+        }
+
+        private void UpdateVaccinationInfoEntity(VaccinationInfo updateEntity, VaccinationInfo existingEntity)
+        {
+            updateEntity.Id = updateEntity.Id > 0 ? updateEntity.Id : existingEntity.Id;
+            updateEntity.AgeGroupId = updateEntity.AgeGroupId > 0 ? updateEntity.AgeGroupId : existingEntity.AgeGroupId;
+            updateEntity.TypeVaccinationId = updateEntity.TypeVaccinationId > 0 ? updateEntity.TypeVaccinationId : existingEntity.TypeVaccinationId;
+            updateEntity.VaccinationId = updateEntity.VaccinationId > 0 ? updateEntity.VaccinationId : existingEntity.VaccinationId;
+            updateEntity.Version = existingEntity.Version;
+            updateEntity.PostponementOfVaccination = updateEntity.PostponementOfVaccination.Length > 0 ? updateEntity.PostponementOfVaccination : existingEntity.PostponementOfVaccination;
+            updateEntity.PostVaccinationReaction = updateEntity.PostVaccinationReaction.Length > 0 ? updateEntity.PostVaccinationReaction : existingEntity.PostVaccinationReaction;
         }
     }
 }
