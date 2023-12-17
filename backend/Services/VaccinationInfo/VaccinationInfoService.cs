@@ -3,7 +3,6 @@ using backend.Entities;
 using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services.VaccinationInfoService
 {
@@ -32,6 +31,12 @@ namespace backend.Services.VaccinationInfoService
 
             var vaccinationInfo = _mapper.Map<VaccinationInfo>(vaccinationInfoCreateDTO);
             vaccinationInfo.VaccinationCardId = cardId;
+
+            var checkIfExist = await _vaccinationInfoRepository.CheckIfVaccinationExist(vaccinationInfo);
+            if (checkIfExist)
+            {
+                return new NotFoundObjectResult("There is already the same vacinnation added");
+            }
 
             TimeZoneInfo targetTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
             if (vaccinationInfoCreateDTO.Date != null)
@@ -97,6 +102,29 @@ namespace backend.Services.VaccinationInfoService
             var vaccinationInfoUpdate = _mapper.Map<VaccinationInfo>(vaccinationInfoCreateDTO);
             UpdateVaccinationInfoEntity(vaccinationInfoUpdate, vaccination);
 
+            var checkIfExist = await _vaccinationInfoRepository.CheckIfVaccinationExistWithId(vaccinationInfoUpdate);
+            if (checkIfExist)
+            {
+                return new NotFoundObjectResult("There is already the same vacinnation added");
+            }
+
+            if (vaccination.VaccinationId != vaccinationInfoUpdate.VaccinationId)
+            {
+                var reductionResult = await _vaccinationsRepository.ReduceVaccinationLeft(vaccinationInfoUpdate.VaccinationId, 1);
+
+                if (!reductionResult)
+                {
+                    return new BadRequestObjectResult("No available vaccinations left");
+                }
+
+                var addResult = await _vaccinationsRepository.ReduceVaccinationLeft(vaccination.VaccinationId, -1);
+
+                if (!addResult)
+                {
+                    return new BadRequestObjectResult("The vaccination cannot be restored");
+                }
+            }
+
             try
             {
                 var result = await _vaccinationInfoRepository.Update(vaccinationInfoUpdate);
@@ -133,9 +161,16 @@ namespace backend.Services.VaccinationInfoService
             updateEntity.AgeGroupId = updateEntity.AgeGroupId > 0 ? updateEntity.AgeGroupId : existingEntity.AgeGroupId;
             updateEntity.TypeVaccinationId = updateEntity.TypeVaccinationId > 0 ? updateEntity.TypeVaccinationId : existingEntity.TypeVaccinationId;
             updateEntity.VaccinationId = updateEntity.VaccinationId > 0 ? updateEntity.VaccinationId : existingEntity.VaccinationId;
-            updateEntity.Version = existingEntity.Version;
-            updateEntity.PostponementOfVaccination = updateEntity.PostponementOfVaccination.Length > 0 ? updateEntity.PostponementOfVaccination : existingEntity.PostponementOfVaccination;
-            updateEntity.PostVaccinationReaction = updateEntity.PostVaccinationReaction.Length > 0 ? updateEntity.PostVaccinationReaction : existingEntity.PostVaccinationReaction;
+            updateEntity.VaccinationCardId = existingEntity.VaccinationCardId;
+            updateEntity.PostponementOfVaccination = updateEntity.PostponementOfVaccination != null ? updateEntity.PostponementOfVaccination : existingEntity.PostponementOfVaccination;
+            updateEntity.PostVaccinationReaction = updateEntity.PostVaccinationReaction != null ? updateEntity.PostVaccinationReaction : existingEntity.PostVaccinationReaction;
         }
+
+        /*private bool CheckIfVaccinationExist(VaccinationInfoCreateDTO updateEntity, VaccinationInfo existingEntity)
+        {
+            if (updateEntity.AgeGroupId == existingEntity.AgeGroupId && updateEntity.TypeVaccinationId == existingEntity.TypeVaccinationId && updateEntity.Dose == existingEntity.Dose)
+                return true;
+            return false;
+        }*/
     }
 }

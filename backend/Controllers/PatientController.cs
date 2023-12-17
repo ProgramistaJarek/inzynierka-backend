@@ -24,6 +24,7 @@ namespace backend.Controllers
         /// <summary>
         /// Get all patients
         /// </summary>
+        /// <returns>List of patients</returns>
         [HttpGet(Name = "getPatients")]
         public async Task<ActionResult<IEnumerable<PatientInfoDTO>>> GetPatients()
         {
@@ -33,15 +34,20 @@ namespace backend.Controllers
         /// <summary>
         /// Get patient by id
         /// </summary>
-        [HttpGet("byId", Name = "getPatientById")]
-        public async Task<ActionResult<PatientDTO>> GetPatient([Required] int id)
+        /// <param name="patientId"></param>
+        /// <returns>Patient object</returns>
+        [HttpGet("patient", Name = "getPatientById")]
+        public async Task<ActionResult<PatientDTO>> GetPatient([Required] int patientId)
         {
-            return await _patientService.GetPatient(id);
+            return await _patientService.GetPatient(patientId);
         }
 
         /// <summary>
-        /// Get all patients
+        /// Get latest vaccination scheduled
         /// </summary>
+        /// <param name="count"></param>
+        /// <param name="date"></param>
+        /// <returns>Scheduled vaccination list</returns>
         [HttpGet("latestScheduledVaccination", Name = "GetLatestVaccinationScheduled")]
         public async Task<ActionResult<IEnumerable<LatestVaccinationInfoDTO>>> GetLatestVaccinationScheduled([Required] int count, [Required] DateTime date)
         {
@@ -49,17 +55,10 @@ namespace backend.Controllers
         }
 
         /// <summary>
-        /// Create new patient with babysitter
-        /// </summary>
-        /*[HttpPost("createPatientWithBabysitter", Name = "createPatientWithBabysitter")]
-        public async Task<ActionResult<string>> PostPatientWithBabysitter([FromBody] AddPatientWithBabysitterDTO addPatientDTO)
-        {
-            return await _patientService.AddPatientWithBabysitter(addPatientDTO);
-        }*/
-
-        /// <summary>
         /// Create new patient
         /// </summary>
+        /// <param name="addPatientDTO"></param>
+        /// <returns>Newly created patient</returns>
         [HttpPost("createPatient", Name = "createPatient")]
         public async Task<ActionResult<PatientInfoDTO>> PostPatient([FromBody] AddPatientDTO addPatientDTO)
         {
@@ -69,15 +68,20 @@ namespace backend.Controllers
         /// <summary>
         /// Add to patient vaccination card
         /// </summary>
+        /// <param name="patientId"></param>
+        /// <param name="vaccinationCardDTO"></param>
+        /// <returns>Object of the patient</returns>
         [HttpPost("vaccinvationCard", Name = "addToPatientVaccinationCard")]
-        public async Task<ActionResult<PatientDTO>> PostPatientWithVaccinationCard([Required] int id, [FromBody] VaccinationCardCreateDTO vaccinationCardDTO)
+        public async Task<ActionResult<PatientDTO>> PostPatientWithVaccinationCard([Required] int patientId, [FromBody] VaccinationCardCreateDTO vaccinationCardDTO)
         {
-            return await _patientService.AddVaccinationCardToPatient(id, vaccinationCardDTO);
+            return await _patientService.AddVaccinationCardToPatient(patientId, vaccinationCardDTO);
         }
 
         /// <summary>
         /// Update patient
         /// </summary>
+        /// <param name="patientDTO"></param>
+        /// <returns>Updated patient</returns>
         [HttpPut(Name = "updatePatient")]
         public async Task<ActionResult<PatientInfoDTO>> PutPatient([FromBody] PatientUpdateDTO patientDTO)
         {
@@ -87,16 +91,18 @@ namespace backend.Controllers
         /// <summary>
         /// Delete patient by id
         /// </summary>
+        /// <param name="patientId"></param>
+        /// <returns>Response</returns>
         [HttpDelete("remove", Name = "deletePatient")]
-        public async Task<IActionResult> DeletePatient([Required] int id)
+        public async Task<IActionResult> DeletePatient([Required] int patientId)
         {
-            var patient = await _patientRepository.GetById(id);
+            var patient = await _patientRepository.GetById(patientId);
             if (patient == null)
             {
                 return NotFound();
             }
 
-            await _patientRepository.Delete(id);
+            await _patientRepository.Delete(patientId);
 
             return NoContent();
         }

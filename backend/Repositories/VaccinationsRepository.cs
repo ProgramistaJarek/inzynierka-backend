@@ -31,6 +31,7 @@ namespace backend.Repositories
 
             var result = await _context.Set<Vaccinations>()
                         .Where(v => v.ExpirationDate >= currentDate && v.ExpirationDate <= daysLater)
+                        .OrderBy(v => v.ExpirationDate)
                         .ToListAsync();
 
             return result;
@@ -41,6 +42,16 @@ namespace backend.Repositories
             var vaccination = await _context.Vaccinations.FirstOrDefaultAsync(v => v.Id == id);
 
             if (vaccination != null && vaccination.Left > 0)
+            {
+                vaccination.Left -= count;
+
+                _context.Vaccinations.Update(vaccination);
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+
+            if (vaccination != null && vaccination.Left == 0 && count < 0)
             {
                 vaccination.Left -= count;
 

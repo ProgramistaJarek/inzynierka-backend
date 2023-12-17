@@ -1,5 +1,6 @@
 ﻿using backend.Database;
 using backend.Entities;
+using backend.ModelsDTO;
 using backend.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,7 @@ namespace backend.Repositories
                 .Where(info => info.ScheduledVaccination.Date == date.Date)
                 .OrderByDescending(info => info.ScheduledVaccination)
                 .Include(info => info.VaccinationCard)
+                .ThenInclude(card => card.Patient)
                 .Include(info => info.AgeGroups)
                 .Include(info => info.TypeVaccinations)
                 .Include(info => info.Vaccinations)
@@ -32,6 +34,28 @@ namespace backend.Repositories
                 .ToListAsync();
 
             return result;
+        }
+
+        public async Task<bool> CheckIfVaccinationExist(VaccinationInfo updateEntity)
+        {
+            var result = await _context.Set<VaccinationInfo>()
+                           .Where(info => info.AgeGroupId == updateEntity.AgeGroupId && info.TypeVaccinationId == updateEntity.TypeVaccinationId && info.VaccinationId == updateEntity.VaccinationId && info.Dose == updateEntity.Dose && info.VaccinationCardId == updateEntity.VaccinationCardId)
+                           .FirstOrDefaultAsync();
+
+            if (result != null)
+            {
+                return true;
+            }
+            else { return false; }
+        }
+
+        public async Task<bool> CheckIfVaccinationExistWithId(VaccinationInfo updateEntity)
+        {
+            var result = await _context.Set<VaccinationInfo>()
+                           .Where(info => info.AgeGroupId == updateEntity.AgeGroupId && info.TypeVaccinationId == updateEntity.TypeVaccinationId && info.VaccinationId == updateEntity.VaccinationId && info.Dose == updateEntity.Dose && info.VaccinationCardId == updateEntity.VaccinationCardId && info.Id != updateEntity.Id)
+                           .FirstOrDefaultAsync();
+
+            return result != null;
         }
     }
 }

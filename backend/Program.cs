@@ -70,6 +70,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+    options.SupportNonNullableReferenceTypes();
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
     {
         Description = "Bearer {token}",

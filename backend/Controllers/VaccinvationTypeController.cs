@@ -21,6 +21,7 @@ namespace backend.Controllers
         /// <summary>
         /// Get vaccination type list
         /// </summary>
+        /// <returns>List of the vaccination type</returns>
         [Authorize]
         [HttpGet(Name = "getVaccinationTypes")]
         public async Task<ActionResult<IEnumerable<VaccinationTypeDTO>>> GetVaccinationTypes()

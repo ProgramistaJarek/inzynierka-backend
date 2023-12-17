@@ -1,5 +1,7 @@
 ﻿using backend.Enums;
+using backend.Utilities;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace backend.ModelsDTO
 {
@@ -12,8 +14,12 @@ namespace backend.ModelsDTO
         [Required] public string Address { get; set; } = string.Empty;
         [Required] public string PhoneNumber { get; set; } = string.Empty;
         [Required] public DateTime BirthDay { get; set; }
-        public DateTime DateOfDeclaration { get; set; }
-        public DateTime DateOfAbandonment { get; set; }
+
+        [JsonConverter(typeof(NullableDateTimeConverter))]
+        public DateTime? DateOfDeclaration { get; set; }
+
+        [JsonConverter(typeof(NullableDateTimeConverter))]
+        public DateTime? DateOfAbandonment { get; set; }
         [Required] public TypeOfVaccination TypeOfVaccination { get; set; }
     }
 }

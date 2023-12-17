@@ -21,6 +21,7 @@ namespace backend.Controllers
         /// <summary>
         /// Get age groups list
         /// </summary>
+        /// <returns>Returns the list of the age groups</returns>
         [Authorize]
         [HttpGet(Name = "getAgeGroups")]
         public async Task<ActionResult<IEnumerable<AgeGroupsDTO>>> GetAgeGroups()

@@ -21,37 +21,35 @@ namespace backend.Controllers
         /// <summary>
         /// Get vaccination card by card id
         /// </summary>
+        /// <param name="cardId"></param>
+        /// <returns>Object of the vaccination card with information</returns>
         [HttpGet("vaccinationCardById", Name = "getVaccinationCard")]
-        public async Task<ActionResult<VaccinationCardDTO>> GetVaccinvationCard([Required] int id)
+        public async Task<ActionResult<VaccinationCardDTO>> GetVaccinvationCard([Required] int cardId)
         {
-            return await _vaccinationCardService.GetVaccinationCard(id);
+            return await _vaccinationCardService.GetVaccinationCard(cardId);
         }
 
         /// <summary>
         /// Get vaccination card by patient id
         /// </summary>
+        /// <param name="patientId"></param>
+        /// <returns>Object of the vaccination card with information</returns>
         [HttpGet("vaccinationCardByPatientId", Name = "getVaccinationCardByPatient")]
-        public async Task<ActionResult<VaccinationCardDTO>> GetVaccinvationCardByPatient([Required] int id)
+        public async Task<ActionResult<VaccinationCardDTO>> GetVaccinvationCardByPatient([Required] int patientId)
         {
-            return await _vaccinationCardService.GetVaccinationCardByPatientId(id);
+            return await _vaccinationCardService.GetVaccinationCardByPatientId(patientId);
         }
-
-        /// <summary>
-        /// Add new vaccination information to vaccination card
-        /// </summary>
-        /*[HttpPost("addVaccinationInfoToCard", Name = "addVaccinationInfoToCard")]
-        public async Task<ActionResult<VaccinationCardDTO>> AddVaccinationToCard([Required] int id, [FromBody] VaccinationInfoCreateDTO vaccinationInfoDTO)
-        {
-            return await _vaccinationCardService.AddVaccinationToCard(id, vaccinationInfoDTO);
-        }*/
 
         /// <summary>
         /// Update existing vaccinvation card
         /// </summary>
+        /// <param name="cardId"></param>
+        /// <param name="vaccinationCardDTO"></param>
+        /// <returns>Object of the vaccination card with information</returns>
         [HttpPut("update", Name = "updateVaccinationCard")]
-        public async Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard([Required] int id, [FromBody] VaccinationCardCreateDTO vaccinationCardDTO)
+        public async Task<ActionResult<VaccinationCardDTO>> UpdateVaccinationCard([Required] int cardId, [FromBody] VaccinationCardCreateDTO vaccinationCardDTO)
         {
-            return await _vaccinationCardService.UpdateVaccinationCard(id, vaccinationCardDTO);
+            return await _vaccinationCardService.UpdateVaccinationCard(cardId, vaccinationCardDTO);
         }
     }
 }

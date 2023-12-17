@@ -10,16 +10,16 @@ namespace backend.Utilities
             string strValue = reader.GetString();
             if (string.IsNullOrEmpty(strValue))
             {
-                return null; // Jeśli wartość w JSON jest pusta, zwróć null dla DateTime?
+                return null;
             }
 
             if (DateTime.TryParse(strValue, out DateTime dateTimeValue))
             {
-                return DateTime.SpecifyKind(dateTimeValue, DateTimeKind.Utc); // Ustaw wartość DateTime z odpowiednią wartością Kind
+                return DateTime.SpecifyKind(dateTimeValue, DateTimeKind.Utc);
             }
             else
             {
-                throw new JsonException(); // Rzuć wyjątek w przypadku problemów z parsowaniem wartości do DateTime
+                throw new JsonException();
             }
         }
 
