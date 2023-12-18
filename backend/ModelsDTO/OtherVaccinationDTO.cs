@@ -8,6 +8,7 @@ namespace backend.ModelsDTO
         public int Id { get; set; }
         public string PostponementOfVaccination { get; set; } = string.Empty;
         public string PostVaccinationReaction { get; set; } = string.Empty;
+        public string Comments { get; set; } = string.Empty;
         public string TypeVaccination { get; set; } = string.Empty;
         public string Place { get; set; } = string.Empty;
         public string Appointment { get; set; } = string.Empty;

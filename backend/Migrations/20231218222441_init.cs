@@ -207,6 +207,7 @@ namespace backend.Migrations
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ScheduledVaccination = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Dose = table.Column<int>(type: "int", nullable: false),
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VaccinationCardId = table.Column<int>(type: "int", nullable: false),
                     VaccinationId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -240,11 +241,11 @@ namespace backend.Migrations
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ScheduledVaccination = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Dose = table.Column<int>(type: "int", nullable: false),
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     VaccinationCardId = table.Column<int>(type: "int", nullable: false),
                     VaccinationId = table.Column<int>(type: "int", nullable: false),
                     AgeGroupId = table.Column<int>(type: "int", nullable: false),
-                    TypeVaccinationId = table.Column<int>(type: "int", nullable: false),
-                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
+                    TypeVaccinationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

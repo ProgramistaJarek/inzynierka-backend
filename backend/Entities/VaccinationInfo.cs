@@ -12,6 +12,7 @@ namespace backend.Entities
         public DateTime Date { get; set; }
         public DateTime ScheduledVaccination { get; set; }
         public int Dose { get; set; }
+        public string Comments { get; set; } = string.Empty;
 
         public int VaccinationCardId { get; set; }
         public VaccinationCard VaccinationCard { get; set; } = null!;

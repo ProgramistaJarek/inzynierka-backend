@@ -15,6 +15,7 @@ namespace backend.ModelsDTO
         [JsonConverter(typeof(NullableDateTimeConverter))]
         public DateTime? ScheduledVaccination { get; set; }
         public int Dose { get; set; }
+        public string Comments { get; set; } = string.Empty;
         public int VaccinationId { get; set; }
         // public int VaccinationCardId { get; set; }
     }
