@@ -137,7 +137,7 @@ namespace backend.Services.Babysitters
                 return new NotFoundObjectResult("Babysitter with this ID do not exist");
             }
 
-            var patient = await _babysitterRepository.GetById(patientId);
+            var patient = await _patientRepository.GetById(patientId);
             if (patient == null)
             {
                 return new NotFoundObjectResult("Patient with this ID do not exist");
